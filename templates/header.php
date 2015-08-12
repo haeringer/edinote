@@ -25,7 +25,7 @@
         <div class="container">
 
             <div id="top">
-                <a href="/"><img alt="C$50 Finance" src="/img/logo.gif"/></a>
+                <a href="/"><p>Edinote</p></a>
             </div>
 
             <div id="middle">
