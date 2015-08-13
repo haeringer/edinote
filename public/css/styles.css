@@ -7,11 +7,10 @@
  * Global CSS.
  */
 
-.container
+
+
+#top
 {
-    /* center contents */
-    margin-left: auto;
-    margin-right: auto;
     text-align: center;
 }
 
@@ -38,6 +37,8 @@
 
 #bottom
 {
+    text-align: center;
+
     /* shrink bottom's font size */
     font-size: smaller;
 
