@@ -78,12 +78,15 @@
             </div>
             <!-- /input-group -->
           </li>
-          <li>
-            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> List item 1</a>
-          </li>
-          <li>
-            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> List item 2</a>
-          </li>
+          <ul class="list-group">
+
+            <?php foreach ($files as $file): ?>
+
+              <li class="list-group-item"><?= $file ?></li>
+
+            <?php endforeach ?>
+
+          </ul>
         </ul>
       </div>
       <!-- /.sidebar-collapse -->
@@ -93,10 +96,7 @@
 
   <div id="page-wrapper">
 
-    <div id="editor-container">function foo(items) {
-        var x = "All this is syntax highlighted";
-        return x;
-    }</div>
+    <div id="editor-container"><?php echo htmlentities(file_get_contents($usrdir."/markdown.md")); ?></div>
 
   </div>
   <!-- /#page-wrapper -->
@@ -117,7 +117,7 @@
 <script>
     var editor = ace.edit("editor-container");
     editor.setTheme("ace/theme/tomorrow");
-    editor.getSession().setMode("ace/mode/javascript");
+    editor.getSession().setMode("ace/mode/markdown");
 </script>
 
 </body>
