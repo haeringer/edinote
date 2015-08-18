@@ -90,7 +90,7 @@
             trigger_error("Could not connect to Yahoo!", E_USER_ERROR);
             exit;
         }
- 
+
         // download first line of CSV file
         $data = fgetcsv($handle);
         if ($data === false || count($data) == 1)
@@ -137,7 +137,7 @@
                 $handle = new PDO("mysql:dbname=" . DATABASE . ";host=" . SERVER, USERNAME, PASSWORD);
 
                 // ensure that PDO::prepare returns false when passed invalid SQL
-                $handle->setAttribute(PDO::ATTR_EMULATE_PREPARES, false); 
+                $handle->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
             }
             catch (Exception $e)
             {
@@ -219,13 +219,13 @@
             extract($values);
 
             // render header
-            require("../templates/header.php");
+            // require("../templates/header.php");
 
             // render template
             require("../templates/$template");
 
             // render footer
-            require("../templates/footer.php");
+            // require("../templates/footer.php");
         }
 
         // else err

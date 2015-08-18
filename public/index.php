@@ -27,6 +27,6 @@
         }
     }
 
-    render("portfolio.php", ["positions" => $positions, "cash" => $cash, "title" => "Portfolio"]);
-
+    render("main.php", ["positions" => $positions, "cash" => $cash, "title" => "Main"]);
+    // require("../templates/temp.php");
 ?>
