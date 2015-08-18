@@ -4,7 +4,6 @@
 
     require("../includes/config.php");
 
-    $rows = query("SELECT symbol, shares FROM stocks WHERE id = ?", $_SESSION["id"]);
     $user = query("SELECT username, cash FROM users WHERE id = ?", $_SESSION["id"]);
 
     // get string (value of 'cash') out of multidimensional array 'user'
