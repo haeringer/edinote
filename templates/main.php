@@ -19,7 +19,7 @@
   <link href="/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Custom CSS -->
-  <link href="/css/sb-admin-2.css" rel="stylesheet">
+  <link href="/css/styles.css" rel="stylesheet">
 
   <!-- Custom Fonts -->
   <link href="/css/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -92,14 +92,12 @@
   </nav>
 
   <div id="page-wrapper">
-    <div class="row">
-      <div class="col-lg-12">
-        <h1 class="page-header">Dashboard</h1>
-      </div>
-      <!-- /.col-lg-12 -->
-    </div>
 
-    <!-- /.row -->
+    <div id="editor-container">function foo(items) {
+        var x = "All this is syntax highlighted";
+        return x;
+    }</div>
+
   </div>
   <!-- /#page-wrapper -->
 
@@ -112,11 +110,15 @@
 <!-- Bootstrap Core JavaScript -->
 <script src="/js/bootstrap.min.js"></script>
 
-<!-- Metis Menu Plugin JavaScript
-<script src="/js/metisMenu.min.js"></script> -->
-
 <!-- Custom Theme JavaScript -->
 <script src="/js/sb-admin-2.js"></script>
+
+<script src="/js/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    var editor = ace.edit("editor-container");
+    editor.setTheme("ace/theme/tomorrow");
+    editor.getSession().setMode("ace/mode/javascript");
+</script>
 
 </body>
 
