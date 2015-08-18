@@ -111,7 +111,7 @@
 <script src="/js/bootstrap.min.js"></script>
 
 <!-- Custom Theme JavaScript -->
-<script src="/js/sb-admin-2.js"></script>
+<script src="/js/scripts.js"></script>
 
 <script src="/js/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 <script>
