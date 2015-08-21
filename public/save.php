@@ -8,14 +8,7 @@
     $filename = $_POST["filename"];
     $contents = $_POST["contents"];
 
-    // ensure file exists
-    if (empty($filename))
-    {
-        http_response_code(400);
-        exit;
-    }
-
-
-    $whatever = file_put_contents($usrdir.$filename, $contents) or die("can't open file");
+    // write contents to file
+    file_put_contents($usrdir.$filename, $contents) or die("can't open file");
 
 ?>

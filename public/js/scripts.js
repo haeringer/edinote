@@ -58,7 +58,7 @@ editor.commands.addCommand({
     },
     exec: function() {
         var contents = editor.getSession().getValue();
-        $.post("savefile.php", {contents: contents, filename: filename}, function() {
+        $.post("save.php", {contents: contents, filename: filename}, function() {
             // TODO add error checking
             console.log('saving...');
         });
