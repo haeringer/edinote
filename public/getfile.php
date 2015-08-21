@@ -2,26 +2,30 @@
 
     require(__DIR__ . "/../includes/config.php");
 
-    // ensure proper usage
-    if (empty($_GET["$filename"]))
+    // TODO code duplicate (index.php)!
+    $usrdir = "../data/";
+
+    $filename = $_GET["filename"];
+
+    // ensure file exists
+    if (empty($filename))
     {
         http_response_code(400);
         exit;
     }
 
-    $filename = $_GET["filename"]);
+    // extract content of file
+    $content = file_get_contents($usrdir.$filename);
 
-    // TODO variable $usrdir
-    $content = file_get_contents("../data".$filename);
+    // ensure content extraction did work
     if ($content === false)
     {
         http_response_code(503);
         exit;
     }
 
-
+    // spit out content as json
     header("Content-type: application/json");
-    // echo htmlentities(file_get_contents($usrdir."/markdown.md"));
     echo json_encode($content);
 
 ?>

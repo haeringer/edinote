@@ -45,15 +45,17 @@ editor.getSession().setMode("ace/mode/markdown");
 // get rid of 'automatically scrolling cursor into view' error
 editor.$blockScrolling = Infinity;
 
-// load file content into editor
+// on click, load file content into editor
 $(function(){
-    $("#fileBtn0").click(function(){
-        $.ajax({
-            url : "test.txt",
-            dataType: "text",
-            success : function (data) {
-                editor.setValue(data, -1);
-            }
+    $(".list-group-item").click(function(){
+        $.getJSON("getfile.php", {filename: $(this).text()})
+        .done(function(data, textStatus, jqXHR) {
+            // fill editor with data returned from getfile.php
+            editor.setValue(data, -1);
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            // log error to browser's console
+            console.log(errorThrown.toString());
         });
     });
 });

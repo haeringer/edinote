@@ -81,10 +81,8 @@
           <ul class="list-group">
 
             <?php
-              $i = 0;
               foreach($files as $file) {
-                  echo '<li class="list-group-item" id="fileBtn' . $i . '">' . $file . '</li>';
-                  $i++;
+                  echo '<li class="list-group-item">' . $file . '</li>';
               }
             ?>
 
@@ -112,6 +110,7 @@
 <!-- Bootstrap Core JavaScript -->
 <script src="/js/bootstrap.min.js"></script>
 
+<!-- Ace editor source -->
 <script src="/js/ace-builds/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 
 <!-- Custom Theme JavaScript -->
