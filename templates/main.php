@@ -80,11 +80,13 @@
           </li>
           <ul class="list-group">
 
-            <?php foreach ($files as $file): ?>
-
-              <li class="list-group-item"><?= $file ?></li>
-
-            <?php endforeach ?>
+            <?php
+              $i = 0;
+              foreach($files as $file) {
+                  echo '<li class="list-group-item" id="fileBtn' . $i . '">' . $file . '</li>';
+                  $i++;
+              }
+            ?>
 
           </ul>
         </ul>
@@ -96,7 +98,7 @@
 
   <div id="page-wrapper">
 
-    <div id="editor-container"><?php echo htmlentities(file_get_contents($usrdir."/markdown.md")); ?></div>
+    <div id="editor-container"><div id="ediContent"></div></div>
 
   </div>
   <!-- /#page-wrapper -->
@@ -110,15 +112,10 @@
 <!-- Bootstrap Core JavaScript -->
 <script src="/js/bootstrap.min.js"></script>
 
+<script src="/js/ace-builds/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+
 <!-- Custom Theme JavaScript -->
 <script src="/js/scripts.js"></script>
-
-<script src="/js/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-<script>
-    var editor = ace.edit("editor-container");
-    editor.setTheme("ace/theme/tomorrow");
-    editor.getSession().setMode("ace/mode/markdown");
-</script>
 
 </body>
 

@@ -33,3 +33,27 @@
          element.addClass('active');
      }
  });
+
+/**
+ * Ace editor integration
+ */
+
+// initiate ace editor without content
+var editor = ace.edit("editor-container");
+editor.setTheme("ace/theme/tomorrow");
+editor.getSession().setMode("ace/mode/markdown");
+// get rid of 'automatically scrolling cursor into view' error
+editor.$blockScrolling = Infinity;
+
+// load file content into editor
+$(function(){
+    $("#fileBtn0").click(function(){
+        $.ajax({
+            url : "test.txt",
+            dataType: "text",
+            success : function (data) {
+                editor.setValue(data, -1);
+            }
+        });
+    });
+});
