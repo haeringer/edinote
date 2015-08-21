@@ -45,10 +45,31 @@ editor.getSession().setMode("ace/mode/markdown");
 // get rid of 'automatically scrolling cursor into view' error
 editor.$blockScrolling = Infinity;
 
+
+var filename;
+
+
+editor.commands.addCommand({
+    name: 'saveFile',
+    bindKey: {
+        win: 'Ctrl-S',
+        mac: 'Command-S',
+        sender: 'editor|cli'
+    },
+    exec: function() {
+        var contents = editor.getSession().getValue();
+        $.post("savefile.php", {contents: contents, filename: filename}, function() {
+            // TODO add error checking
+            console.log('saving...');
+        });
+    }
+});
+
 // on click, load file content into editor
 $(function(){
     $(".list-group-item").click(function(){
-        $.getJSON("getfile.php", {filename: $(this).text()})
+        filename = $(this).text();
+        $.getJSON("getfile.php", {filename: filename})
         .done(function(data, textStatus, jqXHR) {
             // fill editor with data returned from getfile.php
             editor.setValue(data, -1);
@@ -59,3 +80,12 @@ $(function(){
         });
     });
 });
+
+saveFile = function() {
+    var contents = env.editor.getSession().getValue();
+
+    $.post("savefile.php", {contents: contents}, function() {
+            // TODO add error checking
+            console.log('saving...');
+    });
+};
