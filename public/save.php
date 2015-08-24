@@ -8,9 +8,12 @@
     $filename = $_POST["filename"];
     $contents = $_POST["contents"];
 
-    var_dump($filename);
+    if (empty($filename)) {
 
-    // if ($filename)
+        // save file as...!!!???
+
+
+    }
 
     // write contents to file
     $saved = file_put_contents($usrdir.$filename, $contents);
