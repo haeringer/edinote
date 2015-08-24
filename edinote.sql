@@ -16,6 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `files`
+--
+
+DROP TABLE IF EXISTS `files`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `files` (
+  `id` int(10) unsigned NOT NULL,
+  `files` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `tags` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`,`files`,`tags`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `files`
+--
+
+LOCK TABLES `files` WRITE;
+/*!40000 ALTER TABLE `files` DISABLE KEYS */;
+INSERT INTO `files` VALUES (8,'code.php',''),(8,'markdown.md','');
+/*!40000 ALTER TABLE `files` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `history`
 --
 
@@ -44,31 +69,6 @@ INSERT INTO `history` VALUES (8,'BUY','GOOG',6,662,'2015-07-22 08:02:10'),(8,'BU
 UNLOCK TABLES;
 
 --
--- Table structure for table `stocks`
---
-
-DROP TABLE IF EXISTS `stocks`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `stocks` (
-  `id` int(10) unsigned NOT NULL,
-  `symbol` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `shares` int(255) NOT NULL,
-  PRIMARY KEY (`id`,`symbol`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `stocks`
---
-
-LOCK TABLES `stocks` WRITE;
-/*!40000 ALTER TABLE `stocks` DISABLE KEYS */;
-INSERT INTO `stocks` VALUES (6,'FREE',10),(8,'FREE',120),(8,'GOOG',12),(9,'FREE',500),(9,'GOOG',5);
-/*!40000 ALTER TABLE `stocks` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `users`
 --
 
@@ -79,7 +79,6 @@ CREATE TABLE `users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `hash` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `cash` decimal(65,4) unsigned NOT NULL DEFAULT '0.0000',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -91,7 +90,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'belindazeng','$1$50$oxJEDBo9KDStnrhtnSzir0',10000.0000),(2,'caesar','$1$50$GHABNWBNE/o4VL7QjmQ6x0',10000.0000),(3,'jharvard','$1$50$RX3wnAMNrGIbgzbRYrxM1/',10000.0000),(4,'malan','$1$50$lJS9HiGK6sphej8c4bnbX.',10000.0000),(5,'rob','$1$HA$l5llES7AEaz8ndmSo5Ig41',10000.0000),(6,'skroob','$1$50$euBi4ugiJmbpIbvTTfmfI.',10000.0000),(7,'zamyla','$1$50$uwfqB45ANW.9.6qaQ.DcF.',10000.0000),(8,'hans','$1$XtGRziyP$ysD.TT4cEJD2Z8KwKxWCS/',2838.1600),(9,'test','$1$XUgBl8Ii$GHI7N7lY7zJuXFNzHq3Oz/',6776.9500);
+INSERT INTO `users` VALUES (1,'belindazeng','$1$50$oxJEDBo9KDStnrhtnSzir0'),(2,'caesar','$1$50$GHABNWBNE/o4VL7QjmQ6x0'),(3,'jharvard','$1$50$RX3wnAMNrGIbgzbRYrxM1/'),(4,'malan','$1$50$lJS9HiGK6sphej8c4bnbX.'),(5,'rob','$1$HA$l5llES7AEaz8ndmSo5Ig41'),(6,'skroob','$1$50$euBi4ugiJmbpIbvTTfmfI.'),(7,'zamyla','$1$50$uwfqB45ANW.9.6qaQ.DcF.'),(8,'hans','$1$XtGRziyP$ysD.TT4cEJD2Z8KwKxWCS/'),(9,'test','$1$XUgBl8Ii$GHI7N7lY7zJuXFNzHq3Oz/');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -104,4 +103,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-08-18 16:32:50
+-- Dump completed on 2015-08-24 11:03:58

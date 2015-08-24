@@ -2,8 +2,8 @@
 
     require(__DIR__ . "/../includes/config.php");
 
-    // TODO code duplicate (index.php)!
-    $usrdir = "../data/";
+    // TODO make user variables globally available somehow
+    $usrdir = DATADIR . query("SELECT username FROM users WHERE id = ?", $_SESSION["id"])[0]['username'] . "/";
 
     $filename = $_GET["filename"];
 
