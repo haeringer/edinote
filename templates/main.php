@@ -33,13 +33,27 @@
   <!-- Navigation -->
   <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
     <div class="navbar-header">
+
+      <a class="navbar-brand brand" href="#"><img alt="Brand" src="../img/Edinote.png"></a>
+
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Edinote</a>
+
+      <div class="btn-toolbar" role="toolbar">
+        <div class="btn-group" role="group">
+          <button type="button" class="btn btn-default navbar-btn">New</button>
+          <button type="button" class="btn btn-default navbar-btn">Save</button>
+          <button type="button" class="btn btn-default navbar-btn">Delete</button>
+        </div>
+        <div class="btn-group" role="group">
+          <button type="button" class="btn btn-default navbar-btn">Mode</button>
+        </div>
+      </div>
+
     </div>
     <!-- /.navbar-header -->
 
@@ -82,7 +96,7 @@
 
             <?php
               foreach($files as $file) {
-                  echo '<li class="list-group-item">' . $file . '</li>';
+                  echo '<li class="list-group-item button btn btn-default" type="button">' . $file . '</li>';
               }
             ?>
 

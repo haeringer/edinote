@@ -354,7 +354,16 @@ table.dataTable thead .sorting:after {
     color: #df8a13;
 }
 
+/*
+ * custom css
+ */
 
+.brand {
+    position: absolute;
+    left: 50%;
+    margin-left: -50px !important;  /* 50% of logo width */
+    display: block;
+}
 
 /*
  * ace editor css - http://ace.c9.io
