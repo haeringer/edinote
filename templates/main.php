@@ -46,7 +46,7 @@
       <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group">
           <button type="button" class="btn btn-default navbar-btn">New</button>
-          <button type="button" class="btn btn-default navbar-btn">Save</button>
+          <button type="button" id="save" class="btn btn-default navbar-btn disabled">Save</button>
           <button type="button" class="btn btn-default navbar-btn">Delete</button>
         </div>
         <div class="btn-group" role="group">

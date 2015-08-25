@@ -45,10 +45,25 @@ editor.getSession().setMode("ace/mode/markdown");
 // get rid of 'automatically scrolling cursor into view' error
 editor.$blockScrolling = Infinity;
 
-
 var filename;
 
+// on click, load file content into editor
+$(function(){
+    $(".list-group-item").click(function(){
+        filename = $(this).text();
+        $.getJSON("getfile.php", {filename: filename})
+        .done(function(response, textStatus, jqXHR) {
+            // fill editor with response data returned from getfile.php and set
+            // cursor to beginning of file
+            editor.getSession().setValue(response, -1);
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            console.log(errorThrown.toString());
+        });
+    });
+});
 
+// save file on ctrl-s
 editor.commands.addCommand({
     name: 'saveFile',
     bindKey: {
@@ -56,36 +71,44 @@ editor.commands.addCommand({
         mac: 'Command-S',
         sender: 'editor|cli'
     },
-    exec: function() {
+    exec: function(env, args, request) {
+
         var contents = editor.getSession().getValue();
-        $.post("save.php", {contents: contents, filename: filename}, function() {
-            // TODO add error checking
-            console.log('saving...');
+
+        $.ajax({
+          method: "POST",
+          url: "save.php",
+          data: { contents: contents, filename: filename }
+        })
+        .done(function(response) {
+            console.log(response);
+            // clear changed state of document
+            editor.session.getUndoManager().markClean()
+            fileState();
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            console.log(errorThrown.toString());
         });
+
     }
 });
 
-// on click, load file content into editor
-$(function(){
-    $(".list-group-item").click(function(){
-        filename = $(this).text();
-        $.getJSON("getfile.php", {filename: filename})
-        .done(function(data, textStatus, jqXHR) {
-            // fill editor with data returned from getfile.php
-            editor.setValue(data, -1);
-        })
-        .fail(function(jqXHR, textStatus, errorThrown) {
-            // log error to browser's console
-            console.log(errorThrown.toString());
-        });
-    });
+// register any changes made to a file
+editor.on('input', function() {
+    fileState();
 });
 
-saveFile = function() {
-    var contents = env.editor.getSession().getValue();
+function fileState()
+{
+    if (editor.session.getUndoManager().isClean()) {
+        $('#save').addClass("disabled");
+    }
 
-    $.post("savefile.php", {contents: contents}, function() {
-            // TODO add error checking
-            console.log('saving...');
-    });
+    else {
+        $('#save').removeClass("disabled");
+    }
 };
+/*
+$('#save').on("click", function() {
+    editor.session.getUndoManager().markClean()
+}) */
