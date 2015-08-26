@@ -45,13 +45,30 @@ editor.getSession().setMode("ace/mode/markdown");
 // get rid of 'automatically scrolling cursor into view' error
 editor.$blockScrolling = Infinity;
 
+// bind save() to ctrl-s
+editor.commands.addCommand({
+    name: 'saveFile',
+    bindKey: {
+        win: 'Ctrl-S',
+        mac: 'Command-S',
+        sender: 'editor|cli'
+    },
+    // call save() with parameter save_as = 0
+    exec: function () { save(filename, 0) }
+});
+
+/**
+ * File handling
+ */
+
 var filename;
 
 // on click, load file content into editor
 $(function(){
-    $(".list-group-item").click(function(){
+    // use .on() to recognize events also on newly added files
+    $('.list-group').on('click', '.list-group-item', function() {
         filename = $(this).text();
-        $.getJSON("getfile.php", {filename: filename})
+        $.getJSON('getfile.php', {filename: filename})
         .done(function(response, textStatus, jqXHR) {
             // fill editor with response data returned from getfile.php and set
             // cursor to beginning of file
@@ -63,34 +80,70 @@ $(function(){
     });
 });
 
-// save file on ctrl-s
-editor.commands.addCommand({
-    name: 'saveFile',
-    bindKey: {
-        win: 'Ctrl-S',
-        mac: 'Command-S',
-        sender: 'editor|cli'
-    },
-    exec: function(env, args, request) {
+// save file
+function save(filename, save_as) {
 
-        var contents = editor.getSession().getValue();
+    var contents = editor.getSession().getValue();
 
-        $.ajax({
-          method: "POST",
-          url: "save.php",
-          data: { contents: contents, filename: filename }
-        })
-        .done(function(response) {
-            console.log(response);
-            // clear changed state of document
+    $.ajax({
+      method: "POST",
+      url: "save.php",
+      data: { contents: contents, filename: filename, save_as: save_as }
+    })
+
+    .done(function(response) {
+        console.log(response);
+
+        if(response === '0') {
+            // clear changed state of file
             editor.session.getUndoManager().markClean()
             fileState();
-        })
-        .fail(function(jqXHR, textStatus, errorThrown) {
-            console.log(errorThrown.toString());
-        });
+            console.log("file saved");
+            // if a new file was created (via parameter save_as = 1)
+            if (save_as === 1) {
+                $('#SaveModal').modal('hide');
+                $('#new-file').prepend(
+                    '<li class="list-group-item button btn btn-default" type="button">'
+                    + filename
+                    + '</li>'
+                );
+            }
+        }
+        else if(response === '1') {
+            // '0' means filename was empty -> new file needs to be created
+            $('#SaveModal').modal('toggle');
+        }
+        else if(response === '2') {
+            $("label#filename_exists").show();
+            $("input#save-as").focus();
+            return 0;
+        }
+        else {
+            console.log("couldn't write to file");
+        }
+    })
 
-    }
+    .fail(function(jqXHR, textStatus, errorThrown) {
+        console.log(errorThrown.toString());
+    });
+};
+
+// save-as function (called when 'save' is clicked in save-as modal)
+$(function() {
+    $('.error').hide();
+    // setting focus doesn't work?: $('input#save-as').focus();
+    $("button#submit").click(function() {
+        console.log('save as');
+        $('.error').hide();
+        var filename = $("input#save-as").val();
+      		if (filename == "") {
+            $("label#filename_empty").show();
+            $("input#save-as").focus();
+            return false;
+        }
+        // call save() with parameter save_as = 1
+        save(filename, 1);
+   });
 });
 
 // register any changes made to a file
@@ -98,12 +151,11 @@ editor.on('input', function() {
     fileState();
 });
 
-function fileState()
-{
+// enable/disable save button depending on file state
+function fileState() {
     if (editor.session.getUndoManager().isClean()) {
         $('#save').addClass("disabled");
     }
-
     else {
         $('#save').removeClass("disabled");
     }

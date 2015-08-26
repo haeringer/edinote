@@ -28,6 +28,32 @@
 
 <body>
 
+<!-- SaveModal -->
+<div class="modal" id="SaveModal" tabindex="-1" role="dialog" aria-labelledby="SaveModalLabel">
+  <form name="saveAs" action="">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="SaveModalLabel">Save file as...</h4>
+      </div>
+      <div class="modal-body">
+        <div class="input-group input-group-lg col-sm-12">
+          <input type="text" name="filename" class="form-control" id="save-as" placeholder="Example.md">
+          <label class="error" for="filename" id="filename_empty"><br>Please enter a file name!</label>
+          <label class="error" for="filename" id="filename_exists"><br>File name already exists!</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="submit" >Save</button>
+      </div>
+    </div>
+  </div>
+</form>
+</div>
+<!-- /.SaveModal -->
+
 <div id="wrapper">
 
   <!-- Navigation -->
@@ -50,7 +76,7 @@
           <button type="button" class="btn btn-default navbar-btn">Delete</button>
         </div>
         <div class="btn-group" role="group">
-          <button type="button" class="btn btn-default navbar-btn">Mode</button>
+          <button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#SaveModal">Mode</button>
         </div>
       </div>
 
@@ -94,9 +120,12 @@
           </li>
           <ul class="list-group">
 
+            <div id="new-file"></div>
+
             <?php
               foreach($files as $file) {
-                  echo '<li class="list-group-item button btn btn-default" type="button">' . $file . '</li>';
+                  echo '<div><li class="list-group-item button btn btn-default"
+                    type="button">' . $file . '</li></div>';
               }
             ?>
 
