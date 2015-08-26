@@ -73,10 +73,10 @@
         <div class="btn-group" role="group">
           <button type="button" class="btn btn-default navbar-btn">New</button>
           <button type="button" id="save" class="btn btn-default navbar-btn disabled">Save</button>
-          <button type="button" class="btn btn-default navbar-btn">Delete</button>
+          <button type="button" id="delete" class="btn btn-default navbar-btn">Delete</button>
         </div>
         <div class="btn-group" role="group">
-          <button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#SaveModal">Mode</button>
+          <button type="button" class="btn btn-default navbar-btn">Mode</button>
         </div>
       </div>
 

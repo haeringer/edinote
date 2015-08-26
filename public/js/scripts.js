@@ -63,6 +63,10 @@ editor.commands.addCommand({
 
 var filename;
 
+$(function(){
+    $("button#save").click(function() { save(filename, 0) });
+});
+
 // on click, load file content into editor
 $(function(){
     // use .on() to recognize events also on newly added files
