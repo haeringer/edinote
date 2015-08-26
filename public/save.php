@@ -30,11 +30,11 @@
         // save.php was called from save-as form (hence from a non-existing
         // file), therefore check if typed-in name does already exist.
         // If not write to file, if yes return error
-        $files_arr = query("SELECT files FROM files WHERE id = ?", $_SESSION["id"]);
+        $files_arr = query("SELECT file FROM files WHERE id = ?", $_SESSION["id"]);
 
         $files = [];
         for ($i = 0; $i < sizeof($files_arr); $i++) {
-            $files[$i] = $files_arr[$i]['files'];
+            $files[$i] = $files_arr[$i]['file'];
         }
 
         if (in_array($filename, $files)) {
@@ -45,7 +45,8 @@
             $return = file_put_contents($usrdir.$filename, $contents);
 
             // add new file name to database
-            $file_db = query("INSERT INTO files (id, files) VALUES (?, ?)", $_SESSION["id"], $filename);
+            $inserted = query("INSERT INTO files (id, file) VALUES (?, ?)", $_SESSION["id"], $filename);
+            // TODO check $file_db for error
 
             // return values to calling js function
             if ($return !== false) {

@@ -45,7 +45,7 @@ editor.getSession().setMode("ace/mode/markdown");
 // get rid of 'automatically scrolling cursor into view' error
 editor.$blockScrolling = Infinity;
 
-// bind save() to ctrl-s
+// bind saveFile() to ctrl-s
 editor.commands.addCommand({
     name: 'saveFile',
     bindKey: {
@@ -53,8 +53,8 @@ editor.commands.addCommand({
         mac: 'Command-S',
         sender: 'editor|cli'
     },
-    // call save() with parameter save_as = 0
-    exec: function () { save(filename, 0) }
+    // call saveFile() with parameter save_as = 0
+    exec: function () { saveFile(filename, 0) }
 });
 
 /**
@@ -64,7 +64,8 @@ editor.commands.addCommand({
 var filename;
 
 $(function(){
-    $("button#save").click(function() { save(filename, 0) });
+    $("button#save").click(function() { saveFile(filename, 0) });
+    $("button#delete").click(function() { deleteFile(filename) });
 });
 
 // on click, load file content into editor
@@ -85,7 +86,7 @@ $(function(){
 });
 
 // save file
-function save(filename, save_as) {
+function saveFile(filename, save_as) {
 
     var contents = editor.getSession().getValue();
 
@@ -96,9 +97,9 @@ function save(filename, save_as) {
     })
 
     .done(function(response) {
-        console.log(response);
+        console.log('save.php returned ' + response);
 
-        if(response === '0') {
+        if (response === '0') {
             // clear changed state of file
             editor.session.getUndoManager().markClean()
             fileState();
@@ -113,11 +114,11 @@ function save(filename, save_as) {
                 );
             }
         }
-        else if(response === '1') {
+        else if (response === '1') {
             // '0' means filename was empty -> new file needs to be created
             $('#SaveModal').modal('toggle');
         }
-        else if(response === '2') {
+        else if (response === '2') {
             $("label#filename_exists").show();
             $("input#save-as").focus();
             return 0;
@@ -144,9 +145,13 @@ $(function() {
             $("label#filename_empty").show();
             $("input#save-as").focus();
             return false;
+
+        // TODO extend input validation with .validate plugin (allow only
+        // certain characters in file name etc.)
+
         }
-        // call save() with parameter save_as = 1
-        save(filename, 1);
+        // call saveFile() with parameter save_as = 1
+        saveFile(filename, 1);
    });
 });
 
@@ -164,7 +169,37 @@ function fileState() {
         $('#save').removeClass("disabled");
     }
 };
-/*
-$('#save').on("click", function() {
-    editor.session.getUndoManager().markClean()
-}) */
+
+// delete file
+function deleteFile(filename) {
+    console.log('deleting file ' + filename);
+
+    $.ajax({
+      method: "POST",
+      url: "delete.php",
+      data: { filename: filename }
+    })
+
+    .done(function(response) {
+        console.log('delete.php returned ' + response);
+
+        if (response === '0') {
+            console.log("file " + filename + " deleted");
+
+            // remove element from DOM
+            $("#f_" + filename).remove(); // doesn't work????
+
+
+        }
+        else if (response === '1') {
+            console.log("couldn't delete file from database");
+        }
+        else if (response === '2') {
+            console.log("couldn't delete file from file system");
+        }
+    })
+
+    .fail(function(jqXHR, textStatus, errorThrown) {
+        console.log(errorThrown.toString());
+    });
+};
