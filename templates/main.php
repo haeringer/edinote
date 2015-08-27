@@ -19,7 +19,7 @@
   <link href="/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Custom CSS -->
-  <link href="/css/styles.css" rel="stylesheet">
+  <link href="/css/custom.css" rel="stylesheet">
 
   <!-- Custom Fonts -->
   <link href="/css/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -126,8 +126,8 @@
               foreach($files as $file) {
                   /* echo '<div id="f_' . $file . '"><li class="list-group-item
                     button btn btn-default" type="button">' . $file . '</li></div>'; */
-                  echo '<div><li class="list-group-item button btn btn-default"
-                    type="button">' . $file . '</li></div>';
+                  echo '<div><button class="list-group-item "
+                    type="button">' . $file . '</button></div>';
               }
             ?>
 

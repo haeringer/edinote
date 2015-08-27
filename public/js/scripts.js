@@ -115,9 +115,9 @@ function saveFile(filename, save_as) {
             if (save_as === 1) {
                 $('#SaveModal').modal('hide');
                 $('#new-file').html(
-                    '<li class="list-group-item button btn btn-default" type="button">'
+                    '<button class="list-group-item" type="button">'
                     + filename
-                    + '</li>'
+                    + '</button>'
                 );
             }
         }
@@ -150,6 +150,9 @@ $(function() {
         filename = $("input#save-as").val();
       		if (filename == "") {
             $("label#filename_empty").show();
+
+            // TODO change input to bootstrap input error style
+
             $("input#save-as").focus();
             return false;
 
@@ -193,7 +196,7 @@ function deleteFile(filename) {
         if (response === '0') {
             console.log("file " + filename + " deleted");
             // $("#f_" + filename).remove(); // doesn't work??
-            $('li').remove(":contains(" + filename + ")");
+            $('button').remove(":contains(" + filename + ")");
         }
         else if (response === '1') {
             console.log("couldn't delete file from database");
