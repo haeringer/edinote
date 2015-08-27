@@ -42,6 +42,7 @@
 var editor = ace.edit("editor-container");
 editor.setTheme("ace/theme/tomorrow");
 editor.getSession().setMode("ace/mode/markdown");
+editor.setFontSize(16);
 // get rid of 'automatically scrolling cursor into view' error
 editor.$blockScrolling = Infinity;
 
