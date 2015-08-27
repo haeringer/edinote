@@ -34,6 +34,11 @@
      }
  });
 
+// enable bootstrap tooltips
+ $(function() {
+     $('[data-toggle="tooltip"]').tooltip({container: 'body'});
+ });
+
 /**
  * Ace editor integration
  */
@@ -197,6 +202,7 @@ function deleteFile(filename) {
             console.log("file " + filename + " deleted");
             // $("#f_" + filename).remove(); // doesn't work??
             $('button').remove(":contains(" + filename + ")");
+            newFile();
         }
         else if (response === '1') {
             console.log("couldn't delete file from database");

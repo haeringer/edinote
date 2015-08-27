@@ -71,12 +71,20 @@
 
       <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group">
-          <button type="button" id="new" class="btn btn-default navbar-btn">New</button>
-          <button type="button" id="save" class="btn btn-default navbar-btn disabled">Save</button>
-          <button type="button" id="delete" class="btn btn-default navbar-btn">Delete</button>
+          <button type="button" id="new" class="btn btn-default navbar-btn" data-toggle="tooltip" data-placement="bottom" title="New">
+            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+          </button>
+          <button type="button" id="save" class="btn btn-default navbar-btn disabled" data-toggle="tooltip" data-placement="bottom" title="Save">
+            <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+          </button>
+          <button type="button" id="delete" class="btn btn-default navbar-btn" data-toggle="tooltip" data-placement="bottom" title="Delete">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+          </button>
         </div>
         <div class="btn-group" role="group">
-          <button type="button" class="btn btn-default navbar-btn">Mode</button>
+          <button type="button" class="btn btn-default navbar-btn" data-toggle="tooltip" data-placement="bottom" title="View mode">
+            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+          </button>
         </div>
       </div>
 
