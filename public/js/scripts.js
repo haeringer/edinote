@@ -45,10 +45,14 @@
 
 // initiate ace editor without content
 var editor = ace.edit("editor-container");
-editor.setTheme("ace/theme/tomorrow");
 editor.getSession().setMode("ace/mode/markdown");
 // get rid of 'automatically scrolling cursor into view' error
 editor.$blockScrolling = Infinity;
+editor.setOptions({
+    // maxLines: Infinity
+    fontSize: 14,
+    theme: "ace/theme/tomorrow"
+});
 
 // bind saveFile() to ctrl-s
 editor.commands.addCommand({

@@ -57,7 +57,7 @@
 <div id="wrapper">
 
   <!-- Navigation -->
-  <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+  <nav class="navbar navbar-default navbar-static-top navbar-fixed-top" role="navigation">
     <div class="navbar-header">
 
       <a class="navbar-brand brand" href="#"><img alt="Brand" src="../img/Edinote.png"></a>
@@ -72,18 +72,18 @@
       <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group">
           <button type="button" id="new" class="btn btn-default navbar-btn" data-toggle="tooltip" data-placement="bottom" title="New">
-            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-          </button>
-          <button type="button" id="save" class="btn btn-default navbar-btn disabled" data-toggle="tooltip" data-placement="bottom" title="Save">
-            <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+            <span class="fa fa-file-text" aria-hidden="true"></span>
           </button>
           <button type="button" id="delete" class="btn btn-default navbar-btn" data-toggle="tooltip" data-placement="bottom" title="Delete">
-            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            <span class="fa fa-trash" aria-hidden="true"></span>
+          </button>
+          <button type="button" id="save" class="btn btn-default navbar-btn disabled" data-toggle="tooltip" data-placement="bottom" title="Save">
+            <span class="fa fa-floppy-o" aria-hidden="true"></span>
           </button>
         </div>
         <div class="btn-group" role="group">
           <button type="button" class="btn btn-default navbar-btn" data-toggle="tooltip" data-placement="bottom" title="View mode">
-            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+            <span class="fa fa-eye" aria-hidden="true"></span>
           </button>
         </div>
       </div>

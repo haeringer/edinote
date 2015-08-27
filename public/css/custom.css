@@ -22,9 +22,10 @@ body {
     #page-wrapper {
         position: inherit;
         margin: 0 250px;
-        margin: 15px 15px 15px 255px;
+        margin: 65px 15px 15px 255px;
         box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
         border-left: 1px solid #e7e7e7;
+        /* min-height: 70vmax !important; */
     }
 }
 
@@ -96,13 +97,7 @@ body {
 }
 
 .sidebar ul li {
-
-}
-
-.list-group-item {
-    margin: 8px 0px 8px 0px;
-    border-style: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    /* removed for now */
 }
 
 .sidebar ul li a.active {
@@ -179,11 +174,12 @@ body {
     padding-left: 15px;
 }
 
-.btn-default:hover {
-    color: #333;
-    background-color: #E6E6E6;
-    border-color: #ADADAD;
+.list-group-item {
+    margin: 8px 0px 8px 0px;
+    border-style: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
+
 
 /*
  * ace editor css - http://ace.c9.io
