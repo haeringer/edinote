@@ -66,7 +66,14 @@ var filename;
 $(function(){
     $("button#save").click(function() { saveFile(filename, 0) });
     $("button#delete").click(function() { deleteFile(filename) });
+    $("button#new").click(function() { newFile() });
 });
+
+function newFile() {
+    console.log('creating new file...');
+    filename = "";
+    editor.getSession().setValue("");
+};
 
 // on click, load file content into editor
 $(function(){

@@ -35,7 +35,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="SaveModalLabel">Save file as...</h4>
+        <h4 class="modal-title" id="SaveModalLabel">Save new file as...</h4>
       </div>
       <div class="modal-body">
         <div class="input-group input-group-lg col-sm-12">
@@ -71,7 +71,7 @@
 
       <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group">
-          <button type="button" class="btn btn-default navbar-btn">New</button>
+          <button type="button" id="new" class="btn btn-default navbar-btn">New</button>
           <button type="button" id="save" class="btn btn-default navbar-btn disabled">Save</button>
           <button type="button" id="delete" class="btn btn-default navbar-btn">Delete</button>
         </div>
@@ -139,7 +139,7 @@
 
   <div id="page-wrapper">
 
-    <div id="editor-container"><div id="ediContent"></div></div>
+    <div id="editor-container"></div>
 
   </div>
   <!-- /#page-wrapper -->
