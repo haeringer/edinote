@@ -124,8 +124,10 @@
 
             <?php
               foreach($files as $file) {
-                  echo '<div id="f_' . $file . '"><li class="list-group-item
-                    button btn btn-default" type="button">' . $file . '</li></div>';
+                  /* echo '<div id="f_' . $file . '"><li class="list-group-item
+                    button btn btn-default" type="button">' . $file . '</li></div>'; */
+                  echo '<div><li class="list-group-item button btn btn-default"
+                    type="button">' . $file . '</li></div>';
               }
             ?>
 

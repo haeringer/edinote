@@ -114,7 +114,7 @@ function saveFile(filename, save_as) {
             // if a new file was created (via parameter save_as = 1)
             if (save_as === 1) {
                 $('#SaveModal').modal('hide');
-                $('#new-file').prepend(
+                $('#new-file').html(
                     '<li class="list-group-item button btn btn-default" type="button">'
                     + filename
                     + '</li>'
@@ -145,9 +145,9 @@ $(function() {
     $('.error').hide();
     // setting focus doesn't work?: $('input#save-as').focus();
     $("button#submit").click(function() {
-        console.log('save as');
+        console.log('save as...');
         $('.error').hide();
-        var filename = $("input#save-as").val();
+        filename = $("input#save-as").val();
       		if (filename == "") {
             $("label#filename_empty").show();
             $("input#save-as").focus();
@@ -192,11 +192,8 @@ function deleteFile(filename) {
 
         if (response === '0') {
             console.log("file " + filename + " deleted");
-
-            // remove element from DOM
-            $("#f_" + filename).remove(); // doesn't work????
-
-
+            // $("#f_" + filename).remove(); // doesn't work??
+            $('li').remove(":contains(" + filename + ")");
         }
         else if (response === '1') {
             console.log("couldn't delete file from database");
