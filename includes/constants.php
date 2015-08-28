@@ -21,4 +21,7 @@
     // your database's username
     define("USERNAME", "homestead");
 
+    // data directory
+    define("DATADIR", "../data/");
+
 ?>

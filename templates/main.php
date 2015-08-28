@@ -18,28 +18,79 @@
   <!-- Bootstrap Core CSS -->
   <link href="/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Custom CSS -->
-  <link href="/css/styles.css" rel="stylesheet">
+  <!-- Flat UI CSS -->
+  <link href="/flat-ui/dist/css/flat-ui.min.css" rel="stylesheet">
 
-  <!-- Custom Fonts -->
-  <link href="/css/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <!-- Malihu scrollbar CSS -->
+  <link href="/css/jquery.mCustomScrollbar.min.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link href="/css/custom.css" rel="stylesheet">
 
 </head>
 
 <body>
 
+<!-- SaveModal -->
+<div class="modal" id="SaveModal" tabindex="-1" role="dialog" aria-labelledby="SaveModalLabel">
+  <form name="saveAs" action="">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="SaveModalLabel">Save new file as...</h4>
+      </div>
+      <div class="modal-body">
+        <div class="input-group input-group-lg col-sm-12">
+          <input type="text" name="filename" class="form-control" id="save-as" placeholder="Example.md">
+          <label class="error" for="filename" id="filename_empty"><br>Please enter a file name!</label>
+          <label class="error" for="filename" id="filename_exists"><br>File name already exists!</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="submit" >Save</button>
+      </div>
+    </div>
+  </div>
+</form>
+</div>
+<!-- /.SaveModal -->
+
 <div id="wrapper">
 
   <!-- Navigation -->
-  <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+  <nav class="navbar navbar-fixed-top" role="navigation">
     <div class="navbar-header">
+
+      <a class="navbar-brand brand" href="#"><img alt="Brand" src="../img/Edinote.png"></a>
+
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Edinote</a>
+
+      <div class="btn-toolbar" role="toolbar">
+        <div class="btn-group" role="group">
+          <button type="button" id="new" class="btn btn-default navbar-btn" data-toggle="tooltip" data-placement="bottom" title="New">
+            <span class="fui-plus" aria-hidden="true"></span>
+          </button>
+          <button type="button" id="delete" class="btn btn-default navbar-btn" data-toggle="tooltip" data-placement="bottom" title="Delete">
+            <span class="fui-cross" aria-hidden="true"></span>
+          </button>
+          <button type="button" id="save" class="btn btn-default navbar-btn disabled" data-toggle="tooltip" data-placement="bottom" title="Save">
+            <span class="fui-check" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="btn-group" role="group">
+          <button type="button" class="btn btn-default navbar-btn" data-toggle="tooltip" data-placement="bottom" title="View mode">
+            <span class="fui-eye" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+
     </div>
     <!-- /.navbar-header -->
 
@@ -47,15 +98,15 @@
 
       <li class="dropdown pull-right">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-          <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+          <i class="glyphicon glyphicon-user"></i> <i class="glyphicon glyphicon-chevron-down"></i>
         </a>
         <ul class="dropdown-menu dropdown-user">
-          <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+          <li><a href="#"><i class="glyphicon glyphicon-user"></i> User Profile</a>
           </li>
-          <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+          <li><a href="#"><i class="fui-gear"></i> Settings</a>
           </li>
           <li class="divider"></li>
-          <li><a href="logout.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+          <li><a href="logout.php"><i class="fui-export"></i> Logout</a>
           </li>
         </ul>
         <!-- /.dropdown-user -->
@@ -66,13 +117,13 @@
 
     <div class="navbar-default sidebar" role="navigation">
       <div class="sidebar-nav navbar-collapse">
-        <ul class="nav" id="side-menu">
+        <ul class="nav pre-scrollable" id="side-menu">
           <li class="sidebar-search">
             <div class="input-group custom-search-form">
               <input type="text" class="form-control" placeholder="Search...">
               <span class="input-group-btn">
               <button class="btn btn-default" type="button">
-                <i class="fa fa-search"></i>
+                <i class="glyphicon glyphicon-search"></i>
               </button>
             </span>
             </div>
@@ -80,9 +131,14 @@
           </li>
           <ul class="list-group">
 
+            <div id="new-file"></div>
+
             <?php
               foreach($files as $file) {
-                  echo '<li class="list-group-item">' . $file . '</li>';
+                  /* echo '<div id="f_' . $file . '"><li class="list-group-item
+                    button btn btn-default" type="button">' . $file . '</li></div>'; */
+                  echo '<div><button class="list-group-item "
+                    type="button">' . $file . '</button></div>';
               }
             ?>
 
@@ -96,7 +152,7 @@
 
   <div id="page-wrapper">
 
-    <div id="editor-container"><div id="ediContent"></div></div>
+    <div id="editor-container"></div>
 
   </div>
   <!-- /#page-wrapper -->
@@ -107,13 +163,20 @@
 <!-- jQuery -->
 <script src="/js/jquery.min.js"></script>
 
+<!-- Malihu scrollbar -->
+<script src='/js/jquery.mCustomScrollbar.concat.min.js'></script>
+
+<!-- jscroll lazy loading -->
+<script src="/js/jquery.jscroll.min.js"></script>
+<script src="/js/jquery.endless-scroll.js"></script>
+
 <!-- Bootstrap Core JavaScript -->
 <script src="/js/bootstrap.min.js"></script>
 
 <!-- Ace editor source -->
 <script src="/js/ace-builds/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 
-<!-- Custom Theme JavaScript -->
+<!-- App JavaScript -->
 <script src="/js/scripts.js"></script>
 
 </body>
