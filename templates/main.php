@@ -25,7 +25,7 @@
   <link href="/css/jquery.mCustomScrollbar.min.css" rel="stylesheet">
 
   <!-- Custom CSS -->
-  <link href="/css/custom.css" rel="stylesheet">
+  <link href="/css/main.css" rel="stylesheet">
 
 </head>
 
@@ -117,7 +117,7 @@
 
     <div class="navbar-default sidebar" role="navigation">
       <div class="sidebar-nav navbar-collapse">
-        <ul class="nav pre-scrollable" id="side-menu">
+        <ul class="nav" id="side-menu">
           <li class="sidebar-search">
             <div class="input-group custom-search-form">
               <input type="text" class="form-control" placeholder="Search...">
@@ -129,7 +129,8 @@
             </div>
             <!-- /input-group -->
           </li>
-          <ul class="list-group">
+          </ul>
+          <ul class="list-group pre-scrollable" id="file-list">
 
             <div id="new-file"></div>
 
@@ -143,7 +144,7 @@
             ?>
 
           </ul>
-        </ul>
+
       </div>
       <!-- /.sidebar-collapse -->
     </div>

@@ -22,6 +22,6 @@
     define("USERNAME", "homestead");
 
     // data directory
-    define("DATADIR", "../data/");
+    define("DATADIR", "/var/lib/edinote/data/");
 
 ?>

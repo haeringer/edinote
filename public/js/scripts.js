@@ -40,7 +40,7 @@ $(function() {
     // enable bootstrap tooltips
     $('[data-toggle="tooltip"]').tooltip({container: 'body'});
     // enable custom scrollbar
-    $("#side-menu").mCustomScrollbar({
+    $("#file-list").mCustomScrollbar({
         theme: "minimal-dark",
         scrollInertia: 100
     });
@@ -65,7 +65,7 @@ function setHeight() {
     var editor_height = $(window).height() - 110;
     var sidebar_height = editor_height - 100;
     $("#editor-container").css("height", editor_height);
-    $("#side-menu").css("max-height", sidebar_height);
+    $("#file-list").css("max-height", sidebar_height);
 }
 
 
