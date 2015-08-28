@@ -18,11 +18,11 @@
   <!-- Bootstrap Core CSS -->
   <link href="/css/bootstrap.min.css" rel="stylesheet">
 
+  <!-- Flat UI CSS -->
+  <link href="/flat-ui/dist/css/flat-ui.min.css" rel="stylesheet">
+
   <!-- Custom CSS -->
   <link href="/css/custom.css" rel="stylesheet">
-
-  <!-- Custom Fonts -->
-  <link href="/css/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
 </head>
 
@@ -57,7 +57,7 @@
 <div id="wrapper">
 
   <!-- Navigation -->
-  <nav class="navbar navbar-default navbar-static-top navbar-fixed-top" role="navigation">
+  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="navbar-header">
 
       <a class="navbar-brand brand" href="#"><img alt="Brand" src="../img/Edinote.png"></a>
@@ -72,18 +72,18 @@
       <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group">
           <button type="button" id="new" class="btn btn-default navbar-btn" data-toggle="tooltip" data-placement="bottom" title="New">
-            <span class="fa fa-file-text" aria-hidden="true"></span>
+            <span class="fui-plus" aria-hidden="true"></span>
           </button>
           <button type="button" id="delete" class="btn btn-default navbar-btn" data-toggle="tooltip" data-placement="bottom" title="Delete">
-            <span class="fa fa-trash" aria-hidden="true"></span>
+            <span class="fui-cross" aria-hidden="true"></span>
           </button>
           <button type="button" id="save" class="btn btn-default navbar-btn disabled" data-toggle="tooltip" data-placement="bottom" title="Save">
-            <span class="fa fa-floppy-o" aria-hidden="true"></span>
+            <span class="fui-check" aria-hidden="true"></span>
           </button>
         </div>
         <div class="btn-group" role="group">
           <button type="button" class="btn btn-default navbar-btn" data-toggle="tooltip" data-placement="bottom" title="View mode">
-            <span class="fa fa-eye" aria-hidden="true"></span>
+            <span class="fui-eye" aria-hidden="true"></span>
           </button>
         </div>
       </div>
@@ -95,15 +95,15 @@
 
       <li class="dropdown pull-right">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-          <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+          <i class="glyphicon glyphicon-user"></i> <i class="glyphicon glyphicon-chevron-down"></i>
         </a>
         <ul class="dropdown-menu dropdown-user">
-          <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+          <li><a href="#"><i class="glyphicon glyphicon-user"></i> User Profile</a>
           </li>
-          <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+          <li><a href="#"><i class="fui-gear"></i> Settings</a>
           </li>
           <li class="divider"></li>
-          <li><a href="logout.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+          <li><a href="logout.php"><i class="fui-export"></i> Logout</a>
           </li>
         </ul>
         <!-- /.dropdown-user -->
@@ -120,7 +120,7 @@
               <input type="text" class="form-control" placeholder="Search...">
               <span class="input-group-btn">
               <button class="btn btn-default" type="button">
-                <i class="fa fa-search"></i>
+                <i class="glyphicon glyphicon-search"></i>
               </button>
             </span>
             </div>
@@ -166,7 +166,7 @@
 <!-- Ace editor source -->
 <script src="/js/ace-builds/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 
-<!-- Custom Theme JavaScript -->
+<!-- App JavaScript -->
 <script src="/js/scripts.js"></script>
 
 </body>

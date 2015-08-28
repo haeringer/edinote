@@ -1,12 +1,12 @@
 /*
- * Some rules from SB Admin 2 Bootstrap Admin Theme (http://startbootstrap.com)
+ * Some rules based on SB Admin 2 Bootstrap Admin Theme (http://startbootstrap.com)
  * Code licensed under the Apache License v2.0.
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
-
+ */
 
 body {
-    background-color: #f8f8f8;
-} */
+    background-color: #ECF0F1;
+}
 
 #wrapper {
     width: 100%;
@@ -90,6 +90,7 @@ body {
 .sidebar .sidebar-nav.navbar-collapse {
     padding-right: 0;
     padding-left: 0;
+    padding-top: 20px;
 }
 
 .sidebar .sidebar-search {
@@ -163,7 +164,7 @@ body {
 }
 
 #side-menu {
-    background-color: #fff;
+    background-color: #ECF0F1;
 }
 
 .nav {
@@ -177,7 +178,17 @@ body {
 .list-group-item {
     margin: 8px 0px 8px 0px;
     border-style: hidden;
+    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.navbar {
+    -webkit-box-shadow: 0px 2px 5px 0px rgba(120,120,120,1);
+    -moz-box-shadow: 0px 2px 5px 0px rgba(120,120,120,1);
+    box-shadow: 0px 2px 5px 0px rgba(120,120,120,1);
+
+    /* the rest of your styling */
 }
 
 
