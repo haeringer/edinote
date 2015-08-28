@@ -24,9 +24,9 @@ DROP TABLE IF EXISTS `files`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `files` (
   `id` int(10) unsigned NOT NULL,
-  `files` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `file` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tags` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`,`files`,`tags`)
+  PRIMARY KEY (`id`,`file`,`tags`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -36,7 +36,7 @@ CREATE TABLE `files` (
 
 LOCK TABLES `files` WRITE;
 /*!40000 ALTER TABLE `files` DISABLE KEYS */;
-INSERT INTO `files` VALUES (8,'code.php',''),(8,'markdown.md','');
+INSERT INTO `files` VALUES (8,'123.txt',''),(8,'34t4g',''),(8,'3553jh',''),(8,'356udzd',''),(8,'456',''),(8,'5r6z5h',''),(8,'789',''),(8,'code.php',''),(8,'dfh6',''),(8,'e56je6j',''),(8,'html.html',''),(8,'markdown.md',''),(8,'rgsdrg',''),(8,'srgrg',''),(8,'text.txt','');
 /*!40000 ALTER TABLE `files` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -103,4 +103,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-08-24 11:03:58
+-- Dump completed on 2015-08-28 13:57:27

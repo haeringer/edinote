@@ -1,29 +1,16 @@
-# README #
+# Edinote #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+Web-based text editor. Work in progress!
 
-### What is this repository for? ###
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+### Features ###
 
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+* a real good editor, with markdown support, keyboard shortcuts etc. (ace!)
+* some control over the editor with customization options
+* files kept on a server, no local storage
+  * *but* on your own server
+* easy, lightweight installation
+* simple, quick file management
+* fast search
+* tag support
+* mobile usability

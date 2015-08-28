@@ -21,6 +21,9 @@
   <!-- Flat UI CSS -->
   <link href="/flat-ui/dist/css/flat-ui.min.css" rel="stylesheet">
 
+  <!-- Malihu scrollbar CSS -->
+  <link href="/css/jquery.mCustomScrollbar.min.css" rel="stylesheet">
+
   <!-- Custom CSS -->
   <link href="/css/custom.css" rel="stylesheet">
 
@@ -57,7 +60,7 @@
 <div id="wrapper">
 
   <!-- Navigation -->
-  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <nav class="navbar navbar-fixed-top" role="navigation">
     <div class="navbar-header">
 
       <a class="navbar-brand brand" href="#"><img alt="Brand" src="../img/Edinote.png"></a>
@@ -114,7 +117,7 @@
 
     <div class="navbar-default sidebar" role="navigation">
       <div class="sidebar-nav navbar-collapse">
-        <ul class="nav" id="side-menu">
+        <ul class="nav pre-scrollable" id="side-menu">
           <li class="sidebar-search">
             <div class="input-group custom-search-form">
               <input type="text" class="form-control" placeholder="Search...">
@@ -159,6 +162,13 @@
 
 <!-- jQuery -->
 <script src="/js/jquery.min.js"></script>
+
+<!-- Malihu scrollbar -->
+<script src='/js/jquery.mCustomScrollbar.concat.min.js'></script>
+
+<!-- jscroll lazy loading -->
+<script src="/js/jquery.jscroll.min.js"></script>
+<script src="/js/jquery.endless-scroll.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
 <script src="/js/bootstrap.min.js"></script>

@@ -1,6 +1,6 @@
 /*!
  * Flat UI Free v2.2.2 (http://designmodo.github.io/Flat-UI/)
- * Copyright 2013-2014 Designmodo, Inc.
+ * Copyright 2013-2015 Designmodo, Inc.
  */
 
 /* Prettyfy Theme */
@@ -121,7 +121,7 @@ ol.linenums {
   margin-top: 2px;
   margin-bottom: 50px;
   font: 700 118px/1.1 "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-  color: #1abc9c;
+  color: #ecf0f1;
   text-align: center;
   word-wrap: break-word;
   }
@@ -148,7 +148,7 @@ ol.linenums {
   font-size: 13px;
   font-weight: 400;
   line-height: 13px;
-  color: #c0c1c2;
+  color: #c4dae9;
   }
 .demo-row .demo-text-note {
   top: 10px;
@@ -226,7 +226,7 @@ ol.linenums {
 .demo-title small {
   font-size: 13px;
   font-weight: 400;
-  color: #c0c1c2;
+  color: #c4dae9;
   }
 .demo-buttons .btn,
 .demo-inputs .control-group {
@@ -290,7 +290,7 @@ ol.linenums {
   width: 80px;
   margin-left: 0 !important;
   font-size: 12px;
-  color: #c2c8cf;
+  color: #c2e0f4;
   }
 .demo-inline {
   display: inline-block;
@@ -343,7 +343,7 @@ ol.linenums {
   width: 100%;
   padding: 62px 14px;
   margin-bottom: 50px;
-  background-color: #243342;
+  background-color: #246a99;
   }
 .static-modal-backdrop .modal {
   position: relative;
@@ -386,7 +386,7 @@ ol.linenums {
   font-size: 14px;
   line-height: 1.214;
   list-style-type: none;
-  background-color: #f3f4f5;
+  background-color: #f3f9fd;
 
   -webkit-font-smoothing: subpixel-antialiased;
   }

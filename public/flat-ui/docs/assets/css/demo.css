@@ -1,6 +1,6 @@
 /*!
  * Flat UI Free v2.2.2 (http://designmodo.github.io/Flat-UI/)
- * Copyright 2013-2014 Designmodo, Inc.
+ * Copyright 2013-2015 Designmodo, Inc.
  */
 
 /* Prettyfy Theme */
@@ -123,7 +123,7 @@ ol.linenums {
   padding-top: 5px;
   font-size: 22px;
   font-weight: 700;
-  color: rgba(52, 73, 94, .3);
+  color: rgba(52, 152, 219, .3);
   letter-spacing: 0;
   }
 .demo-row {
@@ -139,7 +139,7 @@ ol.linenums {
   font-size: 13px;
   font-weight: 400;
   line-height: 13px;
-  color: #c0c1c2;
+  color: #c4dae9;
   }
 .demo-row .demo-text-note {
   top: 10px;
@@ -167,7 +167,7 @@ ol.linenums {
 .demo-panel-title small {
   font-size: inherit;
   font-weight: 400;
-  color: #798795;
+  color: #79bbe7;
   }
 .demo-navigation {
   margin-top: -10px;
@@ -211,7 +211,7 @@ ol.linenums {
   width: 80px;
   margin-left: 0 !important;
   font-size: 12px;
-  color: #c2c8cf;
+  color: #c2e0f4;
   }
 .demo-illustrations .demo-content {
   padding-top: 20px;
@@ -257,7 +257,7 @@ ol.linenums {
   padding: 40px 28px 30px 32px;
   margin: 0 auto 32px;
   text-align: center;
-  background-color: #ebedef;
+  background-color: #ebf5fb;
   border-radius: 50%;
   }
 .demo-download img {
@@ -270,13 +270,13 @@ ol.linenums {
   text-align: center;
   }
 .demo-text-box a:hover {
-  color: #1abc9c;
+  color: #ecf0f1;
   }
 .demo-browser {
   padding-top: 42px;
   margin: 0 41px 140px 0;
   color: #fff;
-  background: #2c3e50 url(../img/demo/browser.png) 0 0 no-repeat;
+  background: #2c81ba url(../img/demo/browser.png) 0 0 no-repeat;
   background-size: 659px 42px;
   border-radius: 0 0 6px 6px;
   }
@@ -326,7 +326,7 @@ ol.linenums {
 .demo-browser-content {
   padding: 21px 0 0 20px;
   overflow: hidden;
-  background-color: #34495e;
+  background-color: #3498db;
   border-radius: 0 0 6px;
   }
 .demo-browser-content > img {

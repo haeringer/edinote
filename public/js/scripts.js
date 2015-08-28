@@ -1,29 +1,32 @@
 /**
- * sb-admin-2 template custom JS
- *
- * Loads the correct sidebar on window load,
- * collapses the sidebar on window resize.
- * Sets the min-height of #page-wrapper to window size
+ * all the stuff that happens when the page has loaded
  */
 
- $(function() {
-     $(window).bind("load resize", function() {
-         topOffset = 50;
-         width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;
-         if (width < 768) {
-             $('div.navbar-collapse').addClass('collapse');
-             topOffset = 100; // 2-row-menu
-         } else {
-             $('div.navbar-collapse').removeClass('collapse');
-         }
+// From sb-admin-2 template JS - loads the correct sidebar on window load,
+// collapses the sidebar on window resize,
+// (( sets the min-height of #page-wrapper to window size ))
 
-         height = ((this.window.innerHeight > 0) ? this.window.innerHeight : this.screen.height) - 1;
+$(function() {
+
+    setHeight();
+
+    $(window).bind("load resize", function() {
+        topOffset = 50;
+        width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;
+        if (width < 768) {
+            $('div.navbar-collapse').addClass('collapse');
+            topOffset = 100; // 2-row-menu
+        } else {
+            $('div.navbar-collapse').removeClass('collapse');
+        }
+    });
+
+/*       height = ((this.window.innerHeight > 0) ? this.window.innerHeight : this.screen.height) - 1;
          height = height - topOffset;
          if (height < 1) height = 1;
          if (height > topOffset) {
-             $("#page-wrapper").css("min-height", (height) + "px");
+             $("#page-wrapper").css("min-height", height);
          }
-     });
 
      var url = window.location;
      var element = $('ul.nav a').filter(function() {
@@ -32,12 +35,39 @@
      if (element.is('li')) {
          element.addClass('active');
      }
- });
+ }); */
 
-// enable bootstrap tooltips
- $(function() {
-     $('[data-toggle="tooltip"]').tooltip({container: 'body'});
- });
+    // enable bootstrap tooltips
+    $('[data-toggle="tooltip"]').tooltip({container: 'body'});
+    // enable custom scrollbar
+    $("#side-menu").mCustomScrollbar({
+        theme: "minimal-dark",
+        scrollInertia: 100
+    });
+    /* lazy loading
+    $('#side-menu').jscroll({
+        debug: true,
+        padding: 200,
+        contentSelector: 'li'
+    });
+
+    $("ul#list-group").endlessScroll();
+    */
+
+});
+
+
+window.onresize = function(event) {
+     setHeight();
+}
+
+function setHeight() {
+    var editor_height = $(window).height() - 110;
+    var sidebar_height = editor_height - 100;
+    $("#editor-container").css("height", editor_height);
+    $("#side-menu").css("max-height", sidebar_height);
+}
+
 
 /**
  * Ace editor integration
@@ -51,8 +81,13 @@ editor.$blockScrolling = Infinity;
 editor.setOptions({
     // maxLines: Infinity
     fontSize: 14,
-    theme: "ace/theme/tomorrow"
+    theme: "ace/theme/tomorrow",
 });
+// clean up editor
+editor.renderer.setShowGutter(false);
+editor.setHighlightActiveLine(false);
+editor.setDisplayIndentGuides(false);
+editor.setShowPrintMargin(false);
 
 // bind saveFile() to ctrl-s
 editor.commands.addCommand({
@@ -123,7 +158,7 @@ function saveFile(filename, save_as) {
             // if a new file was created (via parameter save_as = 1)
             if (save_as === 1) {
                 $('#SaveModal').modal('hide');
-                $('#new-file').html(
+                $('#new-file').prepend(
                     '<button class="list-group-item" type="button">'
                     + filename
                     + '</button>'
@@ -220,3 +255,7 @@ function deleteFile(filename) {
         console.log(errorThrown.toString());
     });
 };
+
+/*  initialize Perfect scrollbar
+var container = document.getElementById('side-menu');
+Ps.initialize(container); */

@@ -13,7 +13,7 @@ body {
 }
 
 #page-wrapper {
-    padding: 0;
+    padding: 10px;
     min-height: 568px;
     background-color: #fff;
 }
@@ -22,10 +22,10 @@ body {
     #page-wrapper {
         position: inherit;
         margin: 0 250px;
-        margin: 65px 15px 15px 255px;
+        margin: 75px 15px 15px 255px;
         box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
         border-left: 1px solid #e7e7e7;
-        /* min-height: 70vmax !important; */
+        min-height: 0px !important;
     }
 }
 
@@ -90,11 +90,10 @@ body {
 .sidebar .sidebar-nav.navbar-collapse {
     padding-right: 0;
     padding-left: 0;
-    padding-top: 20px;
 }
 
 .sidebar .sidebar-search {
-    padding: 15px 0px 15px 0px;
+    padding: 5px 10px 15px 0px;
 }
 
 .sidebar ul li {
@@ -135,7 +134,7 @@ body {
         z-index: 1;
         position: absolute;
         width: 250px;
-        margin-top: 51px;
+        margin-top: 71px;
     }
 
     .navbar-top-links .dropdown-messages,
@@ -147,7 +146,7 @@ body {
 
 
 /*
- * custom css
+ * additional custom css
  */
 
 .brand {
@@ -165,6 +164,7 @@ body {
 
 #side-menu {
     background-color: #ECF0F1;
+    overflow: hidden;
 }
 
 .nav {
@@ -187,13 +187,15 @@ body {
     -webkit-box-shadow: 0px 2px 5px 0px rgba(120,120,120,1);
     -moz-box-shadow: 0px 2px 5px 0px rgba(120,120,120,1);
     box-shadow: 0px 2px 5px 0px rgba(120,120,120,1);
+}
 
-    /* the rest of your styling */
+.sidebar ul {
+    padding-right: 10px;
 }
 
 
 /*
- * ace editor css - http://ace.c9.io
+ * ace editor rules - http://ace.c9.io
  */
 
 #editor-container {
@@ -202,5 +204,4 @@ body {
     left: 0px;
     bottom: 0px;
     right: 0px;
-    height: 800px;
 }
