@@ -50,10 +50,29 @@ $(function() {
         padding: 200,
         contentSelector: 'li'
     });
-
+--
     $("ul#list-group").endlessScroll();
-    */
+--
+    $("#file-list button").slice(10).hide();
 
+    var mincount = 10;
+    var maxcount = 20;
+
+    $(window).scroll(function() {
+        if($(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
+            $("#file-list button").slice(mincount,maxcount).fadeIn(1200);
+
+            mincount = mincount + 10;
+            maxcount = maxcount + 10;
+        }
+    });
+*/
+    // list.js filtering
+    var options = {
+    valueNames: [ 'list-group-item' ]
+    };
+
+    var fileList = new List('file-list', options);
 });
 
 

@@ -186,6 +186,12 @@ body {
     padding-right: 25px;
 }
 
+/* max-height of file list on mobile, 340px is default in bootstrap */
+.navbar-fixed-top .navbar-collapse {
+    max-height: none;
+    background-color: #ECF0F1;
+}
+
 
 /*
  * ace editor rules - http://ace.c9.io

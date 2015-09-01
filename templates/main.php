@@ -120,7 +120,7 @@
         <ul class="nav" id="side-menu">
           <li class="sidebar-search">
             <div class="input-group custom-search-form">
-              <input type="text" class="form-control" placeholder="Search...">
+              <input type="text" class="search form-control" placeholder="Search...">
               <span class="input-group-btn">
               <button class="btn btn-default" type="button">
                 <i class="glyphicon glyphicon-search"></i>
@@ -167,9 +167,13 @@
 <!-- Malihu scrollbar -->
 <script src='/js/jquery.mCustomScrollbar.concat.min.js'></script>
 
+<!-- List.js for file list filter -->
+<script src='/js/list.min.js'></script>
+
 <!-- jscroll lazy loading -->
 <script src="/js/jquery.jscroll.min.js"></script>
 <script src="/js/jquery.endless-scroll.js"></script>
+<script src="/js/jquery.lazyload.min.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
 <script src="/js/bootstrap.min.js"></script>
