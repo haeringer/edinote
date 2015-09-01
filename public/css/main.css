@@ -126,12 +126,17 @@ body {
 /*
  * additional custom css
  */
-
 .brand {
-    position: absolute;
-    left: 50%;
-    margin-left: -50px !important;  /* 50% of logo width */
-    display: block;
+    display: none;
+}
+
+ @media(min-width:768px) {
+     .brand {
+         position: absolute;
+         left: 50%;
+         margin-left: -50px !important;  /* 50% of logo width */
+         display: block;
+     }
 }
 
 * {

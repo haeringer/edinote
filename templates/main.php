@@ -63,9 +63,7 @@
   <nav class="navbar navbar-fixed-top" role="navigation">
     <div class="navbar-header">
 
-      <a class="navbar-brand brand" href="#"><img alt="Brand" src="../img/Edinote.png"></a>
-
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+      <button type="button" class="navbar-toggle pull-left" data-toggle="collapse" data-target=".navbar-collapse">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -92,6 +90,8 @@
       </div>
 
     </div>
+
+    <a class="navbar-brand brand" href="#"><img alt="Brand" src="../img/Edinote.png"></a>
     <!-- /.navbar-header -->
 
     <ul class="nav navbar-top-links navbar-right">
