@@ -176,16 +176,17 @@ body {
     padding: 0px 25px 0px 11px;
 }
 
-/* for malihu custom scrollbar
-.mCSB_container {
-    padding-right: 25px;
-} */
-
 /* max-height of file list on mobile, 340px is default in bootstrap */
 .navbar-fixed-top .navbar-collapse {
     max-height: none;
     background-color: #ECF0F1;
 }
+
+/* set color for placeholder text in input forms */
+.form-control::-webkit-input-placeholder { color: #95A5A6; }
+.form-control:-moz-placeholder { color: #95A5A6; }
+.form-control::-moz-placeholder { color: #95A5A6; }
+.form-control:-ms-input-placeholder { color: #95A5A6; }
 
 
 /*
