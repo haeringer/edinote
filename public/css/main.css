@@ -103,10 +103,6 @@ body {
     padding: 5px 10px 15px 0px;
 }
 
-.sidebar ul li {
-    /* removed for now */
-}
-
 .sidebar ul li a.active {
     background-color: #eee;
 }
@@ -144,11 +140,9 @@ body {
           border-radius: 0 !important;
 }
 
-#side-menu {
-    background-color: #ECF0F1;
-}
-
 #file-list {
+    /* hide native scrollbar */
+    position: relative;
     overflow: hidden;
 }
 
@@ -178,13 +172,14 @@ body {
     padding-right: 10px;
 }
 
-.sidebar .list-group {
-    padding: 0px 0px 0px 11px;
+.sidebar .list {
+    padding: 0px 25px 0px 11px;
 }
 
+/* for malihu custom scrollbar
 .mCSB_container {
     padding-right: 25px;
-}
+} */
 
 /* max-height of file list on mobile, 340px is default in bootstrap */
 .navbar-fixed-top .navbar-collapse {

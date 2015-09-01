@@ -21,8 +21,8 @@
   <!-- Flat UI CSS -->
   <link href="/flat-ui/dist/css/flat-ui.min.css" rel="stylesheet">
 
-  <!-- Malihu scrollbar CSS -->
-  <link href="/css/jquery.mCustomScrollbar.min.css" rel="stylesheet">
+  <!-- Custom scrollbar CSS -->
+  <link href='/css/perfect-scrollbar.min.css' rel='stylesheet'>
 
   <!-- Custom CSS -->
   <link href="/css/main.css" rel="stylesheet">
@@ -116,7 +116,8 @@
     <!-- /.navbar-top-links -->
 
     <div class="navbar-default sidebar" role="navigation">
-      <div class="sidebar-nav navbar-collapse">
+      <div class="sidebar-nav navbar-collapse" id="sidebar-content">
+
         <ul class="nav" id="side-menu">
           <li class="sidebar-search">
             <div class="input-group custom-search-form">
@@ -130,7 +131,7 @@
             <!-- /input-group -->
           </li>
           </ul>
-          <ul class="list-group pre-scrollable" id="file-list">
+          <ul class="list pre-scrollable" id="file-list">
 
             <div id="new-file"></div>
 
@@ -138,8 +139,7 @@
               foreach($files as $file) {
                   /* echo '<div id="f_' . $file . '"><li class="list-group-item
                     button btn btn-default" type="button">' . $file . '</li></div>'; */
-                  echo '<div><button class="list-group-item "
-                    type="button">' . $file . '</button></div>';
+                  echo '<div><button class="list-group-item">' . $file . '</button></div>' . "\n";
               }
             ?>
 
@@ -164,16 +164,16 @@
 <!-- jQuery -->
 <script src="/js/jquery.min.js"></script>
 
-<!-- Malihu scrollbar -->
-<script src='/js/jquery.mCustomScrollbar.concat.min.js'></script>
+<!-- Custom scrollbar -->
+<script src='/js/perfect-scrollbar.min.js'></script>
 
 <!-- List.js for file list filter -->
 <script src='/js/list.min.js'></script>
 
-<!-- jscroll lazy loading -->
+<!-- lazy loading
 <script src="/js/jquery.jscroll.min.js"></script>
 <script src="/js/jquery.endless-scroll.js"></script>
-<script src="/js/jquery.lazyload.min.js"></script>
+<script src="/js/jquery.lazyload.min.js"></script> -->
 
 <!-- Bootstrap Core JavaScript -->
 <script src="/js/bootstrap.min.js"></script>

@@ -1,15 +1,13 @@
 /**
  * all the stuff that happens when the page has loaded
  */
-
-// From sb-admin-2 template JS - loads the correct sidebar on window load,
-// collapses the sidebar on window resize,
-// (( sets the min-height of #page-wrapper to window size ))
-
 $(function() {
 
     setHeight();
 
+    // From sb-admin-2 template JS - loads the correct sidebar on window load,
+    // collapses the sidebar on window resize,
+    // (( sets the min-height of #page-wrapper to window size ))
     $(window).bind("load resize", function() {
         topOffset = 50;
         width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;
@@ -21,58 +19,26 @@ $(function() {
         }
     });
 
-/*       height = ((this.window.innerHeight > 0) ? this.window.innerHeight : this.screen.height) - 1;
-         height = height - topOffset;
-         if (height < 1) height = 1;
-         if (height > topOffset) {
-             $("#page-wrapper").css("min-height", height);
-         }
-
-     var url = window.location;
-     var element = $('ul.nav a').filter(function() {
-         return this.href == url || url.href.indexOf(this.href) == 0;
-     }).addClass('active').parent().parent().addClass('in').parent();
-     if (element.is('li')) {
-         element.addClass('active');
-     }
- }); */
-
     // enable bootstrap tooltips
     $('[data-toggle="tooltip"]').tooltip({container: 'body'});
-    // enable custom scrollbar
+
+    // listen for clicks on files
+    $('.list').on('click', '.list-group-item', loadFile());
+
+    /* custom scrollbar
     $("#file-list").mCustomScrollbar({
         theme: "minimal-dark",
         scrollInertia: 100
-    });
-    /* lazy loading
-    $('#side-menu').jscroll({
-        debug: true,
-        padding: 200,
-        contentSelector: 'li'
-    });
---
-    $("ul#list-group").endlessScroll();
---
-    $("#file-list button").slice(10).hide();
+    }); */
+    var scrollContainer = document.getElementById('file-list');
+    Ps.initialize(scrollContainer);
 
-    var mincount = 10;
-    var maxcount = 20;
-
-    $(window).scroll(function() {
-        if($(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
-            $("#file-list button").slice(mincount,maxcount).fadeIn(1200);
-
-            mincount = mincount + 10;
-            maxcount = maxcount + 10;
-        }
-    });
-*/
     // list.js filtering
     var options = {
-    valueNames: [ 'list-group-item' ]
+        valueNames: [ 'list-group-item' ]
     };
+    var fileList = new List('sidebar-content', options);
 
-    var fileList = new List('file-list', options);
 });
 
 
@@ -102,11 +68,16 @@ editor.setOptions({
     fontSize: 14,
     theme: "ace/theme/tomorrow",
 });
-// clean up editor
+// clean up editor layout
 editor.renderer.setShowGutter(false);
 editor.setHighlightActiveLine(false);
 editor.setDisplayIndentGuides(false);
 editor.setShowPrintMargin(false);
+
+// register any changes made to a file
+editor.on('input', function() {
+    fileState();
+});
 
 // bind saveFile() to ctrl-s
 editor.commands.addCommand({
@@ -138,10 +109,10 @@ function newFile() {
     editor.getSession().setValue("");
 };
 
-// on click, load file content into editor
-$(function(){
-    // use .on() to recognize events also on newly added files
-    $('.list-group').on('click', '.list-group-item', function() {
+// load file content into editor
+function loadFile() {
+    // use .on instead of .click to recognize events also on newly added files
+    $('.list').on('click', '.list-group-item', function() {
         filename = $(this).text();
         $.getJSON('getfile.php', {filename: filename})
         .done(function(response, textStatus, jqXHR) {
@@ -153,7 +124,7 @@ $(function(){
             console.log(errorThrown.toString());
         });
     });
-});
+};
 
 // save file
 function saveFile(filename, save_as) {
@@ -226,11 +197,6 @@ $(function() {
         // call saveFile() with parameter save_as = 1
         saveFile(filename, 1);
    });
-});
-
-// register any changes made to a file
-editor.on('input', function() {
-    fileState();
 });
 
 // enable/disable save button depending on file state
