@@ -120,15 +120,7 @@
 
         <ul class="nav" id="side-menu">
           <li class="sidebar-search">
-            <div class="input-group custom-search-form">
-              <input type="text" class="search form-control" placeholder="Search...">
-              <span class="input-group-btn">
-              <button class="btn btn-default" type="button">
-                <i class="glyphicon glyphicon-search"></i>
-              </button>
-            </span>
-            </div>
-            <!-- /input-group -->
+            <input type="text" class="search form-control" placeholder="Search...">
           </li>
           </ul>
           <ul class="list pre-scrollable" id="file-list">
