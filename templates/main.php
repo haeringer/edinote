@@ -61,14 +61,15 @@
 
   <!-- Navigation -->
   <nav class="navbar navbar-fixed-top" role="navigation">
-    <div class="navbar-header">
 
-      <button type="button" class="navbar-toggle pull-left" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+
+    <div class="navbar-header">
 
       <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group">
@@ -94,6 +95,7 @@
     <a class="navbar-brand brand" href="#"><img alt="Brand" src="../img/Edinote.png"></a>
     <!-- /.navbar-header -->
 
+    <!-- Non-collapsing right-side stuff (dropdown) -->
     <ul class="nav navbar-top-links navbar-right">
 
       <li class="dropdown pull-right">
@@ -115,27 +117,28 @@
     </ul>
     <!-- /.navbar-top-links -->
 
-    <div class="navbar-default sidebar" role="navigation">
+    <!-- collapsing navbar content (sidebar) -->
+    <div class=".navbar-default sidebar" role="navigation">
       <div class="sidebar-nav navbar-collapse" id="sidebar-content">
 
         <ul class="nav" id="side-menu">
           <li class="sidebar-search">
             <input type="text" class="search form-control" placeholder="Search...">
           </li>
-          </ul>
-          <ul class="list pre-scrollable" id="file-list">
+        </ul>
+        <ul class="list pre-scrollable" id="file-list">
 
-            <div id="new-file"></div>
+          <div id="new-file"></div>
 
-            <?php
-              foreach($files as $file) {
-                  /* echo '<div id="f_' . $file . '"><li class="list-group-item
-                    button btn btn-default" type="button">' . $file . '</li></div>'; */
-                  echo '<div><button class="list-group-item">' . $file . '</button></div>' . "\n";
-              }
-            ?>
+          <?php
+            foreach($files as $file) {
+                /* echo '<div id="f_' . $file . '"><li class="list-group-item
+                  button btn btn-default" type="button">' . $file . '</li></div>'; */
+                echo '<div><button class="list-group-item">' . $file . '</button></div>' . "\n";
+            }
+          ?>
 
-          </ul>
+        </ul>
 
       </div>
       <!-- /.sidebar-collapse -->

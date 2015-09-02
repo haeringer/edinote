@@ -33,7 +33,7 @@ body {
 
 /* Top navigation - hide default border to remove 1px line */
 .navbar-fixed-top {
-  border: 0;
+    border: 0;
 }
 
 .navbar-top-links {
@@ -124,7 +124,7 @@ body {
 
 
 /*
- * additional custom css
+ * custom css
  */
 .brand {
     display: none;
@@ -155,22 +155,26 @@ body {
     padding: 0px 15px 0px 15px;
 }
 
-.btn-toolbar {
-    padding-left: 15px;
-}
-
-.list-group-item {
-    margin: 8px 5px 8px 5px;
-    border-style: hidden;
-    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-}
-
 .navbar {
     -webkit-box-shadow: 0px 2px 5px 0px rgba(120,120,120,1);
     -moz-box-shadow: 0px 2px 5px 0px rgba(120,120,120,1);
     box-shadow: 0px 2px 5px 0px rgba(120,120,120,1);
+}
+
+/* max-height of file list on mobile, 340px is default in bootstrap */
+.navbar-fixed-top .navbar-collapse {
+    max-height: none;
+    background-color: #ECF0F1;
+}
+
+.navbar .navbar-toggle {
+    float: left;
+    /* override navbar-toggle margin from flat-ui */
+    margin: 0px 0px 0px 0px;
+}
+
+.btn-toolbar {
+    padding-left: 15px;
 }
 
 .sidebar ul {
@@ -181,10 +185,12 @@ body {
     padding: 0px 25px 0px 11px;
 }
 
-/* max-height of file list on mobile, 340px is default in bootstrap */
-.navbar-fixed-top .navbar-collapse {
-    max-height: none;
-    background-color: #ECF0F1;
+.sidebar .list-group-item {
+    margin: 8px 5px 8px 5px;
+    border-style: hidden;
+    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 
 /* set color for placeholder text in input forms */
@@ -193,6 +199,10 @@ body {
 .form-control::-moz-placeholder { color: #95A5A6; }
 .form-control:-ms-input-placeholder { color: #95A5A6; }
 
+/* override form focus color from flat ui */
+.form-group.focus .form-control, .form-control:focus, .form-group.focus .select2-search input[type=text], .select2-search input[type=text]:focus {
+    border-color: #3498DB;
+}
 
 /*
  * ace editor rules - http://ace.c9.io
