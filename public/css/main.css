@@ -6,6 +6,8 @@
 
 body {
     background-color: #ECF0F1;
+    /* ultimate navbar height */
+    padding-top: 58px;
 }
 
 #wrapper {
@@ -21,12 +23,17 @@ body {
 @media(min-width:768px) {
     #page-wrapper {
         position: inherit;
-        margin: 0 250px;
-        margin: 75px 15px 15px 255px;
+        margin: 15px 15px 15px 255px;
         box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
         border-left: 1px solid #e7e7e7;
         min-height: 0px !important;
     }
+}
+
+
+/* Top navigation - hide default border to remove 1px line */
+.navbar-fixed-top {
+    border: 0;
 }
 
 .navbar-top-links {
@@ -96,37 +103,8 @@ body {
     padding: 5px 10px 15px 0px;
 }
 
-.sidebar ul li {
-    /* removed for now */
-}
-
 .sidebar ul li a.active {
     background-color: #eee;
-}
-
-.sidebar .arrow {
-    float: right;
-}
-
-.sidebar .fa.arrow:before {
-    content: "\f104";
-}
-
-.sidebar .active>a>.fa.arrow:before {
-    content: "\f107";
-}
-
-.sidebar .nav-second-level li,
-.sidebar .nav-third-level li {
-    border-bottom: 0!important;
-}
-
-.sidebar .nav-second-level li a {
-    padding-left: 37px;
-}
-
-.sidebar .nav-third-level li a {
-    padding-left: 52px;
 }
 
 @media(min-width:768px) {
@@ -146,14 +124,19 @@ body {
 
 
 /*
- * additional custom css
+ * custom css
  */
-
 .brand {
-    position: absolute;
-    left: 50%;
-    margin-left: -50px !important;  /* 50% of logo width */
-    display: block;
+    display: none;
+}
+
+ @media(min-width:768px) {
+     .brand {
+         position: absolute;
+         left: 50%;
+         margin-left: -50px !important;  /* 50% of logo width */
+         display: block;
+     }
 }
 
 * {
@@ -162,25 +145,14 @@ body {
           border-radius: 0 !important;
 }
 
-#side-menu {
-    background-color: #ECF0F1;
+#file-list {
+    /* hide native scrollbar */
+    position: relative;
     overflow: hidden;
 }
 
-.nav {
-    padding: 0px 15px 0px 15px;
-}
-
-.btn-toolbar {
+#side-menu {
     padding-left: 15px;
-}
-
-.list-group-item {
-    margin: 8px 0px 8px 0px;
-    border-style: hidden;
-    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 
 .navbar {
@@ -189,10 +161,56 @@ body {
     box-shadow: 0px 2px 5px 0px rgba(120,120,120,1);
 }
 
+/* max-height of file list on mobile, 340px is default in bootstrap */
+.navbar-fixed-top .navbar-collapse {
+    max-height: none;
+    background-color: #ECF0F1;
+}
+
+.navbar .navbar-toggle {
+    float: left;
+    /* override navbar-toggle margin from flat-ui */
+    margin: 0px 0px 0px 0px;
+}
+
+.btn-toolbar {
+    padding-left: 15px;
+}
+
 .sidebar ul {
     padding-right: 10px;
 }
 
+.sidebar .list {
+    padding: 0px 25px 0px 11px;
+}
+
+.sidebar .list-group-item {
+    margin: 8px 5px 8px 5px;
+    border-style: hidden;
+    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+/* set color for placeholder text in input forms */
+.form-control::-webkit-input-placeholder { color: #95A5A6; }
+.form-control:-moz-placeholder { color: #95A5A6; }
+.form-control::-moz-placeholder { color: #95A5A6; }
+.form-control:-ms-input-placeholder { color: #95A5A6; }
+
+/* override form focus color from flat ui */
+.form-group.focus .form-control, .form-control:focus, .form-group.focus .select2-search input[type=text], .select2-search input[type=text]:focus {
+    border-color: #3498DB;
+}
+
+/* override bootstrap's :after {clear: both} to keep nav one-rowed on mobile */
+.btn-group:after,
+.btn-toolbar:after,
+.navbar-header:after,
+.navbar:after {
+    content: none;
+}
 
 /*
  * ace editor rules - http://ace.c9.io

@@ -21,11 +21,11 @@
   <!-- Flat UI CSS -->
   <link href="/flat-ui/dist/css/flat-ui.min.css" rel="stylesheet">
 
-  <!-- Malihu scrollbar CSS -->
-  <link href="/css/jquery.mCustomScrollbar.min.css" rel="stylesheet">
+  <!-- Custom scrollbar CSS -->
+  <link href='/css/perfect-scrollbar.min.css' rel='stylesheet'>
 
   <!-- Custom CSS -->
-  <link href="/css/custom.css" rel="stylesheet">
+  <link href="/css/main.css" rel="stylesheet">
 
 </head>
 
@@ -61,16 +61,15 @@
 
   <!-- Navigation -->
   <nav class="navbar navbar-fixed-top" role="navigation">
+
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+
     <div class="navbar-header">
-
-      <a class="navbar-brand brand" href="#"><img alt="Brand" src="../img/Edinote.png"></a>
-
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
 
       <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group">
@@ -92,8 +91,11 @@
       </div>
 
     </div>
+
+    <a class="navbar-brand brand" href="#"><img alt="Brand" src="../img/Edinote.png"></a>
     <!-- /.navbar-header -->
 
+    <!-- Non-collapsing right-side stuff (dropdown) -->
     <ul class="nav navbar-top-links navbar-right">
 
       <li class="dropdown pull-right">
@@ -115,35 +117,29 @@
     </ul>
     <!-- /.navbar-top-links -->
 
-    <div class="navbar-default sidebar" role="navigation">
-      <div class="sidebar-nav navbar-collapse">
-        <ul class="nav pre-scrollable" id="side-menu">
+    <!-- collapsing navbar content (sidebar) -->
+    <div class=".navbar-default sidebar" role="navigation">
+      <div class="sidebar-nav navbar-collapse" id="sidebar-content">
+
+        <ul class="nav" id="side-menu">
           <li class="sidebar-search">
-            <div class="input-group custom-search-form">
-              <input type="text" class="form-control" placeholder="Search...">
-              <span class="input-group-btn">
-              <button class="btn btn-default" type="button">
-                <i class="glyphicon glyphicon-search"></i>
-              </button>
-            </span>
-            </div>
-            <!-- /input-group -->
+            <input type="text" class="search form-control" placeholder="Search...">
           </li>
-          <ul class="list-group">
-
-            <div id="new-file"></div>
-
-            <?php
-              foreach($files as $file) {
-                  /* echo '<div id="f_' . $file . '"><li class="list-group-item
-                    button btn btn-default" type="button">' . $file . '</li></div>'; */
-                  echo '<div><button class="list-group-item "
-                    type="button">' . $file . '</button></div>';
-              }
-            ?>
-
-          </ul>
         </ul>
+        <ul class="list pre-scrollable" id="file-list">
+
+          <div id="new-file"></div>
+
+          <?php
+            foreach($files as $file) {
+                /* echo '<div id="f_' . $file . '"><li class="list-group-item
+                  button btn btn-default" type="button">' . $file . '</li></div>'; */
+                echo '<div><button class="list-group-item">' . $file . '</button></div>' . "\n";
+            }
+          ?>
+
+        </ul>
+
       </div>
       <!-- /.sidebar-collapse -->
     </div>
@@ -163,12 +159,16 @@
 <!-- jQuery -->
 <script src="/js/jquery.min.js"></script>
 
-<!-- Malihu scrollbar -->
-<script src='/js/jquery.mCustomScrollbar.concat.min.js'></script>
+<!-- Custom scrollbar -->
+<script src='/js/perfect-scrollbar.min.js'></script>
 
-<!-- jscroll lazy loading -->
+<!-- List.js for file list filter -->
+<script src='/js/list.min.js'></script>
+
+<!-- lazy loading
 <script src="/js/jquery.jscroll.min.js"></script>
 <script src="/js/jquery.endless-scroll.js"></script>
+<script src="/js/jquery.lazyload.min.js"></script> -->
 
 <!-- Bootstrap Core JavaScript -->
 <script src="/js/bootstrap.min.js"></script>
