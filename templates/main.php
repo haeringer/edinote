@@ -132,9 +132,8 @@
 
           <?php
             foreach($files as $file) {
-                /* echo '<div id="f_' . $file . '"><li class="list-group-item
-                  button btn btn-default" type="button">' . $file . '</li></div>'; */
-                echo '<div><button class="list-group-item">' . $file . '</button></div>' . "\n";
+                echo '<div><button class="list-group-item" id="f_' . $file . '">' . $file . '</button></div>' . "\n";
+                // echo '<div><button class="list-group-item">' . $file . '</button></div>' . "\n";
             }
           ?>
 

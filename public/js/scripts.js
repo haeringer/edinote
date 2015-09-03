@@ -18,16 +18,12 @@ $(function() {
     // enable bootstrap tooltips
     $('[data-toggle="tooltip"]').tooltip({container: 'body'});
 
-    // listen for clicks on files
-    $('.list').on('click', '.list-group-item', loadFile());
-
-    /* custom scrollbar
-    $("#file-list").mCustomScrollbar({
-        theme: "minimal-dark",
-        scrollInertia: 100
-    }); */
+    // custom scrollbar
     var scrollContainer = document.getElementById('file-list');
     Ps.initialize(scrollContainer);
+
+    // listen for clicks on files
+    loadFile();
 
     // list.js filtering
     var options = {
@@ -109,13 +105,23 @@ function newFile() {
 function loadFile() {
     // use .on instead of .click to recognize events also on newly added files
     $('.list').on('click', '.list-group-item', function() {
+
         filename = $(this).text();
+
         $.getJSON('getfile.php', {filename: filename})
+
         .done(function(response, textStatus, jqXHR) {
-            // fill editor with response data returned from getfile.php and set
-            // cursor to beginning of file
+            /* fill editor with response data returned from getfile.php and set
+               cursor to beginning of file */
             editor.getSession().setValue(response, -1);
+            $('.list-group-item').removeClass('active');
+
+            /* don't use jquery for adding class 'active' because of possible
+               dot in id and therefore hassle with need for escaping */
+            var fileId = document.getElementById('f_' + filename);
+            fileId.className = fileId.className + " active";
         })
+
         .fail(function(jqXHR, textStatus, errorThrown) {
             console.log(errorThrown.toString());
         });

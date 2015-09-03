@@ -7,7 +7,7 @@
 body {
     background-color: #ECF0F1;
     /* ultimate navbar height */
-    padding-top: 58px;
+    padding-top: 53px;
 }
 
 #wrapper {
@@ -23,10 +23,12 @@ body {
 @media(min-width:768px) {
     #page-wrapper {
         position: inherit;
-        margin: 15px 15px 15px 255px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-        border-left: 1px solid #e7e7e7;
+        margin: 18px 15px 15px 255px;
         min-height: 0px !important;
+        border-left: 1px solid #e7e7e7;
+        -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     }
 }
 
@@ -49,7 +51,7 @@ body {
 }
 
 .navbar-top-links li a {
-    padding: 15px;
+    padding-top: 15px;
     min-height: 50px;
 }
 
@@ -133,8 +135,8 @@ body {
  @media(min-width:768px) {
      .brand {
          position: absolute;
-         left: 50%;
-         margin-left: -50px !important;  /* 50% of logo width */
+         right: 80px;
+         bottom: 5px;
          display: block;
      }
 }
@@ -191,7 +193,18 @@ body {
     -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.2s ease-in-out;
 }
+
+.sidebar .list-group-item:hover {
+    background-color: #fff;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.19), 0 2px 3px rgba(0,0,0,0.23);
+}
+
+.sidebar .list-group-item.active {
+    background-color: #3498DB;
+}
+
 
 /* set color for placeholder text in input forms */
 .form-control::-webkit-input-placeholder { color: #95A5A6; }
