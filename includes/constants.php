@@ -7,7 +7,7 @@
      */
 
     // database type: mysql or sqlite
-    define("DBTYPE", "mysql");
+    define("DBTYPE", "sqlite");
 
     // database name
     define("DATABASE", "edinote");
@@ -21,7 +21,7 @@
     // database username
     define("USERNAME", "homestead");
 
-    // user data directory
-    define("DATADIR", "/var/lib/edinote/data/");
+    // user data directory (production: /var/lib/edinote/data/)
+    define("DATADIR", "../data/");
 
 ?>

@@ -151,7 +151,9 @@ function saveFile(filename, save_as) {
             if (save_as === 1) {
                 $('#SaveModal').modal('hide');
                 $('#new-file').prepend(
-                    '<button class="list-group-item" type="button">'
+                    '<button class="list-group-item" id="f_'
+                    + filename
+                    + '">'
                     + filename
                     + '</button>'
                 );
@@ -166,8 +168,11 @@ function saveFile(filename, save_as) {
             $("input#save-as").focus();
             return 0;
         }
+        else if (response === '3') {
+            console.log("couldn't write to database");
+        }
         else {
-            console.log("couldn't write to file");
+            console.log("couldn't save file");
         }
     })
 

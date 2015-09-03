@@ -44,14 +44,21 @@
             // write contents to a new file
             $return = file_put_contents($usrdir.$filename, $contents);
 
-            // add new file name to database
-            $inserted = query("INSERT INTO files (id, file) VALUES (?, ?)", $_SESSION["id"], $filename);
-            // TODO check $file_db for error
-
             // return values to calling js function
             if ($return !== false) {
-                // writing to file was successful
-                echo 0;
+
+                // add new file name to database
+                $inserted = query("INSERT INTO files (id, file, tags)
+                    VALUES (?, ?, '')", $_SESSION["id"], $filename);
+
+                if ($inserted !== false) {
+                    // writing to file and database was successful
+                    echo 0;
+                }
+                else {
+                    // writing to database was unsuccessful
+                    echo 3;
+                }
             }
         }
     }
