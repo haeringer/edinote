@@ -104,9 +104,10 @@ function newFile() {
 // load file content into editor
 function loadFile() {
     // use .on instead of .click to recognize events also on newly added files
-    $('.list').on('click', '.list-group-item', function() {
+    $('.list-group-item').on('click', function() {
 
-        filename = $(this).text();
+        filename = this.id.slice(3);
+        console.log('filename: ' + filename);
 
         $.getJSON('getfile.php', {filename: filename})
 
@@ -118,7 +119,7 @@ function loadFile() {
 
             /* don't use jquery for adding class 'active' because of possible
                dot in id and therefore hassle with need for escaping */
-            var fileId = document.getElementById('f_' + filename);
+            var fileId = document.getElementById('fn_' + filename);
             fileId.className = fileId.className + " active";
         })
 
@@ -150,13 +151,8 @@ function saveFile(filename, save_as) {
             // if a new file was created (via parameter save_as = 1)
             if (save_as === 1) {
                 $('#SaveModal').modal('hide');
-                $('#new-file').prepend(
-                    '<button class="list-group-item" id="f_'
-                    + filename
-                    + '">'
-                    + filename
-                    + '</button>'
-                );
+                $('#new-file').prepend('<button class="list-group-item" id="f_'
+                + filename + '">' + filename + '</button>');
             }
         }
         else if (response === '1') {

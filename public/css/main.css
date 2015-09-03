@@ -32,6 +32,14 @@ body {
     }
 }
 
+.tag {
+    background-color: #eee;
+    opacity: 0.5;
+    width: 30px;
+    height: 20px;
+    float: right;
+    margin-top: 5px;
+}
 
 /* Top navigation - hide default border to remove 1px line */
 .navbar-fixed-top {
@@ -189,6 +197,7 @@ body {
 
 .sidebar .list-group-item {
     margin: 8px 5px 8px 5px;
+    /* padding: 0px; */
     border-style: hidden;
     -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
