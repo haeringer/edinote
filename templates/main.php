@@ -134,7 +134,7 @@
           <?php
             foreach($files as $file) {
                 // echo '<button class="list-group-item" id="fn_' . $file . '">' . $file . '<div class="tag"></div></button>' . "\n";
-                echo '<li class="list-group-item" id="fn_' . $file . '"><div class="lgi-name">' . $file . '</div><div class="tag">Tag</div></li>' . "\n";
+                echo '<li class="list-group-item" id="fn_' . $file . '"><div class="lgi-name">' . substr($file,0,30) . '</div><div class="tag">Tag</div></li>' . "\n";
 
                 // echo '<div><button class="list-group-item">' . $file . '</button></div>' . "\n";
             }
@@ -150,7 +150,7 @@
             <button type="button" id="tag-del" class="btn btn-bottom" data-toggle="tooltip" data-placement="right" title="Delete Tag">
               <span class="fui-cross-circle" aria-hidden="true"></span>
             </button>
-            <button type="button" id="rename" class="btn btn-bottom" data-toggle="tooltip" data-placement="right" title="Rename File">
+            <button type="button" id="rename" class="btn btn-bottom" disabled="true" data-toggle="tooltip" data-placement="right" title="Rename File">
               <span class="fui-new" aria-hidden="true"></span>
             </button>
           </div>

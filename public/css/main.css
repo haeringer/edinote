@@ -189,6 +189,11 @@ body {
     color: #AAB7B8;
 }
 
+.btn-bottom:disabled {
+    background-color: #ECF0F1;
+    color: #95A5A6;
+}
+
 .sidebar ul {
     padding-right: 10px;
 }
@@ -222,8 +227,8 @@ a.list-group-item, li.list-group-item {
 }
 
 .lgi-name {
-    padding: 12px;
-    line-height: 2.7;
+    padding: 13px;
+    line-height: 3;
     width: auto;
     display: inline;
 }
@@ -233,7 +238,7 @@ a.list-group-item, li.list-group-item {
     background-color: #eee;
     opacity: 0.5;
     float: right;
-    margin-top: 27px;
+    margin-top: 30px;
     margin-right: 4px;
     height: 15px;
     line-height: 15px;
