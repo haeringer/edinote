@@ -119,7 +119,7 @@
     <!-- /.navbar-top-links -->
 
     <!-- collapsing navbar content (sidebar) -->
-    <div class=".navbar-default sidebar" role="navigation">
+    <div class="sidebar" role="navigation">
       <div class="sidebar-nav navbar-collapse" id="sidebar-content">
 
         <ul class="nav" id="side-menu">
@@ -134,13 +134,28 @@
           <?php
             foreach($files as $file) {
                 // echo '<button class="list-group-item" id="fn_' . $file . '">' . $file . '<div class="tag"></div></button>' . "\n";
-                echo '<button class="list-group-item" id="fn_' . $file . '">' . $file . '<div class="tag">tag</div></button>' . "\n";
+                echo '<li class="list-group-item" id="fn_' . $file . '"><div class="lgi-name">' . $file . '</div><div class="tag">Tag</div></li>' . "\n";
 
                 // echo '<div><button class="list-group-item">' . $file . '</button></div>' . "\n";
             }
           ?>
 
         </ul>
+
+        <div class="btn-toolbar en-bottom" role="toolbar">
+          <div class="btn-group btn-group-xs" role="group">
+            <button type="button" id="tag-add" class="btn btn-bottom" data-toggle="tooltip" data-placement="right" title="Add Tag">
+              <span class="fui-plus-circle" aria-hidden="true"></span>
+            </button>
+            <button type="button" id="tag-del" class="btn btn-bottom" data-toggle="tooltip" data-placement="right" title="Delete Tag">
+              <span class="fui-cross-circle" aria-hidden="true"></span>
+            </button>
+            <button type="button" id="rename" class="btn btn-bottom" data-toggle="tooltip" data-placement="right" title="Rename File">
+              <span class="fui-new" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
+
 
       </div>
       <!-- /.sidebar-collapse -->

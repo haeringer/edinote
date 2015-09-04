@@ -25,11 +25,14 @@ $(function() {
     // listen for clicks on files
     loadFile();
 
+    // listen for clicks on tag
+    tagFile();
+
     // list.js filtering
-    var options = {
-        valueNames: [ 'list-group-item' ]
+    var listOptions = {
+        valueNames: [ 'lgi-name' ]
     };
-    var fileList = new List('sidebar-content', options);
+    var fileList = new List('sidebar-content', listOptions);
 
 });
 
@@ -107,7 +110,7 @@ function loadFile() {
     $('.list-group-item').on('click', function() {
 
         filename = this.id.slice(3);
-        console.log('filename: ' + filename);
+        console.log('load file ' + filename);
 
         $.getJSON('getfile.php', {filename: filename})
 
@@ -128,6 +131,49 @@ function loadFile() {
         });
     });
 };
+
+
+// rename file
+function tagFile() {
+
+    $('.list-group-item .tag').click(function() {
+
+        filename = $(this).parent().attr('id').slice(3);
+        console.log('tag file ' + filename);
+
+
+
+/*
+        $.getJSON('getfile.php', {filename: filename})
+
+        .done(function(response, textStatus, jqXHR) {
+            editor.getSession().setValue(response, -1);
+            $('.list-group-item').removeClass('active');
+
+            var fileId = document.getElementById('fn_' + filename);
+            fileId.className = fileId.className + " active";
+        })
+
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            console.log(errorThrown.toString());
+        });
+*/
+
+
+
+    // end of .on(click)
+    });
+// end of renameFile()
+};
+
+
+
+
+
+
+
+
+
 
 // save file
 function saveFile(filename, save_as) {
@@ -151,8 +197,8 @@ function saveFile(filename, save_as) {
             // if a new file was created (via parameter save_as = 1)
             if (save_as === 1) {
                 $('#SaveModal').modal('hide');
-                $('#new-file').prepend('<button class="list-group-item" id="f_'
-                + filename + '">' + filename + '</button>');
+                $('#new-file').prepend('<li class="list-group-item" id="f_'
+                + filename + '"><div class="lgi-name">' + filename + '</div></li>');
             }
         }
         else if (response === '1') {
@@ -243,7 +289,3 @@ function deleteFile(filename) {
         console.log(errorThrown.toString());
     });
 };
-
-/*  initialize Perfect scrollbar
-var container = document.getElementById('side-menu');
-Ps.initialize(container); */
