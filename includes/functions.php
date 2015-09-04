@@ -68,7 +68,14 @@
             try
             {
                 // connect to database
-                $handle = new PDO("mysql:dbname=" . DATABASE . ";host=" . SERVER, USERNAME, PASSWORD);
+                if (DBTYPE === 'mysql')
+                {
+                    $handle = new PDO("mysql:dbname=" . DATABASE . ";host=" . SERVER, USERNAME, PASSWORD);
+                }
+                else
+                {
+                    $handle = new PDO("sqlite:" . DATADIR . DATABASE);
+                }
 
                 // ensure that PDO::prepare returns false when passed invalid SQL
                 $handle->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);

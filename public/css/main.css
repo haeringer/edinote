@@ -7,7 +7,7 @@
 body {
     background-color: #ECF0F1;
     /* ultimate navbar height */
-    padding-top: 58px;
+    padding-top: 53px;
 }
 
 #wrapper {
@@ -23,13 +23,14 @@ body {
 @media(min-width:768px) {
     #page-wrapper {
         position: inherit;
-        margin: 15px 15px 15px 255px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-        border-left: 1px solid #e7e7e7;
+        margin: 18px 15px 15px 255px;
         min-height: 0px !important;
+        border-left: 1px solid #e7e7e7;
+        -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     }
 }
-
 
 /* Top navigation - hide default border to remove 1px line */
 .navbar-fixed-top {
@@ -49,7 +50,7 @@ body {
 }
 
 .navbar-top-links li a {
-    padding: 15px;
+    padding-top: 15px;
     min-height: 50px;
 }
 
@@ -97,10 +98,11 @@ body {
 .sidebar .sidebar-nav.navbar-collapse {
     padding-right: 0;
     padding-left: 0;
+    position: relative;
 }
 
 .sidebar .sidebar-search {
-    padding: 5px 10px 15px 0px;
+    padding: 5px 8px 15px 0px;
 }
 
 .sidebar ul li a.active {
@@ -133,8 +135,8 @@ body {
  @media(min-width:768px) {
      .brand {
          position: absolute;
-         left: 50%;
-         margin-left: -50px !important;  /* 50% of logo width */
+         right: 80px;
+         bottom: 5px;
          display: block;
      }
 }
@@ -177,20 +179,68 @@ body {
     padding-left: 15px;
 }
 
+.btn-bottom {
+    background-color: #ECF0F1;
+    color: #95A5A6;
+    margin-bottom: 15px;
+}
+
+.btn-bottom:hover {
+    color: #AAB7B8;
+}
+
 .sidebar ul {
     padding-right: 10px;
 }
 
 .sidebar .list {
-    padding: 0px 25px 0px 11px;
+    padding: 0px 19px 0px 11px;
 }
 
 .sidebar .list-group-item {
-    margin: 8px 5px 8px 5px;
+    margin: 8px 0px 8px 5px;
+    padding: 0px;
     border-style: hidden;
     -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.2s ease-in-out;
+}
+
+.sidebar .list-group-item:hover {
+    background-color: #fff;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.19), 0 2px 3px rgba(0,0,0,0.23);
+}
+
+.sidebar .list-group-item.active {
+    background-color: #3498DB;
+}
+
+a.list-group-item, li.list-group-item {
+    color: #555;
+    cursor: pointer;
+}
+
+.lgi-name {
+    padding: 12px;
+    line-height: 2.7;
+    width: auto;
+    display: inline;
+}
+
+.tag {
+    font-size: 0.7em;
+    background-color: #eee;
+    opacity: 0.5;
+    float: right;
+    margin-top: 27px;
+    margin-right: 4px;
+    height: 15px;
+    line-height: 15px;
+}
+
+.tag:hover {
+    background-color: red;
 }
 
 /* set color for placeholder text in input forms */

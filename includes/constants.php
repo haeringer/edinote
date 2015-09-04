@@ -3,25 +3,25 @@
     /**
      * constants.php
      *
-     * Computer Science 50
-     * Problem Set 7
-     *
      * Global constants.
      */
 
-    // your database's name
+    // database type: mysql or sqlite
+    define("DBTYPE", "sqlite");
+
+    // database name
     define("DATABASE", "edinote");
 
-    // your database's password
+    // database password
     define("PASSWORD", "secret");
 
-    // your database's server
+    // database server
     define("SERVER", "localhost");
 
-    // your database's username
+    // database username
     define("USERNAME", "homestead");
 
-    // data directory
-    define("DATADIR", "/var/lib/edinote/data/");
+    // user data directory (production: /var/lib/edinote/data/)
+    define("DATADIR", "../data/");
 
 ?>

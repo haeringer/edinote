@@ -7,7 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="">
   <meta name="author" content="">
-  <!-- <link rel="icon" href="../../favicon.ico"> -->
+  <link rel="shortcut icon" href="../img/favicon-1.ico?v=1" type="image/x-icon">
+  <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
 
   <?php if (isset($title)): ?>
       <title>Edinote: <?= htmlspecialchars($title) ?></title>
@@ -92,7 +93,7 @@
 
     </div>
 
-    <a class="navbar-brand brand" href="#"><img alt="Brand" src="../img/Edinote.png"></a>
+    <a class="navbar-brand brand" href="#"><img alt="Brand" src="../img/logo-b-1.png"></a>
     <!-- /.navbar-header -->
 
     <!-- Non-collapsing right-side stuff (dropdown) -->
@@ -118,7 +119,7 @@
     <!-- /.navbar-top-links -->
 
     <!-- collapsing navbar content (sidebar) -->
-    <div class=".navbar-default sidebar" role="navigation">
+    <div class="sidebar" role="navigation">
       <div class="sidebar-nav navbar-collapse" id="sidebar-content">
 
         <ul class="nav" id="side-menu">
@@ -132,13 +133,29 @@
 
           <?php
             foreach($files as $file) {
-                /* echo '<div id="f_' . $file . '"><li class="list-group-item
-                  button btn btn-default" type="button">' . $file . '</li></div>'; */
-                echo '<div><button class="list-group-item">' . $file . '</button></div>' . "\n";
+                // echo '<button class="list-group-item" id="fn_' . $file . '">' . $file . '<div class="tag"></div></button>' . "\n";
+                echo '<li class="list-group-item" id="fn_' . $file . '"><div class="lgi-name">' . $file . '</div><div class="tag">Tag</div></li>' . "\n";
+
+                // echo '<div><button class="list-group-item">' . $file . '</button></div>' . "\n";
             }
           ?>
 
         </ul>
+
+        <div class="btn-toolbar en-bottom" role="toolbar">
+          <div class="btn-group btn-group-xs" role="group">
+            <button type="button" id="tag-add" class="btn btn-bottom" data-toggle="tooltip" data-placement="right" title="Add Tag">
+              <span class="fui-plus-circle" aria-hidden="true"></span>
+            </button>
+            <button type="button" id="tag-del" class="btn btn-bottom" data-toggle="tooltip" data-placement="right" title="Delete Tag">
+              <span class="fui-cross-circle" aria-hidden="true"></span>
+            </button>
+            <button type="button" id="rename" class="btn btn-bottom" data-toggle="tooltip" data-placement="right" title="Rename File">
+              <span class="fui-new" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
+
 
       </div>
       <!-- /.sidebar-collapse -->
