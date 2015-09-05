@@ -50,13 +50,38 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="submit" >Save</button>
+        <button type="button" class="btn btn-primary" id="submit-fn" >Save</button>
       </div>
     </div>
   </div>
 </form>
 </div>
 <!-- /.SaveModal -->
+
+<!-- TagModal -->
+<div class="modal" id="TagModal" tabindex="-1" role="dialog" aria-labelledby="TagModalLabel">
+  <form name="tagFile" action="">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="TagModalLabel">Add a tag</h4>
+      </div>
+      <div class="modal-body">
+        <div class="input-group input-group-lg col-sm-12">
+          <input type="text" name="tag" class="form-control" id="save-tag">
+          <label class="error" for="tag" id="tag_empty"><br>Please enter a tag!</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="submit-tag" >Ok</button>
+      </div>
+    </div>
+  </div>
+</form>
+</div>
+<!-- /.TagModal -->
 
 <div id="wrapper">
 
@@ -134,7 +159,7 @@
           <?php
             foreach($files as $file) {
                 // echo '<button class="list-group-item" id="fn_' . $file . '">' . $file . '<div class="tag"></div></button>' . "\n";
-                echo '<li class="list-group-item" id="fn_' . $file . '"><div class="lgi-name">' . substr($file,0,30) . '</div><div class="tag">Tag</div></li>' . "\n";
+                echo '<li class="list-group-item" id="fn_' . $file . '"><div class="lgi-name">' . substr($file,0,30) . '</div><div id="tg_' . $file . '"></div></li>' . "\n";
 
                 // echo '<div><button class="list-group-item">' . $file . '</button></div>' . "\n";
             }

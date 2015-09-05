@@ -138,58 +138,60 @@ function loadFile() {
 };
 
 
-// rename file
+// set tag
 function tagFile() {
 
     $('#tag-add').click(function() {
 
-        // filename = $(this).parent().attr('id').slice(3);
         console.log('tag file ' + filename);
-
-        $(".en-bottom").replaceWith('\
-        <div class="input-group">\
-          <input type="text" class="form-control">\
-          <span class="input-group-btn">\
-            <button class="btn btn-default" type="button">Ok</button>\
-          </span>\
-        </div>\
-        ');
-
+        $('#TagModal').modal('toggle');
         $('div').tooltip('hide');
 
-        //
-        // $.ajax({
-        //   method: "POST",
-        //   url: "settag.php",
-        //   data: { tag: tag, filename: filename }
-        // })
-        //
-        // .done(function(response) {
-        //     console.log('save.php returned ' + response);
-        //
-        //     if (response === '0') {
-        //         // clear changed state of file
-        //         editor.session.getUndoManager().markClean()
-        //         fileState();
-        //         console.log("file saved");
-        //         // if a new file was created (via parameter save_as = 1)
-        //         if (save_as === 1) {
-        //             $('#SaveModal').modal('hide');
-        //             $('#new-file').prepend('<li class="list-group-item" id="f_'
-        //             + filename + '"><div class="lgi-name">' + filename.substring(0,30) + '</div></li>');
-        //         }
-        //     }
-        //     else {
-        //         console.log("couldn't save file");
-        //     }
-        // })
-        //
-        // .fail(function(jqXHR, textStatus, errorThrown) {
-        //     console.log(errorThrown.toString());
-        // });
+        $("button#submit-tag").click(function() {
+            console.log('save tag...');
+            $('.error').hide();
+            tag = $("input#save-tag").val();
+              if (tag == "") {
+                $("label#tag_empty").show();
+
+                // TODO change input to bootstrap input error style
+
+                $("input#save-tag").focus();
+                return false;
+
+                // TODO extend input validation with .validate plugin (allow only
+                // certain characters in file name etc.)
+              }
+
+            $.ajax({
+              method: "POST",
+              url: "settag.php",
+              data: { tag: tag, filename: filename }
+            })
+
+            .done(function(response) {
+                console.log('settag.php returned ' + response);
+
+                if (response === '0') {
+                    // if a new file was created (via parameter save_as = 1)
+                    $('#TagModal').modal('hide');
+                    var TagId = document.getElementById('tg_' + filename);
+                    console.log('TagId: ' + TagId.id);
+                    $('#' + TagId.id).before('<div class="tag">' + tag + '</div>');
+
+                }
+                else {
+                    console.log("couldn't save tag");
+                }
+            })
+
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown.toString());
+            });
 
 
-
+        // end of submit
+        });
     // end of .on(click)
     });
 // end of renameFile()
@@ -257,7 +259,7 @@ function saveFile(filename, save_as) {
 function saveAs() {
     $('.error').hide();
     // setting focus doesn't work?: $('input#save-as').focus();
-    $("button#submit").click(function() {
+    $("button#submit-fn").click(function() {
         console.log('save as...');
         $('.error').hide();
         filename = $("input#save-as").val();
