@@ -10,13 +10,25 @@
     $filename = $_POST["filename"];
     $tag = $_POST["tag"];
 
-    $tagged = query("UPDATE files SET tags = ? WHERE id = ? AND file = ?",
-                $_POST["tag"], $_SESSION["id"], $filename);
+    // check which tag slot is free
+    $tags = query("SELECT tag1,tag2,tag3 FROM files WHERE id = ? AND file = ?",
+            $_SESSION["id"], $filename);
 
-    if ($tagged !== false) {
-        echo 0;
+    echo var_dump($tags);
+
+    for ($i = 0; $i < sizeof($tags); $i++) {
+        if ($tags[0][$i] === NULL) {
+            $tagged = query("UPDATE files SET tag1 = ? WHERE id = ? AND file = ?",
+                        $_POST["tag"], $_SESSION["id"], $filename);
+
+            if ($tagged !== false) {
+                echo 0;
+            }
+            else {
+                echo 2;
+            }
+        }
     }
-    else {
-        echo 2;
-    }
+
+
 ?>

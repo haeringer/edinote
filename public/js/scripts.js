@@ -34,7 +34,7 @@ $(function() {
 
     // list.js filtering
     var listOptions = {
-        valueNames: [ 'lgi-name' ]
+        valueNames: ['lgi-name','tag']
     };
     var fileList = new List('sidebar-content', listOptions);
 

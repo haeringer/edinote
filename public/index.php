@@ -10,7 +10,7 @@
     // scan user directory for files and use array_diff() to remove the dots
     // $files = array_diff(scandir($usrdir), array('..', '.'));
     // --> instead of scandir() (above), query database
-    $files = query("SELECT file, tags FROM files WHERE id = ?", $_SESSION["id"]);
+    $files = query("SELECT file, tag1, tag2, tag3 FROM files WHERE id = ?", $_SESSION["id"]);
 
     // var_dump($files_arr);
     //
