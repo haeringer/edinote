@@ -30,6 +30,8 @@ $(function() {
 
     saveAs();
 
+    saveTag();
+
     // list.js filtering
     var listOptions = {
         valueNames: [ 'lgi-name' ]
@@ -147,58 +149,55 @@ function tagFile() {
         $('#TagModal').modal('toggle');
         $('div').tooltip('hide');
 
-        $("button#submit-tag").click(function() {
-            console.log('save tag...');
-            $('.error').hide();
-            tag = $("input#save-tag").val();
-              if (tag == "") {
-                $("label#tag_empty").show();
-
-                // TODO change input to bootstrap input error style
-
-                $("input#save-tag").focus();
-                return false;
-
-                // TODO extend input validation with .validate plugin (allow only
-                // certain characters in file name etc.)
-              }
-
-            $.ajax({
-              method: "POST",
-              url: "settag.php",
-              data: { tag: tag, filename: filename }
-            })
-
-            .done(function(response) {
-                console.log('settag.php returned ' + response);
-
-                if (response === '0') {
-                    // if a new file was created (via parameter save_as = 1)
-                    $('#TagModal').modal('hide');
-                    var TagId = document.getElementById('tg_' + filename);
-                    console.log('TagId: ' + TagId.id);
-                    $('#' + TagId.id).before('<div class="tag">' + tag + '</div>');
-
-                }
-                else {
-                    console.log("couldn't save tag");
-                }
-            })
-
-            .fail(function(jqXHR, textStatus, errorThrown) {
-                console.log(errorThrown.toString());
-            });
-
-
-        // end of submit
-        });
     // end of .on(click)
     });
 // end of renameFile()
 };
 
 
+function saveTag() {
+    $("button#submit-tag").click(function() {
 
+        console.log('save tag on file ' + filename);
+        $('.error').hide();
+        tag = $("input#save-tag").val();
+          if (tag == "") {
+            $("label#tag_empty").show();
+
+            // TODO change input to bootstrap input error style
+
+            $("input#save-tag").focus();
+            return false;
+
+            // TODO extend input validation with .validate plugin (allow only
+            // certain characters in file name etc.)
+          }
+
+        $.ajax({
+          method: "POST",
+          url: "settag.php",
+          data: { tag: tag, filename: filename }
+        })
+
+        .done(function(response) {
+            console.log('settag.php returned ' + response);
+
+            if (response === '0') {
+                $('#TagModal').modal('hide');
+                var TagId = document.getElementById('tg_' + filename);
+                $('#' + TagId.id).before('<div class="tag">' + tag + '</div>');
+                console.log('TagId: ' + TagId.id);
+            }
+            else {
+                console.log("couldn't save tag");
+            }
+        })
+
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            console.log(errorThrown.toString());
+        });
+    });
+};
 
 
 

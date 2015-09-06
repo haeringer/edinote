@@ -10,13 +10,15 @@
     // scan user directory for files and use array_diff() to remove the dots
     // $files = array_diff(scandir($usrdir), array('..', '.'));
     // --> instead of scandir() (above), query database
-    $files_arr = query("SELECT file FROM files WHERE id = ?", $_SESSION["id"]);
+    $files = query("SELECT file, tags FROM files WHERE id = ?", $_SESSION["id"]);
 
-    $files = [];
-    for ($i = 0; $i < sizeof($files_arr); $i++) {
-        $files[$i] = $files_arr[$i]['file'];
-    }
+    // var_dump($files_arr);
+    //
+    // $files = [];
+    // for ($i = 0; $i < sizeof($files_arr); $i++) {
+    //     $files[$i] = $files_arr[$i]['file'];
+    // }
 
-    render("main.php", ["files" => $files, /* "user" => $user, "usrdir" => $usrdir,*/ "title" => "Main"]);
+    render("main.php", ["files" => $files,/* "user" => $user, "usrdir" => $usrdir,*/ "title" => "Main"]);
     // require("../templates/temp.php");
 ?>

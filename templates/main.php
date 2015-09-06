@@ -157,11 +157,11 @@
           <div id="new-file"></div>
 
           <?php
-            foreach($files as $file) {
-                // echo '<button class="list-group-item" id="fn_' . $file . '">' . $file . '<div class="tag"></div></button>' . "\n";
-                echo '<li class="list-group-item" id="fn_' . $file . '"><div class="lgi-name">' . substr($file,0,30) . '</div><div id="tg_' . $file . '"></div></li>' . "\n";
-
-                // echo '<div><button class="list-group-item">' . $file . '</button></div>' . "\n";
+            // foreach($files as $file) {
+            for ($i = 0; $i < sizeof($files); $i++) {
+                echo '<li class="list-group-item" id="fn_' . $files[$i]["file"] . '"><div class="lgi-name">'
+                . substr($files[$i]["file"],0,30) . '</div><div class="tag">' . $files[$i]["tags"] . '</div><div id="tg_'
+                . $files[$i]["file"] . '"></div></li>' . "\n";
             }
           ?>
 
