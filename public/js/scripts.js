@@ -129,10 +129,12 @@ function loadFile() {
             editor.getSession().setValue(response, -1);
             $('.list-group-item').removeClass('active');
 
-            /* don't use jquery for adding class 'active' because of possible
-               dot in id and therefore hassle with need for escaping */
+            // works with space in id
             var fileId = document.getElementById('fn_' + filename);
             fileId.className = fileId.className + " active";
+
+            // TODO doesn't work with space in id
+            // $('#fn_' + jq(filename)).addClass('active');
         })
 
         .fail(function(jqXHR, textStatus, errorThrown) {
@@ -181,14 +183,8 @@ function saveTag() {
 
             if (response === '0') {
                 $('#TagModal').modal('hide');
-                var TagId = document.getElementById('tg_' + filename).id;
-
-                // TODO BUG: filename + jquery !!!
-                $('#' + TagId).before('<div class="tag">' + tag + '</div>');
-                console.log('TagId: ' + TagId);
-
-                // tagname = fileId.children[1].children[1].className;
-
+                $('#tg_' + jq(filename)).before('<div class="tag">' + tag + '</div>');
+                console.log('TagId: ' + '#tg_' + jq(filename));
             }
             else if (response === '2') {
                 console.log('database query failed');
@@ -207,11 +203,14 @@ function saveTag() {
     });
 };
 
-
 function selectTag() {
 
+    // $('.list').on('click', '.list-group-item', function() {
+    //     filename = this.id.slice(3);
+    // };
+
     $('.tag').click(function() {
-        console.log('click');
+        console.log('tag: ' + filename);
         // filename = $(this).parent().attr('id').slice(3);
         // tag = 'x';
         // console.log('tag ' + tag + ' on file ' + filename);
@@ -355,4 +354,9 @@ function deleteFile(filename) {
     .fail(function(jqXHR, textStatus, errorThrown) {
         console.log(errorThrown.toString());
     });
+};
+
+// function to escape ids for use with jquery
+function jq(id) {
+    return id.replace( /(:|\.|\[|\]|,)/g, "\\$1" );
 };

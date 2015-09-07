@@ -48,8 +48,8 @@
             if ($return !== false) {
 
                 // add new file name to database
-                $inserted = query("INSERT INTO files (id, file, tags)
-                    VALUES (?, ?, '')", $_SESSION["id"], $filename);
+                $inserted = query("INSERT INTO files (id, file, tag1, tag2, tag3)
+                    VALUES (?, ?, NULL, NULL, NULL)", $_SESSION["id"], $filename);
 
                 if ($inserted !== false) {
                     // writing to file and database was successful
