@@ -157,12 +157,18 @@
           <div id="new-file"></div>
 
           <?php
-            // foreach($files as $file) {
             for ($i = 0; $i < sizeof($files); $i++) {
-                echo '<li class="list-group-item" id="fn_' . $files[$i]["file"] . '"><div class="lgi-name">'
-                . substr($files[$i]["file"],0,30) . '</div><div class="tag">' . $files[$i]["tag3"]
-                . '</div><div class="tag">' . $files[$i]["tag2"] . '</div><div class="tag">' . $files[$i]["tag1"]
-                . '</div><div id="tg_' . $files[$i]["file"] . '"></div></li>' . "\n";
+                ?>
+                <li class="list-group-item" id="fn_<?=$files[$i]["file"]?>">
+                  <div class="lgi-name"><?=substr($files[$i]["file"],0,30)?></div>
+                    <div class="tags">
+                      <div class="tag"><?=$files[$i]["tag1"]?></div>
+                      <div class="tag"><?=$files[$i]["tag2"]?></div>
+                      <div class="tag"><?=$files[$i]["tag3"]?></div>
+                      <div id="tg_<?=$files[$i]["file"]?>"></div>
+                    </div>
+                </li>
+                <?php
             }
           ?>
 

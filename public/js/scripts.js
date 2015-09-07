@@ -28,13 +28,15 @@ $(function() {
     // listen for clicks on tag
     tagFile();
 
+    selectTag();
+
     saveAs();
 
     saveTag();
 
     // list.js filtering
     var listOptions = {
-        valueNames: ['lgi-name','tag']
+        valueNames: ['lgi-name','tags']
     };
     var fileList = new List('sidebar-content', listOptions);
 
@@ -142,16 +144,11 @@ function loadFile() {
 
 // set tag
 function tagFile() {
-
     $('#tag-add').click(function() {
-
         console.log('tag file ' + filename);
         $('#TagModal').modal('toggle');
         $('div').tooltip('hide');
-
-    // end of .on(click)
     });
-// end of renameFile()
 };
 
 
@@ -184,9 +181,20 @@ function saveTag() {
 
             if (response === '0') {
                 $('#TagModal').modal('hide');
-                var TagId = document.getElementById('tg_' + filename);
-                $('#' + TagId.id).before('<div class="tag">' + tag + '</div>');
-                console.log('TagId: ' + TagId.id);
+                var TagId = document.getElementById('tg_' + filename).id;
+
+                // TODO BUG: filename + jquery !!!
+                $('#' + TagId).before('<div class="tag">' + tag + '</div>');
+                console.log('TagId: ' + TagId);
+
+                // tagname = fileId.children[1].children[1].className;
+
+            }
+            else if (response === '2') {
+                console.log('database query failed');
+            }
+            else if (response === '3') {
+                console.log('tag slots are full');
             }
             else {
                 console.log("couldn't save tag");
@@ -200,7 +208,35 @@ function saveTag() {
 };
 
 
+function selectTag() {
 
+    $('.tag').click(function() {
+        console.log('click');
+        // filename = $(this).parent().attr('id').slice(3);
+        // tag = 'x';
+        // console.log('tag ' + tag + ' on file ' + filename);
+
+
+
+/*
+        $.getJSON('getfile.php', {filename: filename})
+        .done(function(response, textStatus, jqXHR) {
+            editor.getSession().setValue(response, -1);
+            $('.list-group-item').removeClass('active');
+            var fileId = document.getElementById('fn_' + filename);
+            fileId.className = fileId.className + " active";
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            console.log(errorThrown.toString());
+        });
+*/
+
+
+
+    // end of .on(click)
+    });
+// end of renameFile()
+};
 
 
 
