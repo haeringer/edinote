@@ -159,7 +159,7 @@
           <?php
             for ($i = 0; $i < sizeof($files); $i++) {
                 ?>
-                <li class="list-group-item" id="fn_<?=$files[$i]["file"]?>">
+                <li class="list-group-item" id="<?=$files[$i]["fileid"]?>">
                   <div class="lgi-name"><?=substr($files[$i]["file"],0,30)?></div>
                     <div class="tags">
                       <div class="tag"><?=$files[$i]["tag1"]?></div>

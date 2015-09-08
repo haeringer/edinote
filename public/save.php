@@ -14,6 +14,7 @@
     $filename = $_POST["filename"];
     $contents = $_POST["contents"];
     $save_as = $_POST["save_as"];
+    $fileId = uniqid('fn_');
 
     if ($save_as === '0') {
         // write contents to file (overwrite file safely without asking, because
@@ -48,8 +49,8 @@
             if ($return !== false) {
 
                 // add new file name to database
-                $inserted = query("INSERT INTO files (id, file, tag1, tag2, tag3)
-                    VALUES (?, ?, NULL, NULL, NULL)", $_SESSION["id"], $filename);
+                $inserted = query("INSERT INTO files (fileid, id, file, tag1, tag2, tag3)
+                    VALUES (?, ?, ?, NULL, NULL, NULL)", $fileId, $_SESSION["id"], $filename);
 
                 if ($inserted !== false) {
                     // writing to file and database was successful

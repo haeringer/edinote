@@ -5,14 +5,17 @@
     // TODO make user variables globally available somehow
     $usrdir = DATADIR . query("SELECT username FROM users WHERE id = ?", $_SESSION["id"])[0]['username'] . "/";
 
-    $filename = $_GET["filename"];
+    $fileId = $_GET["fileId"];
 
-    // ensure file exists
-    if (empty($filename))
+    // getfile wasn't called properly with a file id
+    if (empty($fileId))
     {
         http_response_code(400);
         exit;
     }
+
+    // get name of file
+    $filename = query("SELECT file FROM files WHERE fileid = '?'", $fileId);
 
     // extract content of file
     $content = file_get_contents($usrdir.$filename);
@@ -24,8 +27,14 @@
         exit;
     }
 
+    // build array for ajax response
+    $response = [
+      "content" => $content,
+      "filename" => $filename
+    ];
+
     // spit out content as json
     header("Content-type: application/json");
-    echo json_encode($content);
+    echo json_encode($response);
 
 ?>

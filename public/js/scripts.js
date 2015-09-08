@@ -22,20 +22,18 @@ $(function() {
     var scrollContainer = document.getElementById('file-list');
     Ps.initialize(scrollContainer);
 
-    // listen for cli;cks on files
+    // load functions for file handling
     loadFile();
-
-    // listen for clicks on tag
     tagFile();
-
     selectTag();
-
+    saveTag();
     saveAs();
 
-    saveTag();
+    // TODO consolidate different function calls
 
-    isTouchDevice();
-    touchScroll('page-wrapper');
+    $("button#save").click(function() { saveFile(filename, 0) });
+    $("button#delete").click(function() { deleteFile(filename) });
+    $("button#new").click(function() { newFile() });
 
     // list.js filtering
     var listOptions = {
@@ -45,6 +43,7 @@ $(function() {
 
 });
 
+
 window.onresize = function(event) {
      setHeight();
 }
@@ -52,9 +51,8 @@ window.onresize = function(event) {
 function setHeight() {
     var editor_height = $(window).height() - 110;
     var sidebar_height = editor_height - 100;
-    $("#file-list").css("max-height", sidebar_height);
-    $("#page-wrapper").css("min-height", editor_height);
     $("#editor-container").css("height", editor_height);
+    $("#file-list").css("max-height", sidebar_height);
 }
 
 
@@ -69,11 +67,9 @@ editor.setFontSize(16);
 // get rid of 'automatically scrolling cursor into view' error
 editor.$blockScrolling = Infinity;
 editor.setOptions({
+    // maxLines: Infinity
     fontSize: 14,
     theme: "ace/theme/tomorrow",
-    // maxLines: Infinity,
-    // maxLines: 30,
-    // autoScrollEditorIntoView: true
 });
 // clean up editor layout
 editor.renderer.setShowGutter(false);
@@ -98,34 +94,12 @@ editor.commands.addCommand({
     exec: function () { saveFile(filename, 0) }
 });
 
-// enable scrolling for ace editor on touch devices
-$('#page-wrapper').on('touchmove', function(e) {
-    e.preventDefault();
-    var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0],
-        elm = $(this).offset(),
-        x = touch.pageX - elm.left,
-        y = touch.pageY - elm.top;
-    if (x < $(this).width() && x > 0 && y < $(this).height() && y > 0) {
-        var editor = ace.edit('editor-container'),
-            xDiff = x - window.SyntaxEditor_scrollStart_X,
-            yDiff = y - window.SyntaxEditor_scrollStart_Y;
-        editor.renderer.scrollBy(-xDiff, -yDiff);
-        window.SyntaxEditor_scrollStart_X = x;
-        window.SyntaxEditor_scrollStart_Y = y;
-    }
-});
-
 /**
  * File handling
  */
 
 var filename;
-
-$(function(){
-    $("button#save").click(function() { saveFile(filename, 0) });
-    $("button#delete").click(function() { deleteFile(filename) });
-    $("button#new").click(function() { newFile() });
-});
+var fileId;
 
 function newFile() {
     console.log('creating new file...');
@@ -140,15 +114,22 @@ function loadFile() {
     // use .on instead of .click to recognize events also on newly added files
     $('.list').on('click', '.list-group-item', function() {
 
-        filename = this.id.slice(3);
-        console.log('load file ' + filename);
+        fileId = this.id;
+        console.log('load file ' + fileId);
 
-        $.getJSON('getfile.php', {filename: filename})
+        $.getJSON('getfile.php', {fileId: fileId})
 
         .done(function(response, textStatus, jqXHR) {
+
+            json_obj = JSON.parse(response);
+
+            alert(json_obj.filename);
+
+
+
             /* fill editor with response data returned from getfile.php and set
                cursor to beginning of file */
-            editor.getSession().setValue(response, -1);
+            editor.getSession().setValue(json_obj.content, -1);
             $('.list-group-item').removeClass('active');
 
             // works with space in id
@@ -165,6 +146,122 @@ function loadFile() {
     });
 };
 
+// save file
+function saveFile(filename, save_as) {
+
+    var contents = editor.getSession().getValue();
+
+    $.ajax({
+      method: "POST",
+      url: "save.php",
+      data: { contents: contents, filename: filename, save_as: save_as }
+    })
+
+    .done(function(response) {
+        console.log('save.php returned ' + response);
+
+        if (response === '0') {
+            // clear changed state of file
+            editor.session.getUndoManager().markClean()
+            fileState();
+            console.log("file saved");
+            // if a new file was created (via parameter save_as = 1)
+            if (save_as === 1) {
+                $('#SaveModal').modal('hide');
+                $('#new-file').prepend('<li class="list-group-item" id="fn_'
+                + filename + '"><div class="lgi-name">' + filename.substring(0,30) + '</div></li>');
+                var fileId = document.getElementById('fn_' + filename);
+                fileId.className = fileId.className + " active";
+            }
+        }
+        else if (response === '1') {
+            // '1' means var filename was empty -> new file needs to be created
+            $('#SaveModal').modal('toggle');
+        }
+        else if (response === '2') {
+            $("label#filename_exists").show();
+            $("input#save-as").focus();
+            return 0;
+        }
+        else if (response === '3') {
+            console.log("couldn't write to database");
+        }
+        else {
+            console.log("couldn't save file");
+        }
+    })
+
+    .fail(function(jqXHR, textStatus, errorThrown) {
+        console.log(errorThrown.toString());
+    });
+};
+
+// save-as function (called when 'save' is clicked in save-as modal)
+function saveAs() {
+    $('.error').hide();
+    // TODO setting focus doesn't work?: $('input#save-as').focus();
+    $("button#submit-fn").click(function() {
+        console.log('save as...');
+        $('.error').hide();
+        filename = $("input#save-as").val();
+      		if (filename == "") {
+            $("label#filename_empty").show();
+
+            // TODO change input to bootstrap input error style
+
+            $("input#save-as").focus();
+            return false;
+
+        // TODO extend input validation with .validate plugin (allow only
+        // certain characters in file name etc.)
+
+        }
+        // call saveFile() with parameter save_as = 1
+        saveFile(filename, 1);
+   });
+};
+
+// enable/disable save button depending on file state
+function fileState() {
+    if (editor.session.getUndoManager().isClean()) {
+        $('#save').addClass("disabled");
+    }
+    else {
+        $('#save').removeClass("disabled");
+    }
+};
+
+// delete file
+function deleteFile(filename) {
+    console.log('deleting file ' + filename);
+
+    $.ajax({
+      method: "POST",
+      url: "delete.php",
+      data: { filename: filename }
+    })
+
+    .done(function(response) {
+        console.log('delete.php returned ' + response);
+
+        if (response === '0') {
+            console.log("file " + filename + " deleted");
+            // $("#f_" + filename).remove(); // doesn't work??
+            $('li').remove(":contains(" + filename + ")");
+            newFile();
+        }
+        else if (response === '1') {
+            console.log("couldn't delete file from database");
+        }
+        else if (response === '2') {
+            console.log("couldn't delete file from file system");
+        }
+    })
+
+    .fail(function(jqXHR, textStatus, errorThrown) {
+        console.log(errorThrown.toString());
+    });
+};
 
 // set tag
 function tagFile() {
@@ -174,7 +271,6 @@ function tagFile() {
         $('div').tooltip('hide');
     });
 };
-
 
 function saveTag() {
     $("button#submit-tag").click(function() {
@@ -257,125 +353,6 @@ function selectTag() {
     // end of .on(click)
     });
 // end of renameFile()
-};
-
-
-
-// save file
-function saveFile(filename, save_as) {
-
-    var contents = editor.getSession().getValue();
-
-    $.ajax({
-      method: "POST",
-      url: "save.php",
-      data: { contents: contents, filename: filename, save_as: save_as }
-    })
-
-    .done(function(response) {
-        console.log('save.php returned ' + response);
-
-        if (response === '0') {
-            // clear changed state of file
-            editor.session.getUndoManager().markClean()
-            fileState();
-            console.log("file saved");
-            // if a new file was created (via parameter save_as = 1)
-            if (save_as === 1) {
-                $('#SaveModal').modal('hide');
-                $('#new-file').prepend('<li class="list-group-item" id="fn_'
-                + filename + '"><div class="lgi-name">' + filename.substring(0,30) + '</div></li>');
-                var fileId = document.getElementById('fn_' + filename);
-                fileId.className = fileId.className + " active";
-            }
-        }
-        else if (response === '1') {
-            // '0' means filename was empty -> new file needs to be created
-            $('#SaveModal').modal('toggle');
-        }
-        else if (response === '2') {
-            $("label#filename_exists").show();
-            $("input#save-as").focus();
-            return 0;
-        }
-        else if (response === '3') {
-            console.log("couldn't write to database");
-        }
-        else {
-            console.log("couldn't save file");
-        }
-    })
-
-    .fail(function(jqXHR, textStatus, errorThrown) {
-        console.log(errorThrown.toString());
-    });
-};
-
-// save-as function (called when 'save' is clicked in save-as modal)
-function saveAs() {
-    $('.error').hide();
-    // setting focus doesn't work?: $('input#save-as').focus();
-    $("button#submit-fn").click(function() {
-        console.log('save as...');
-        $('.error').hide();
-        filename = $("input#save-as").val();
-      		if (filename == "") {
-            $("label#filename_empty").show();
-
-            // TODO change input to bootstrap input error style
-
-            $("input#save-as").focus();
-            return false;
-
-        // TODO extend input validation with .validate plugin (allow only
-        // certain characters in file name etc.)
-
-        }
-        // call saveFile() with parameter save_as = 1
-        saveFile(filename, 1);
-   });
-};
-
-// enable/disable save button depending on file state
-function fileState() {
-    if (editor.session.getUndoManager().isClean()) {
-        $('#save').addClass("disabled");
-    }
-    else {
-        $('#save').removeClass("disabled");
-    }
-};
-
-// delete file
-function deleteFile(filename) {
-    console.log('deleting file ' + filename);
-
-    $.ajax({
-      method: "POST",
-      url: "delete.php",
-      data: { filename: filename }
-    })
-
-    .done(function(response) {
-        console.log('delete.php returned ' + response);
-
-        if (response === '0') {
-            console.log("file " + filename + " deleted");
-            // $("#f_" + filename).remove(); // doesn't work??
-            $('li').remove(":contains(" + filename + ")");
-            newFile();
-        }
-        else if (response === '1') {
-            console.log("couldn't delete file from database");
-        }
-        else if (response === '2') {
-            console.log("couldn't delete file from file system");
-        }
-    })
-
-    .fail(function(jqXHR, textStatus, errorThrown) {
-        console.log(errorThrown.toString());
-    });
 };
 
 // function to escape ids for use with jquery
