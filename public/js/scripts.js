@@ -34,6 +34,9 @@ $(function() {
 
     saveTag();
 
+    isTouchDevice();
+    touchScroll('page-wrapper');
+
     // list.js filtering
     var listOptions = {
         valueNames: ['lgi-name','tags']
@@ -42,7 +45,6 @@ $(function() {
 
 });
 
-
 window.onresize = function(event) {
      setHeight();
 }
@@ -50,8 +52,9 @@ window.onresize = function(event) {
 function setHeight() {
     var editor_height = $(window).height() - 110;
     var sidebar_height = editor_height - 100;
-    $("#editor-container").css("height", editor_height);
     $("#file-list").css("max-height", sidebar_height);
+    $("#page-wrapper").css("min-height", editor_height);
+    $("#editor-container").css("height", editor_height);
 }
 
 
@@ -66,9 +69,11 @@ editor.setFontSize(16);
 // get rid of 'automatically scrolling cursor into view' error
 editor.$blockScrolling = Infinity;
 editor.setOptions({
-    // maxLines: Infinity
     fontSize: 14,
     theme: "ace/theme/tomorrow",
+    // maxLines: Infinity,
+    // maxLines: 30,
+    // autoScrollEditorIntoView: true
 });
 // clean up editor layout
 editor.renderer.setShowGutter(false);
@@ -91,6 +96,23 @@ editor.commands.addCommand({
     },
     // call saveFile() with parameter save_as = 0
     exec: function () { saveFile(filename, 0) }
+});
+
+// enable scrolling for ace editor on touch devices
+$('#page-wrapper').on('touchmove', function(e) {
+    e.preventDefault();
+    var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0],
+        elm = $(this).offset(),
+        x = touch.pageX - elm.left,
+        y = touch.pageY - elm.top;
+    if (x < $(this).width() && x > 0 && y < $(this).height() && y > 0) {
+        var editor = ace.edit('editor-container'),
+            xDiff = x - window.SyntaxEditor_scrollStart_X,
+            yDiff = y - window.SyntaxEditor_scrollStart_Y;
+        editor.renderer.scrollBy(-xDiff, -yDiff);
+        window.SyntaxEditor_scrollStart_X = x;
+        window.SyntaxEditor_scrollStart_Y = y;
+    }
 });
 
 /**
