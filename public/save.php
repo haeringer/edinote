@@ -14,7 +14,7 @@
     $filename = $_POST["filename"];
     $contents = $_POST["contents"];
     $save_as = $_POST["save_as"];
-    $fileId = uniqid('fn_');
+    $fileId = uniqid('fid_');
 
     if ($save_as === '0') {
         // write contents to file (overwrite file safely without asking, because

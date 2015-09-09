@@ -102,7 +102,7 @@ var filename;
 var fileId;
 
 function newFile() {
-    console.log('creating new file...');
+    console.log('new empty document...');
     filename = "";
     editor.getSession().setValue("");
     $('.list-group-item').removeClass('active');
@@ -115,29 +115,21 @@ function loadFile() {
     $('.list').on('click', '.list-group-item', function() {
 
         fileId = this.id;
-        console.log('load file ' + fileId);
+        console.log('load file with id ' + fileId);
 
         $.getJSON('getfile.php', {fileId: fileId})
 
         .done(function(response, textStatus, jqXHR) {
 
-            json_obj = JSON.parse(response);
-
-            alert(json_obj.filename);
-
-
+            console.log('filename: ' + response.filename);
+            filename = response.filename;
 
             /* fill editor with response data returned from getfile.php and set
                cursor to beginning of file */
-            editor.getSession().setValue(json_obj.content, -1);
+            editor.getSession().setValue(response.content, -1);
+
             $('.list-group-item').removeClass('active');
-
-            // works with space in id
-            var fileId = document.getElementById('fn_' + filename);
-            fileId.className = fileId.className + " active";
-
-            // TODO doesn't work with space in id
-            // $('#fn_' + jq(filename)).addClass('active');
+            $('#' + fileId).addClass('active');
         })
 
         .fail(function(jqXHR, textStatus, errorThrown) {
@@ -168,10 +160,10 @@ function saveFile(filename, save_as) {
             // if a new file was created (via parameter save_as = 1)
             if (save_as === 1) {
                 $('#SaveModal').modal('hide');
-                $('#new-file').prepend('<li class="list-group-item" id="fn_'
-                + filename + '"><div class="lgi-name">' + filename.substring(0,30) + '</div></li>');
-                var fileId = document.getElementById('fn_' + filename);
-                fileId.className = fileId.className + " active";
+                $('#new-file').prepend('<li class="list-group-item" id="'
+                    + fileId + '"><div class="lgi-name">'
+                    + filename.substring(0,30) + '</div></li>');
+                $('#' + fileId).addClass('active');
             }
         }
         else if (response === '1') {
@@ -246,8 +238,7 @@ function deleteFile(filename) {
 
         if (response === '0') {
             console.log("file " + filename + " deleted");
-            // $("#f_" + filename).remove(); // doesn't work??
-            $('li').remove(":contains(" + filename + ")");
+            $('#' + fileId).remove();
             newFile();
         }
         else if (response === '1') {
