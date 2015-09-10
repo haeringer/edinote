@@ -22,18 +22,18 @@ $(function() {
     var scrollContainer = document.getElementById('file-list');
     Ps.initialize(scrollContainer);
 
-    // load functions for file handling
-    loadFile();
-    tagFile();
-    selectTag();
-    saveTag();
-    saveAs();
-
-    // TODO consolidate different function calls
-
+    /* file handling */
+    // use .on instead of .click to recognize events also on newly added files
+    $('.list').on('click', '.list-group-item', function() { loadFile(this.id) });
     $("button#save").click(function() { saveFile(filename, 0) });
+    $("button#submit-fn").click(function() { saveAs() });
     $("button#delete").click(function() { deleteFile(filename) });
     $("button#new").click(function() { newFile() });
+
+    /* tag handling */
+    $('#tag-add').click(function() { tagFile() });
+    $("button#submit-tag").click(function() { saveTag() };
+    $('.tag').click(function() { selectTag() };
 
     // list.js filtering
     var listOptions = {
@@ -110,31 +110,28 @@ function newFile() {
 };
 
 // load file content into editor
-function loadFile() {
-    // use .on instead of .click to recognize events also on newly added files
-    $('.list').on('click', '.list-group-item', function() {
+function loadFile(fileId_load) {
+    // fill global var fileId with function call parameter
+    fileId = fileId_load;
+    console.log('load file with id ' + fileId);
 
-        fileId = this.id;
-        console.log('load file with id ' + fileId);
+    $.getJSON('getfile.php', {fileId: fileId})
 
-        $.getJSON('getfile.php', {fileId: fileId})
+    .done(function(response, textStatus, jqXHR) {
 
-        .done(function(response, textStatus, jqXHR) {
+        console.log('filename: ' + response.filename);
+        filename = response.filename;
 
-            console.log('filename: ' + response.filename);
-            filename = response.filename;
+        /* fill editor with response data returned from getfile.php and set
+           cursor to beginning of file */
+        editor.getSession().setValue(response.content, -1);
 
-            /* fill editor with response data returned from getfile.php and set
-               cursor to beginning of file */
-            editor.getSession().setValue(response.content, -1);
+        $('.list-group-item').removeClass('active');
+        $('#' + fileId).addClass('active');
+    })
 
-            $('.list-group-item').removeClass('active');
-            $('#' + fileId).addClass('active');
-        })
-
-        .fail(function(jqXHR, textStatus, errorThrown) {
-            console.log(errorThrown.toString());
-        });
+    .fail(function(jqXHR, textStatus, errorThrown) {
+        console.log(errorThrown.toString());
     });
 };
 
@@ -152,23 +149,10 @@ function saveFile(filename, save_as) {
     .done(function(response) {
         console.log('save.php returned ' + response);
 
-        if (response === '0') {
-            // clear changed state of file
-            editor.session.getUndoManager().markClean()
-            fileState();
-            console.log("file saved");
-            // if a new file was created (via parameter save_as = 1)
-            if (save_as === 1) {
-                $('#SaveModal').modal('hide');
-                $('#new-file').prepend('<li class="list-group-item" id="'
-                    + fileId + '"><div class="lgi-name">'
-                    + filename.substring(0,30) + '</div></li>');
-                $('#' + fileId).addClass('active');
-            }
-        }
-        else if (response === '1') {
+        if (response === '1') {
             // '1' means var filename was empty -> new file needs to be created
             $('#SaveModal').modal('toggle');
+            $('.error').hide();
         }
         else if (response === '2') {
             $("label#filename_exists").show();
@@ -179,7 +163,18 @@ function saveFile(filename, save_as) {
             console.log("couldn't write to database");
         }
         else {
-            console.log("couldn't save file");
+            // clear changed state of file
+            editor.session.getUndoManager().markClean()
+            fileState();
+            console.log("file saved");
+            // if a new file was created (via parameter save_as = 1)
+            if (save_as === 1) {
+                $('#SaveModal').modal('hide');
+                $('#new-file').after('<li class="list-group-item" id="'
+                    + response + '"><div class="lgi-name"><div class="tags"></div>'
+                    + filename.substring(0,30) + '</div></li>');
+                $('#' + response).addClass('active');
+            }
         }
     })
 
@@ -190,27 +185,24 @@ function saveFile(filename, save_as) {
 
 // save-as function (called when 'save' is clicked in save-as modal)
 function saveAs() {
-    $('.error').hide();
     // TODO setting focus doesn't work?: $('input#save-as').focus();
-    $("button#submit-fn").click(function() {
-        console.log('save as...');
-        $('.error').hide();
-        filename = $("input#save-as").val();
-      		if (filename == "") {
-            $("label#filename_empty").show();
+    console.log('save as...');
+    $('.error').hide();
+    filename = $("input#save-as").val();
+  		if (filename == "") {
+        $("label#filename_empty").show();
 
-            // TODO change input to bootstrap input error style
+        // TODO change input to bootstrap input error style
 
-            $("input#save-as").focus();
-            return false;
+        $("input#save-as").focus();
+        return false;
 
-        // TODO extend input validation with .validate plugin (allow only
-        // certain characters in file name etc.)
+    // TODO extend input validation with .validate plugin (allow only
+    // certain characters in file name etc.)
 
-        }
-        // call saveFile() with parameter save_as = 1
-        saveFile(filename, 1);
-   });
+    }
+    // call saveFile() with parameter save_as = 1
+    saveFile(filename, 1);
 };
 
 // enable/disable save button depending on file state
@@ -256,59 +248,54 @@ function deleteFile(filename) {
 
 // set tag
 function tagFile() {
-    $('#tag-add').click(function() {
-        console.log('tag file ' + filename);
-        $('#TagModal').modal('toggle');
-        $('div').tooltip('hide');
-    });
+    console.log('tag file ' + filename);
+    $('#TagModal').modal('toggle');
+    $('div').tooltip('hide');
 };
 
 function saveTag() {
-    $("button#submit-tag").click(function() {
+    console.log('save tag on file ' + filename);
+    $('.error').hide();
+    tag = $("input#save-tag").val();
+      if (tag == "") {
+        $("label#tag_empty").show();
 
-        console.log('save tag on file ' + filename);
-        $('.error').hide();
-        tag = $("input#save-tag").val();
-          if (tag == "") {
-            $("label#tag_empty").show();
+        // TODO change input to bootstrap input error style
 
-            // TODO change input to bootstrap input error style
+        $("input#save-tag").focus();
+        return false;
 
-            $("input#save-tag").focus();
-            return false;
+        // TODO extend input validation with .validate plugin (allow only
+        // certain characters in file name etc.)
+      }
 
-            // TODO extend input validation with .validate plugin (allow only
-            // certain characters in file name etc.)
-          }
+    $.ajax({
+      method: "POST",
+      url: "settag.php",
+      data: { tag: tag, filename: filename }
+    })
 
-        $.ajax({
-          method: "POST",
-          url: "settag.php",
-          data: { tag: tag, filename: filename }
-        })
+    .done(function(response) {
+        console.log('settag.php returned ' + response);
 
-        .done(function(response) {
-            console.log('settag.php returned ' + response);
+        if (response === '0') {
+            $('#TagModal').modal('hide');
+            $('#tg_' + jq(filename)).before('<div class="tag">' + tag + '</div>');
+            console.log('TagId: ' + '#tg_' + jq(filename));
+        }
+        else if (response === '2') {
+            console.log('database query failed');
+        }
+        else if (response === '3') {
+            console.log('tag slots are full');
+        }
+        else {
+            console.log("couldn't save tag");
+        }
+    })
 
-            if (response === '0') {
-                $('#TagModal').modal('hide');
-                $('#tg_' + jq(filename)).before('<div class="tag">' + tag + '</div>');
-                console.log('TagId: ' + '#tg_' + jq(filename));
-            }
-            else if (response === '2') {
-                console.log('database query failed');
-            }
-            else if (response === '3') {
-                console.log('tag slots are full');
-            }
-            else {
-                console.log("couldn't save tag");
-            }
-        })
-
-        .fail(function(jqXHR, textStatus, errorThrown) {
-            console.log(errorThrown.toString());
-        });
+    .fail(function(jqXHR, textStatus, errorThrown) {
+        console.log(errorThrown.toString());
     });
 };
 
@@ -318,31 +305,26 @@ function selectTag() {
     //     filename = this.id.slice(3);
     // };
 
-    $('.tag').click(function() {
-        console.log('tag: ' + filename);
-        // filename = $(this).parent().attr('id').slice(3);
-        // tag = 'x';
-        // console.log('tag ' + tag + ' on file ' + filename);
+    console.log('tag: ' + filename);
+    // filename = $(this).parent().attr('id').slice(3);
+    // tag = 'x';
+    // console.log('tag ' + tag + ' on file ' + filename);
 
 
 
 /*
-        $.getJSON('getfile.php', {filename: filename})
-        .done(function(response, textStatus, jqXHR) {
-            editor.getSession().setValue(response, -1);
-            $('.list-group-item').removeClass('active');
-            var fileId = document.getElementById('fn_' + filename);
-            fileId.className = fileId.className + " active";
-        })
-        .fail(function(jqXHR, textStatus, errorThrown) {
-            console.log(errorThrown.toString());
-        });
+    $.getJSON('getfile.php', {filename: filename})
+    .done(function(response, textStatus, jqXHR) {
+        editor.getSession().setValue(response, -1);
+        $('.list-group-item').removeClass('active');
+        var fileId = document.getElementById('fn_' + filename);
+        fileId.className = fileId.className + " active";
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) {
+        console.log(errorThrown.toString());
+    });
 */
 
-
-
-    // end of .on(click)
-    });
 // end of renameFile()
 };
 

@@ -24,7 +24,7 @@
         // return values to calling js function
         if ($return !== false) {
             // writing to file was successful
-            echo 0;
+            echo $fileId;
         }
     }
     else {
@@ -54,7 +54,7 @@
 
                 if ($inserted !== false) {
                     // writing to file and database was successful
-                    echo 0;
+                    echo $fileId;
                 }
                 else {
                     // writing to database was unsuccessful
