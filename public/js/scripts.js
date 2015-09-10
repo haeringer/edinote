@@ -33,7 +33,8 @@ $(function() {
     /* tag handling */
     $('#tag-add').click(function() { tagFile() });
     $("button#submit-tag").click(function() { saveTag() });
-    selectTag();
+    // selectTag();
+    $('.tags').on('click', '.tag', function() { selectTag() });
 
     // list.js filtering
     var listOptions = {
@@ -311,10 +312,14 @@ function selectTag() {
     //     filename = this.id.slice(3);
     // };
 
-    $('.tag').parents().click(function() {
+    // $('.tag').closest('id').click(function() {
+    // console.log('tag: ' + this.id);
+    // });
+
+    // var tag = $(this).closest('.list-group-item').attr('id');
+    console.log('tag: ' + this);
 
     // filename = $(this).parent().parent().attr('id').slice(3);
-    console.log('tag: ' + this.id);
     // tag = 'x';
     // console.log('tag ' + tag + ' on file ' + filename);
 
@@ -332,6 +337,5 @@ function selectTag() {
         console.log(errorThrown.toString());
     });
 */
-    });
 // end of renameFile()
 };
