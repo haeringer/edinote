@@ -165,7 +165,7 @@
                       <div class="tag"><?=$files[$i]["tag1"]?></div>
                       <div class="tag"><?=$files[$i]["tag2"]?></div>
                       <div class="tag"><?=$files[$i]["tag3"]?></div>
-                      <div id="tg_<?=$files[$i]["file"]?>"></div>
+                      <div id="tg_<?=$files[$i]["fileid"]?>"></div>
                     </div>
                 </li>
                 <?php

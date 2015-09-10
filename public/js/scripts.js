@@ -32,8 +32,8 @@ $(function() {
 
     /* tag handling */
     $('#tag-add').click(function() { tagFile() });
-    $("button#submit-tag").click(function() { saveTag() };
-    $('.tag').click(function() { selectTag() };
+    $("button#submit-tag").click(function() { saveTag() });
+    selectTag();
 
     // list.js filtering
     var listOptions = {
@@ -119,7 +119,7 @@ function loadFile(fileId_load) {
 
     .done(function(response, textStatus, jqXHR) {
 
-        console.log('filename: ' + response.filename);
+        console.log('file "' + response.filename + '" loaded');
         filename = response.filename;
 
         /* fill editor with response data returned from getfile.php and set
@@ -246,16 +246,21 @@ function deleteFile(filename) {
     });
 };
 
+
+/**
+ * Tag handling
+ */
+
 // set tag
 function tagFile() {
     console.log('tag file ' + filename);
     $('#TagModal').modal('toggle');
+    $('.error').hide();
     $('div').tooltip('hide');
 };
 
 function saveTag() {
     console.log('save tag on file ' + filename);
-    $('.error').hide();
     tag = $("input#save-tag").val();
       if (tag == "") {
         $("label#tag_empty").show();
@@ -280,17 +285,18 @@ function saveTag() {
 
         if (response === '0') {
             $('#TagModal').modal('hide');
-            $('#tg_' + jq(filename)).before('<div class="tag">' + tag + '</div>');
-            console.log('TagId: ' + '#tg_' + jq(filename));
+            $('#tg_' + fileId).before('<div class="tag">' + tag + '</div>');
+            console.log('TagId: ' + '#tg_' + fileId);
         }
         else if (response === '2') {
             console.log('database query failed');
         }
         else if (response === '3') {
             console.log('tag slots are full');
+            alert('Sorry, you can assign only up to three tags per file!')
         }
         else {
-            console.log("couldn't save tag");
+            console.log("couldn't save tag for any reason");
         }
     })
 
@@ -305,8 +311,10 @@ function selectTag() {
     //     filename = this.id.slice(3);
     // };
 
-    console.log('tag: ' + filename);
-    // filename = $(this).parent().attr('id').slice(3);
+    $('.tag').parents().click(function() {
+
+    // filename = $(this).parent().parent().attr('id').slice(3);
+    console.log('tag: ' + this.id);
     // tag = 'x';
     // console.log('tag ' + tag + ' on file ' + filename);
 
@@ -324,11 +332,6 @@ function selectTag() {
         console.log(errorThrown.toString());
     });
 */
-
+    });
 // end of renameFile()
-};
-
-// function to escape ids for use with jquery
-function jq(id) {
-    return id.replace( /(:|\.|\[|\]|,)/g, "\\$1" );
 };
