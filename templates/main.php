@@ -162,9 +162,9 @@
                 <li class="list-group-item" id="<?=$files[$i]["fileid"]?>">
                   <div class="lgi-name"><?=substr($files[$i]["file"],0,30)?></div>
                     <div class="tags">
-                      <div class="tag"><?=$files[$i]["tag1"]?></div>
-                      <div class="tag"><?=$files[$i]["tag2"]?></div>
-                      <div class="tag"><?=$files[$i]["tag3"]?></div>
+                      <div class="tag" id="tag1_<?=$files[$i]["fileid"]?>"><?=$files[$i]["tag1"]?></div>
+                      <div class="tag" id="tag2_<?=$files[$i]["fileid"]?>"><?=$files[$i]["tag2"]?></div>
+                      <div class="tag" id="tag3_<?=$files[$i]["fileid"]?>"><?=$files[$i]["tag3"]?></div>
                       <div id="tg_<?=$files[$i]["fileid"]?>"></div>
                     </div>
                 </li>

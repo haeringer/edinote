@@ -16,7 +16,7 @@ body {
 
 #page-wrapper {
     padding: 10px;
-    min-height: 0px;
+    min-height: 568px;
     background-color: #fff;
 }
 
@@ -24,20 +24,10 @@ body {
     #page-wrapper {
         position: inherit;
         margin: 18px 15px 15px 255px;
-        /*min-height: 0px !important;*/
+        min-height: 0px !important;
         border-left: 1px solid #e7e7e7;
         box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     }
-}
-
-/* ace editor */
-#editor-container {
-    /*position: absolute;*/
-    transition: all 0.2s ease-in-out;
-    top:  0px;
-    left: 0px;
-    bottom: 0px;
-    right: 0px;
 }
 
 /* Top navigation - hide default border to remove 1px line */
@@ -273,6 +263,10 @@ a.list-group-item, li.list-group-item {
     background-color: red;
 }
 
+.tag.active {
+    background-color: green;
+}
+
 /* set color for placeholder text in input forms */
 .form-control::-webkit-input-placeholder { color: #95A5A6; }
 .form-control:-moz-placeholder { color: #95A5A6; }
@@ -290,4 +284,17 @@ a.list-group-item, li.list-group-item {
 .navbar-header:after,
 .navbar:after {
     content: none;
+}
+
+/*
+ * ace editor rules - http://ace.c9.io
+ */
+
+#editor-container {
+    /* position: absolute; */
+    transition: all 0.2s ease-in-out;
+    top:  0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
 }

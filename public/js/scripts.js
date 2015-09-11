@@ -34,7 +34,7 @@ $(function() {
     $('#tag-add').click(function() { tagFile() });
     $("button#submit-tag").click(function() { saveTag() });
     // selectTag();
-    $('.tags').on('click', '.tag', function() { selectTag() });
+    $('.list-group-item').on('click', '.tag', function() { selectTag(this) });
 
     // list.js filtering
     var listOptions = {
@@ -101,6 +101,7 @@ editor.commands.addCommand({
 
 var filename;
 var fileId;
+var tagId;
 
 function newFile() {
     console.log('new empty document...');
@@ -287,7 +288,7 @@ function saveTag() {
         if (response === '0') {
             $('#TagModal').modal('hide');
             $('#tg_' + fileId).before('<div class="tag">' + tag + '</div>');
-            console.log('TagId: ' + '#tg_' + fileId);
+            console.log('TagId: ' + 'tg_' + fileId);
         }
         else if (response === '2') {
             console.log('database query failed');
@@ -306,36 +307,24 @@ function saveTag() {
     });
 };
 
-function selectTag() {
+function selectTag(tagId_obj) {
 
-    // $('.list').on('click', '.list-group-item', function() {
-    //     filename = this.id.slice(3);
-    // };
+    var tagId = $(tagId_obj).attr('id');
+    console.log('tag: ' + tagId);
 
-    // $('.tag').closest('id').click(function() {
-    // console.log('tag: ' + this.id);
+    $('.tag').removeClass('active');
+    $('#' + tagId).addClass('active');
+
+
+    // $.getJSON('getfile.php', {filename: filename})
+    // .done(function(response, textStatus, jqXHR) {
+    //     editor.getSession().setValue(response, -1);
+    //     $('.list-group-item').removeClass('active');
+    //     var fileId = document.getElementById('fn_' + filename);
+    //     fileId.className = fileId.className + " active";
+    // })
+    // .fail(function(jqXHR, textStatus, errorThrown) {
+    //     console.log(errorThrown.toString());
     // });
 
-    // var tag = $(this).closest('.list-group-item').attr('id');
-    console.log('tag: ' + this);
-
-    // filename = $(this).parent().parent().attr('id').slice(3);
-    // tag = 'x';
-    // console.log('tag ' + tag + ' on file ' + filename);
-
-
-
-/*
-    $.getJSON('getfile.php', {filename: filename})
-    .done(function(response, textStatus, jqXHR) {
-        editor.getSession().setValue(response, -1);
-        $('.list-group-item').removeClass('active');
-        var fileId = document.getElementById('fn_' + filename);
-        fileId.className = fileId.className + " active";
-    })
-    .fail(function(jqXHR, textStatus, errorThrown) {
-        console.log(errorThrown.toString());
-    });
-*/
-// end of renameFile()
 };
