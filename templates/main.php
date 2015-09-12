@@ -179,7 +179,7 @@
             <button type="button" id="tag-add" class="btn btn-bottom" data-toggle="tooltip" data-placement="right" title="Add Tag">
               <span class="fui-plus-circle" aria-hidden="true"></span>
             </button>
-            <button type="button" id="tag-del" class="btn btn-bottom" data-toggle="tooltip" data-placement="right" title="Delete Tag">
+            <button type="button" id="tag-rm" class="btn btn-bottom" data-toggle="tooltip" data-placement="right" title="Remove Tag">
               <span class="fui-cross-circle" aria-hidden="true"></span>
             </button>
             <button type="button" id="rename" class="btn btn-bottom" disabled="true" data-toggle="tooltip" data-placement="right" title="Rename File">

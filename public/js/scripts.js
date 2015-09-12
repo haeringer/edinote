@@ -33,8 +33,8 @@ $(function() {
     /* tag handling */
     $('#tag-add').click(function() { tagFile() });
     $("button#submit-tag").click(function() { saveTag() });
-    // selectTag();
     $('.list-group-item').on('click', '.tag', function() { selectTag(this) });
+    $("button#tag-rm").click(function() { removeTag() });
 
     // list.js filtering
     var listOptions = {
@@ -308,13 +308,11 @@ function saveTag() {
 };
 
 function selectTag(tagId_obj) {
-
-    var tagId = $(tagId_obj).attr('id');
+    tagId = $(tagId_obj).attr('id');
     console.log('tag: ' + tagId);
 
     $('.tag').removeClass('active');
     $('#' + tagId).addClass('active');
-
 
     // $.getJSON('getfile.php', {filename: filename})
     // .done(function(response, textStatus, jqXHR) {
@@ -326,5 +324,35 @@ function selectTag(tagId_obj) {
     // .fail(function(jqXHR, textStatus, errorThrown) {
     //     console.log(errorThrown.toString());
     // });
+};
+
+function removeTag() {
+  console.log('remove Tag ' + tagId);
+
+  $.ajax({
+    method: "POST",
+    url: "rmtag.php",
+    data: { tagId: tagId }
+  })
+
+  .done(function(response) {
+      console.log('rmtag.php returned ' + response);
+
+  //     if (response === '0') {
+  //         console.log("file " + filename + " deleted");
+  //         $('#' + fileId).remove();
+  //         newFile();
+  //     }
+  //     else if (response === '1') {
+  //         console.log("couldn't delete file from database");
+  //     }
+  //     else if (response === '2') {
+  //         console.log("couldn't delete file from file system");
+  //     }
+  // })
+
+  .fail(function(jqXHR, textStatus, errorThrown) {
+      console.log(errorThrown.toString());
+  });
 
 };
