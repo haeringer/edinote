@@ -163,7 +163,7 @@ body {
 }
 
 .navbar {
-    box-shadow: 0px 2px 5px 0px rgba(120,120,120,1);
+    box-shadow: 0px 2px 5px 0px rgba(160,160,160,1);
 }
 
 /* max-height of file list on mobile, 340px is default in bootstrap */
@@ -192,9 +192,13 @@ body {
     color: #AAB7B8;
 }
 
-.btn-bottom:disabled {
-    background-color: #ECF0F1;
-    color: #95A5A6;
+.bottom-disabled {
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+.bottom-disabled:hover {
+    color: #ccc;
 }
 
 .sidebar ul {
@@ -239,15 +243,13 @@ a.list-group-item, li.list-group-item {
     margin-top: 33px;
     line-height: 14px;
 
-    /*font-size: 0.7em;
-    background-color: #EEE;
-    opacity: 0.5;
-    margin-right: 4px;
+    /*
     height: 15px;
     line-height: 15px;
     position: absolute;
     right: 0px;
-    top: 32px;*/
+    top: 32px;
+    */
 }
 
 .tag {

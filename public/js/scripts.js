@@ -108,6 +108,7 @@ function newFile() {
     filename = "";
     editor.getSession().setValue("");
     $('.list-group-item').removeClass('active');
+    $('#tag-add').addClass('bottom-disabled');
     $('div').tooltip('hide');
 };
 
@@ -129,6 +130,10 @@ function loadFile(fileId_load) {
         editor.getSession().setValue(response.content, -1);
 
         $('.list-group-item').removeClass('active');
+        $('#tag-add').removeClass('bottom-disabled');
+        $('.tag').removeClass('active');
+        $('#tag-rm').addClass('bottom-disabled');
+        tagId = '';
         $('#' + fileId).addClass('active');
     })
 
@@ -172,10 +177,12 @@ function saveFile(filename, save_as) {
             // if a new file was created (via parameter save_as = 1)
             if (save_as === 1) {
                 $('#SaveModal').modal('hide');
-                $('#new-file').after('<li class="list-group-item" id="'
-                    + response + '"><div class="lgi-name"><div class="tags"></div>'
-                    + filename.substring(0,30) + '</div></li>');
+                $('#new-file').after('<li class="list-group-item" id="' + response
+                + '"><div class="lgi-name">' + filename.substring(0,30)
+                + '</div><div class="tags"><div id="tg_' + response + '"></div></div></li>');
                 $('#' + response).addClass('active');
+                $('#tag-add').removeClass('bottom-disabled');
+                fileId = response;
             }
         }
     })
@@ -287,6 +294,8 @@ function saveTag() {
 
         if (response === '0') {
             $('#TagModal').modal('hide');
+
+            // TODO insert tagId (tag3_fid_...) somehow??
             $('#tg_' + fileId).before('<div class="tag">' + tag + '</div>');
             console.log('TagId: ' + 'tg_' + fileId);
         }
@@ -295,7 +304,7 @@ function saveTag() {
         }
         else if (response === '3') {
             console.log('tag slots are full');
-            alert('Sorry, you can assign only up to three tags per file!')
+            $("label#tags_full").show();
         }
         else {
             console.log("couldn't save tag for any reason");
@@ -308,22 +317,14 @@ function saveTag() {
 };
 
 function selectTag(tagId_obj) {
+    // prevent selection of parent -> loading of file
+    event.stopPropagation();
     tagId = $(tagId_obj).attr('id');
     console.log('tag: ' + tagId);
 
     $('.tag').removeClass('active');
+    $('#tag-rm').removeClass('bottom-disabled');
     $('#' + tagId).addClass('active');
-
-    // $.getJSON('getfile.php', {filename: filename})
-    // .done(function(response, textStatus, jqXHR) {
-    //     editor.getSession().setValue(response, -1);
-    //     $('.list-group-item').removeClass('active');
-    //     var fileId = document.getElementById('fn_' + filename);
-    //     fileId.className = fileId.className + " active";
-    // })
-    // .fail(function(jqXHR, textStatus, errorThrown) {
-    //     console.log(errorThrown.toString());
-    // });
 };
 
 function removeTag() {
@@ -338,21 +339,20 @@ function removeTag() {
   .done(function(response) {
       console.log('rmtag.php returned ' + response);
 
-  //     if (response === '0') {
-  //         console.log("file " + filename + " deleted");
-  //         $('#' + fileId).remove();
-  //         newFile();
-  //     }
-  //     else if (response === '1') {
-  //         console.log("couldn't delete file from database");
-  //     }
-  //     else if (response === '2') {
-  //         console.log("couldn't delete file from file system");
-  //     }
-  // })
+      if (response === '1') {
+          console.log("tag ID was empty");
+      }
+      else if (response === '2') {
+          console.log("couldn't delete tag from database");
+      }
+      else {
+          console.log(tagId + " removed");
+          $('#' + tagId).remove();
+          $('#tag-rm').addClass('bottom-disabled');
+      }
+  })
 
   .fail(function(jqXHR, textStatus, errorThrown) {
       console.log(errorThrown.toString());
   });
-
 };

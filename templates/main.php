@@ -71,6 +71,7 @@
         <div class="input-group input-group-lg col-sm-12">
           <input type="text" name="tag" class="form-control" id="save-tag">
           <label class="error" for="tag" id="tag_empty"><br>Please enter a tag!</label>
+          <label class="error" for="tag" id="tags_full"><br>Sorry, you can assign only up to three tags per file!</label>
         </div>
       </div>
       <div class="modal-footer">
@@ -176,13 +177,13 @@
 
         <div class="btn-toolbar en-bottom" role="toolbar">
           <div class="btn-group btn-group-xs" role="group">
-            <button type="button" id="tag-add" class="btn btn-bottom" data-toggle="tooltip" data-placement="right" title="Add Tag">
+            <button type="button" id="tag-add" class="btn btn-bottom bottom-disabled" data-toggle="tooltip" data-placement="right" title="Add Tag">
               <span class="fui-plus-circle" aria-hidden="true"></span>
             </button>
-            <button type="button" id="tag-rm" class="btn btn-bottom" data-toggle="tooltip" data-placement="right" title="Remove Tag">
+            <button type="button" id="tag-rm" class="btn btn-bottom bottom-disabled" data-toggle="tooltip" data-placement="right" title="Remove Tag">
               <span class="fui-cross-circle" aria-hidden="true"></span>
             </button>
-            <button type="button" id="rename" class="btn btn-bottom" disabled="true" data-toggle="tooltip" data-placement="right" title="Rename File">
+            <button type="button" id="rename" class="btn btn-bottom bottom-disabled" data-toggle="tooltip" data-placement="right" title="Rename File">
               <span class="fui-new" aria-hidden="true"></span>
             </button>
           </div>
