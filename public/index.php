@@ -19,6 +19,6 @@
     //     $files[$i] = $files_arr[$i]['file'];
     // }
 
-    render("main.php", ["files" => $files,/* "user" => $user, "usrdir" => $usrdir,*/ "title" => "Main"]);
+    render("main.php", ["files" => $files,/* "user" => $user, "usrdir" => $usrdir,*/ "title" => "<Edinote>"]);
     // require("../templates/temp.php");
 ?>

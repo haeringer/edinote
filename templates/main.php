@@ -11,7 +11,7 @@
   <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
 
   <?php if (isset($title)): ?>
-      <title>Edinote: <?= htmlspecialchars($title) ?></title>
+      <title><?= htmlspecialchars($title) ?></title>
   <?php else: ?>
       <title>Edinote</title>
   <?php endif ?>
