@@ -36,6 +36,8 @@ $(function() {
     $('.list-group-item').on('click', '.tag', function() { selectTag(this) });
     $("button#tag-rm").click(function() { removeTag() });
 
+    enableReturn();
+
     // list.js filtering
     var listOptions = {
         valueNames: ['lgi-name','tags']
@@ -158,8 +160,12 @@ function saveFile(filename, save_as) {
 
         if (response === '1') {
             // '1' means var filename was empty -> new file needs to be created
-            $('#SaveModal').modal('toggle');
             $('.error').hide();
+            $('#SaveModal').modal('toggle');
+            $("#save-as").val('new file.md');
+            var input = document.getElementById("save-as");
+                input.focus();
+                input.setSelectionRange(0,8);
         }
         else if (response === '2') {
             $("label#filename_exists").show();
@@ -194,7 +200,6 @@ function saveFile(filename, save_as) {
 
 // save-as function (called when 'save' is clicked in save-as modal)
 function saveAs() {
-    // TODO setting focus doesn't work?: $('input#save-as').focus();
     console.log('save as...');
     $('.error').hide();
     filename = $("input#save-as").val();
@@ -263,9 +268,11 @@ function deleteFile(filename) {
 // set tag
 function tagFile() {
     console.log('tag file ' + filename);
-    $('#TagModal').modal('toggle');
     $('.error').hide();
+    $('#TagModal').modal('toggle');
     $('div').tooltip('hide');
+    $('input#save-tag').focus();
+
 };
 
 function saveTag() {
@@ -355,4 +362,20 @@ function removeTag() {
   .fail(function(jqXHR, textStatus, errorThrown) {
       console.log(errorThrown.toString());
   });
+};
+
+// enable submitting modal form with return key
+function enableReturn() {
+    $('#save-as').on('keypress', function(e) {
+        if(e.keyCode === 13) {
+            e.preventDefault();
+            $('#submit-fn').trigger('click');
+        }
+    });
+    $('#save-tag').on('keypress', function(e) {
+        if(e.keyCode === 13) {
+            e.preventDefault();
+            $('#submit-tag').trigger('click');
+        }
+    });
 };
