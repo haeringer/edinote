@@ -34,7 +34,7 @@
   <!-- Bootstrap Core JavaScript -->
   <script src="/js/bootstrap.min.js"></script>
 
-  <!-- login logic -->
+  <!-- edinote login js -->
   <script src="/js/login.js"></script>
 
 </head>
@@ -42,7 +42,7 @@
 <body>
 
 <div class="container">
-<form class="form-signin" method="post">
+<form class="form-signin" action="./" method="post">
   <p class="pull-right" href="#"><img alt="Brand" src="../img/logo-b-1.png"></p></br></br>
   <!-- <h3 class="form-signin-heading">Please sign in</h3> -->
   <label for="inputUsername" class="sr-only">Username</label>
@@ -57,6 +57,8 @@
   <button id="submit-login" class="btn btn-lg btn-primary btn-block login-btn" type="button">Log in</button>
   </br>
   <div class="alert alert-danger invalid-login">Invalid username/password!</div>
+  <div class="alert alert-danger empty-username">Please enter a username!</div>
+  <div class="alert alert-danger empty-password">Please enter a password!</div>
 </form>
 </div>
 

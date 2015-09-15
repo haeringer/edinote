@@ -1,6 +1,6 @@
 $(function() {
 
-		$(".invalid-login").css('display', 'none', 'important');
+		$(".alert").css('display', 'none', 'important');
 
 		$("#submit-login").click(function(){
 
@@ -12,7 +12,8 @@ $(function() {
 		  	$.ajax({
 						type: "POST",
 						url: "login.php",
-						data: { username: username, password: password }
+						data: { username: username, password: password },
+						beforeSend: function() { $("#submit-login").html('Connecting...'); }
 		   	})
 
 				.done (function(response) {
@@ -22,12 +23,19 @@ $(function() {
 		        		// redirect to main
 								document.location.href = "/";
 						}
+						else if (response === '2') {
+								$(".alert").css('display', 'none');
+								$(".empty-username").show();
+						}
+						else if (response === '3') {
+								$(".alert").css('display', 'none');
+								$(".empty-password").show();
+						}
 		        else if (response === '0') {
+								$(".alert").css('display', 'none');
 		            $(".invalid-login").show();
-								console.log('invalid credentials');
 		        }
 		        else {
-		            // clear changed state of file
 								console.log('what happened?');
 		        }
 		    })
@@ -37,17 +45,13 @@ $(function() {
 		    });
 		});
 
-		$('#inputPassword').on('keypress', function(e) {
-        if(e.keyCode === 13) {
-            e.preventDefault();
-            $('#submit-login').trigger('click');
-        }
-		});
-		$('#inputUsername').on('keypress', function(e) {
-				if(e.keyCode === 13) {
-						e.preventDefault();
-						$('#submit-login').trigger('click');
-				}
-		});
-
+		$('#inputPassword').on('keypress', function(e) { submit(e) });
+		$('#inputUsername').on('keypress', function(e) { submit(e) });
 });
+
+function submit(e) {
+		if(e.keyCode === 13) {
+				e.preventDefault();
+				$('#submit-login').trigger('click');
+		}
+};

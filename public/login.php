@@ -16,11 +16,13 @@
         // validate submission
         if (empty($_POST["username"]))
         {
-            apologize("You must provide your username.");
+            echo 2;
+            exit;
         }
         else if (empty($_POST["password"]))
         {
-            apologize("You must provide your password.");
+            echo 3;
+            exit;
         }
 
         // query database for user
@@ -45,8 +47,7 @@
             }
         }
 
-        // else apologize
-        // apologize("Invalid username and/or password.");
+        // credentials not valid
         echo 0;
     }
 
