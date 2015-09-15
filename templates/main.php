@@ -16,9 +16,6 @@
       <title>Edinote</title>
   <?php endif ?>
 
-  <!-- PACE loading indicator CSS -->
-  <link href="/css/pace.css" rel="stylesheet">
-
   <!-- Bootstrap Core CSS -->
   <link href="/css/bootstrap.min.css" rel="stylesheet">
 
@@ -30,6 +27,9 @@
 
   <!-- Custom CSS -->
   <link href="/css/main.css" rel="stylesheet">
+
+  <!-- PACE loading indicator CSS -->
+  <link href="/css/pace.css" rel="stylesheet">
 
 </head>
 

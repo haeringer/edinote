@@ -44,6 +44,12 @@ $(function() {
     };
     var fileList = new List('sidebar-content', listOptions);
 
+    Pace.once('done', function() {
+        console.log('main window loaded');
+        $("#wrapper").fadeIn(100);
+        editor.focus();
+    });
+
 });
 
 
@@ -79,7 +85,6 @@ editor.renderer.setShowGutter(false);
 editor.setHighlightActiveLine(false);
 editor.setDisplayIndentGuides(false);
 editor.setShowPrintMargin(false);
-editor.focus();
 
 // register any changes made to a file
 editor.on('input', function() {

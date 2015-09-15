@@ -12,6 +12,7 @@ body {
 
 #wrapper {
     width: 100%;
+    display: none;
 }
 
 #page-wrapper {
@@ -179,7 +180,7 @@ body {
 }
 
 #save.disabled {
-    background-color: #aaa;
+    background-color: #AEBCC1;
 }
 
 #save {
