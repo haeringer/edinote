@@ -50,6 +50,13 @@ $(function() {
         editor.focus();
     });
 
+    // window.onbeforeunload = alertUnsaved();
+    $(window).bind('beforeunload', function(){
+        if (alertUnsaved() === false) {
+            return 'Your document has not been saved yet.';
+        }
+    });
+
 });
 
 
@@ -112,6 +119,9 @@ var fileId;
 var tagId;
 
 function newFile() {
+    if (alertUnsaved() === false) {
+        return;
+    }
     console.log('new empty document...');
     filename = "";
     editor.getSession().setValue("");
@@ -123,6 +133,9 @@ function newFile() {
 
 // load file content into editor
 function loadFile(fileId_load) {
+    if (alertUnsaved() === false) {
+        return;
+    }
     // fill global var fileId with function call parameter
     fileId = fileId_load;
     console.log('load file with id ' + fileId);
@@ -332,7 +345,7 @@ function saveTag() {
 };
 
 function selectTag(tagId_obj) {
-    // prevent selection of parent -> loading of file
+    // prevent selection of parent (file loading)
     event.stopPropagation();
     tagId = $(tagId_obj).attr('id');
     console.log('tag: ' + tagId);
@@ -386,4 +399,16 @@ function enableReturn() {
             $('#submit-tag').trigger('click');
         }
     });
+};
+
+// alert if user is about to leave unsaved file
+function alertUnsaved() {
+    if (editor.session.getUndoManager().isClean()) {
+        console.log('leaving saved file...');
+    }
+    else {
+        // alert('Your file "' + filename + '"has not been saved yet.\nDo you really want to leave?');
+        return (confirm('Your document has not been saved yet.\n\n'
+                    + 'Are you sure you want to leave?') == true);
+    }
 };

@@ -39,12 +39,15 @@
                 $_SESSION["id"] = $row["id"];
 
                 // redirect to main
-                redirect("/");
+                // redirect("/");
+                echo 1;
+                exit;
             }
         }
 
         // else apologize
-        apologize("Invalid username and/or password.");
+        // apologize("Invalid username and/or password.");
+        echo 0;
     }
 
 ?>

@@ -28,15 +28,21 @@
   <!-- Custom CSS -->
   <link href="/css/main.css" rel="stylesheet">
 
-  <!-- Custom Fonts -->
-  <link href="/css/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <!-- jQuery -->
+  <script src="/js/jquery.min.js"></script>
+
+  <!-- Bootstrap Core JavaScript -->
+  <script src="/js/bootstrap.min.js"></script>
+
+  <!-- login logic -->
+  <script src="/js/login.js"></script>
 
 </head>
 
 <body>
 
 <div class="container">
-<form class="form-signin" action="login.php" method="post">
+<form class="form-signin" method="post">
   <p class="pull-right" href="#"><img alt="Brand" src="../img/logo-b-1.png"></p></br></br>
   <!-- <h3 class="form-signin-heading">Please sign in</h3> -->
   <label for="inputUsername" class="sr-only">Username</label>
@@ -48,7 +54,9 @@
       <input type="checkbox" value="remember-me"> Remember me
     </label>
   </div> -->
-  <button class="btn btn-lg btn-primary btn-block login-btn" type="submit">Log in</button>
+  <button id="submit-login" class="btn btn-lg btn-primary btn-block login-btn" type="button">Log in</button>
+  </br>
+  <div class="alert alert-danger invalid-login">Invalid username/password!</div>
 </form>
 </div>
 

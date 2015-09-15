@@ -192,6 +192,10 @@ body {
     background-color: #62B1E6;
 }
 
+.btn.login-btn:focus {
+    background-color: #3498DB;
+}
+
 .btn-toolbar {
     padding-left: 15px;
 }

@@ -215,6 +215,9 @@
 <!-- PACE loading indicator -->
 <script src="/js/pace.min.js"></script>
 
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
 <!-- Custom scrollbar -->
 <script src='/js/perfect-scrollbar.min.js'></script>
 
@@ -225,9 +228,6 @@
 <script src="/js/jquery.jscroll.min.js"></script>
 <script src="/js/jquery.endless-scroll.js"></script>
 <script src="/js/jquery.lazyload.min.js"></script> -->
-
-<!-- Bootstrap Core JavaScript -->
-<script src="/js/bootstrap.min.js"></script>
 
 <!-- Ace editor source -->
 <script src="/js/ace-builds/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
