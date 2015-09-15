@@ -178,6 +178,15 @@ body {
     margin: 0px 0px 0px 0px;
 }
 
+#save.disabled {
+    background-color: #aaa;
+}
+
+#save {
+    /*background-color: #FF8080;*/
+    background-color: #3498DB;
+}
+
 .btn-toolbar {
     padding-left: 15px;
 }
@@ -260,7 +269,6 @@ a.list-group-item, li.list-group-item {
 .tag:hover {
     background-color: #95A5A6;
     color: #fff;
-    /*opacity: 1;*/
 }
 
 .tag.active {
