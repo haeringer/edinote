@@ -16,6 +16,9 @@
       <title>Edinote</title>
   <?php endif ?>
 
+  <!-- PACE loading indicator CSS -->
+  <link href="/css/pace.css" rel="stylesheet">
+
   <!-- Bootstrap Core CSS -->
   <link href="/css/bootstrap.min.css" rel="stylesheet">
 
@@ -49,7 +52,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
         <button type="button" class="btn btn-primary" id="submit-fn" >Save</button>
       </div>
     </div>
@@ -208,6 +211,9 @@
 
 <!-- jQuery -->
 <script src="/js/jquery.min.js"></script>
+
+<!-- PACE loading indicator -->
+<script src="/js/pace.min.js"></script>
 
 <!-- Custom scrollbar -->
 <script src='/js/perfect-scrollbar.min.js'></script>
