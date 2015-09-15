@@ -7,7 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="">
   <meta name="author" content="">
-  <!-- <link rel="icon" href="../../favicon.ico"> -->
+  <link rel="shortcut icon" href="../img/favicon-1.ico?v=1" type="image/x-icon">
+  <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
 
   <?php if (isset($title)): ?>
       <title>Edinote: <?= htmlspecialchars($title) ?></title>
@@ -21,8 +22,11 @@
   <!-- Bootstrap login page template -->
   <link href="/css/signin.css" rel="stylesheet">
 
+  <!-- Flat UI CSS -->
+  <link href="/flat-ui/dist/css/flat-ui.min.css" rel="stylesheet">
+
   <!-- Custom CSS -->
-  <link href="/css/sb-admin-2.css" rel="stylesheet">
+  <link href="/css/main.css" rel="stylesheet">
 
   <!-- Custom Fonts -->
   <link href="/css/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -33,7 +37,8 @@
 
 <div class="container">
 <form class="form-signin" action="login.php" method="post">
-  <h2 class="form-signin-heading">Please sign in</h2>
+  <p class="pull-right" href="#"><img alt="Brand" src="../img/logo-b-1.png"></p></br></br>
+  <!-- <h3 class="form-signin-heading">Please sign in</h3> -->
   <label for="inputUsername" class="sr-only">Username</label>
   <label for="inputPassword" class="sr-only">Password</label>
   <input type="username" id="inputUsername" class="form-control" name="username" type="text" placeholder="Username" required autofocus>
