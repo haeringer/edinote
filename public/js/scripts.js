@@ -79,6 +79,7 @@ editor.renderer.setShowGutter(false);
 editor.setHighlightActiveLine(false);
 editor.setDisplayIndentGuides(false);
 editor.setShowPrintMargin(false);
+editor.focus();
 
 // register any changes made to a file
 editor.on('input', function() {
@@ -109,6 +110,7 @@ function newFile() {
     console.log('new empty document...');
     filename = "";
     editor.getSession().setValue("");
+    editor.focus();
     $('.list-group-item').removeClass('active');
     $('#tag-add').addClass('bottom-disabled');
     $('div').tooltip('hide');
@@ -130,6 +132,7 @@ function loadFile(fileId_load) {
         /* fill editor with response data returned from getfile.php and set
            cursor to beginning of file */
         editor.getSession().setValue(response.content, -1);
+        editor.focus();
 
         $('.list-group-item').removeClass('active');
         $('#tag-add').removeClass('bottom-disabled');
