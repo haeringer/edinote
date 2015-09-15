@@ -188,6 +188,10 @@ body {
     background-color: #3498DB;
 }
 
+.btn.login-btn:hover {
+    background-color: #62B1E6;
+}
+
 .btn-toolbar {
     padding-left: 15px;
 }
