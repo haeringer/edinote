@@ -22,13 +22,21 @@ $(function() {
     var scrollContainer = document.getElementById('file-list');
     Ps.initialize(scrollContainer);
 
+    // check which mode user is in
+    checkMode();
+
+    $("button#mode").click(function() { Mode() });
+
     /* file handling */
     // use .on instead of .click to recognize events also on newly added files
     $('.list').on('click', '.list-group-item', function() {
-        // loadFile(this.id)
-        viewFile(this.id)
+        if (mode === 'edit') {
+            loadFile(this.id);
+        }
+        else if (mode === 'view') {
+            viewFile(this.id);
+        }
     });
-
     $("button#save").click(function() { saveFile(filename, 0) });
     $("button#submit-fn").click(function() { saveAs() });
     $("button#delete").click(function() { deleteFile(filename) });
@@ -65,13 +73,14 @@ $(function() {
 
 
 window.onresize = function(event) {
-     setHeight();
+    setHeight();
 }
 
 function setHeight() {
     var editor_height = $(window).height() - 110;
     var sidebar_height = editor_height - 100;
     $("#editor-container").css("height", editor_height);
+    $("#md-container").css("height", editor_height);        // TODO
     $("#file-list").css("max-height", sidebar_height);
 }
 
@@ -121,6 +130,8 @@ editor.commands.addCommand({
 var filename;
 var fileId;
 var tagId;
+var mode;
+var filecontent;
 
 function newFile() {
     if (alertUnsaved() === false) {
@@ -151,10 +162,15 @@ function loadFile(fileId_load) {
         console.log('file "' + response.filename + '" loaded');
         filename = response.filename;
 
-        /* fill editor with response data returned from getfile.php and set
-           cursor to beginning of file */
-        editor.getSession().setValue(response.content, -1);
-        editor.focus();
+        if (mode === 'edit') {
+            /* fill editor with response data returned from getfile.php and set
+               cursor to beginning of file */
+            editor.getSession().setValue(response.content, -1);
+            editor.focus();
+        }
+        else {
+            $('#md-container').html(marked(htmlEntities(response.content)));
+        }
 
         $('.list-group-item').removeClass('active');
         $('#tag-add').removeClass('bottom-disabled');
@@ -181,10 +197,7 @@ function viewFile(fileId_load) {
 
         console.log('file "' + response.filename + '" loaded');
         filename = response.filename;
-
-        console.log(marked(response.content));
-        $('#editor-container').css('display', 'none', 'important');
-        $('#md-container').fadeIn(100).html(marked(response.content));
+        $('#md-container').html(marked(htmlEntities(response.content)));
 
         // TODO code duplicate
         $('.list-group-item').removeClass('active');
@@ -207,9 +220,9 @@ function saveFile(filename, save_as) {
     var contents = editor.getSession().getValue();
 
     $.ajax({
-      method: "POST",
-      url: "save.php",
-      data: { contents: contents, filename: filename, save_as: save_as }
+        method: "POST",
+        url: "save.php",
+        data: { contents: contents, filename: filename, save_as: save_as }
     })
 
     .done(function(response) {
@@ -246,6 +259,7 @@ function saveFile(filename, save_as) {
                 $('#' + response).addClass('active');
                 $('#tag-add').removeClass('bottom-disabled');
                 fileId = response;
+                editor.focus();
             }
         }
     })
@@ -291,9 +305,9 @@ function deleteFile(filename) {
     console.log('deleting file ' + filename);
 
     $.ajax({
-      method: "POST",
-      url: "delete.php",
-      data: { filename: filename }
+        method: "POST",
+        url: "delete.php",
+        data: { filename: filename }
     })
 
     .done(function(response) {
@@ -392,33 +406,34 @@ function selectTag(tagId_obj) {
 };
 
 function removeTag() {
-  console.log('remove Tag ' + tagId);
+    console.log('remove Tag ' + tagId);
 
-  $.ajax({
-    method: "POST",
-    url: "rmtag.php",
-    data: { tagId: tagId }
-  })
+    $.ajax({
+        method: "POST",
+        url: "rmtag.php",
+        data: { tagId: tagId }
+    })
 
-  .done(function(response) {
-      console.log('rmtag.php returned ' + response);
+    .done(function(response) {
+            console.log('rmtag.php returned ' + response);
 
-      if (response === '1') {
-          console.log("tag ID was empty");
-      }
-      else if (response === '2') {
-          console.log("couldn't delete tag from database");
-      }
-      else {
-          console.log(tagId + " removed");
-          $('#' + tagId).remove();
-          $('#tag-rm').addClass('bottom-disabled');
-      }
-  })
+        if (response === '1') {
+            console.log("tag ID was empty");
+        }
+        else if (response === '2') {
+            console.log("couldn't delete tag from database");
+        }
+        else {
+            console.log(tagId + " removed");
+            $('#' + tagId).remove();
+            $('#tag-rm').addClass('bottom-disabled');
+            editor.focus();
+        }
+    })
 
-  .fail(function(jqXHR, textStatus, errorThrown) {
-      console.log(errorThrown.toString());
-  });
+    .fail(function(jqXHR, textStatus, errorThrown) {
+        console.log(errorThrown.toString());
+    });
 };
 
 // enable submitting modal form with return key
@@ -443,8 +458,66 @@ function alertUnsaved() {
         console.log('leaving saved file...');
     }
     else {
-        // alert('Your file "' + filename + '"has not been saved yet.\nDo you really want to leave?');
         return (confirm('Your document has not been saved yet.\n\n'
                     + 'Are you sure you want to leave?') == true);
     }
+};
+
+// TODO integrate function as function parameter in switchMode() TODO!!
+function checkMode() {
+    $.ajax({ method: "GET", url: "checkmode.php" })
+
+    .done(function(response) {
+        console.log('checkmode.php returned ' + response);
+
+        if (response === 'edit') {
+            mode = 'edit';
+        }
+        else if (response === 'view') {
+            mode = 'view';
+            $('#editor-container').css('display', 'none', 'important');
+            $('#md-container').fadeIn(100);
+        }
+        else {
+            console.log('something went wrong');
+        }
+    })
+
+    .fail(function(jqXHR, textStatus, errorThrown) {
+        console.log(errorThrown.toString());
+    });
+};
+
+function Mode() {
+    $.ajax({ method: "GET", url: "mode.php" })
+
+    .done(function(response) {
+        console.log('switchmode.php returned ' + response);
+
+        if (response === 'edit') {
+            console.log('mode switched to "edit"');
+            mode = 'edit';
+            loadFile(fileId);
+            $('#md-container').css('display', 'none', 'important');
+            $('#editor-container').fadeIn(100);
+        }
+        else if (response === 'view') {
+            console.log('mode switched to "view"');
+            mode = 'view';
+            $('#editor-container').css('display', 'none', 'important');
+            $('#md-container').fadeIn(100).html(marked(htmlEntities(editor.getValue())));
+            $('button#mode').blur();
+        }
+        else {
+            console.log('something went wrong');
+        }
+    })
+
+    .fail(function(jqXHR, textStatus, errorThrown) {
+        console.log(errorThrown.toString());
+    });
+};
+
+function htmlEntities(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 };

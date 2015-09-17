@@ -114,7 +114,7 @@
           </button>
         </div>
         <div class="btn-group" role="group">
-          <button type="button" class="btn btn-default navbar-btn" data-toggle="tooltip" data-placement="bottom" title="View mode">
+          <button type="button" id="mode" class="btn btn-default navbar-btn" data-toggle="tooltip" data-placement="bottom" title="View mode">
             <span class="fui-eye" aria-hidden="true"></span>
           </button>
         </div>

@@ -29,8 +29,8 @@
 
     // build array for ajax response
     $response = [
-      "content" => $content,
-      "filename" => $filename
+        "content" => $content,
+        "filename" => $filename
     ];
 
     // spit out content as json

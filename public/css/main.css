@@ -43,14 +43,14 @@ body {
 
 #md-container {
     display: none;
+    padding: 20px;
+    overflow: auto;
     transition: all 0.2s ease-in-out;
-    top:  0px;
-    left: 0px;
-    bottom: 0px;
-    right: 0px;
-    font-family: arial;
-    color: black;
-    font-size: 10px;
+    font-family: "Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+    word-wrap: break-word;
+    color: #444;
 }
 
 /* Top navigation - hide default border to remove 1px line */
