@@ -31,6 +31,28 @@ body {
     }
 }
 
+/* ace editor container */
+#editor-container {
+    /* position: absolute; */
+    transition: all 0.2s ease-in-out;
+    top:  0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+}
+
+#md-container {
+    display: none;
+    transition: all 0.2s ease-in-out;
+    top:  0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    font-family: arial;
+    color: black;
+    font-size: 10px;
+}
+
 /* Top navigation - hide default border to remove 1px line */
 .navbar-fixed-top {
     border: 0;
@@ -302,17 +324,4 @@ a.list-group-item, li.list-group-item {
 .navbar-header:after,
 .navbar:after {
     content: none;
-}
-
-/*
- * ace editor rules - http://ace.c9.io
- */
-
-#editor-container {
-    /* position: absolute; */
-    transition: all 0.2s ease-in-out;
-    top:  0px;
-    left: 0px;
-    bottom: 0px;
-    right: 0px;
 }

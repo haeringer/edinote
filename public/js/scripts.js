@@ -24,7 +24,11 @@ $(function() {
 
     /* file handling */
     // use .on instead of .click to recognize events also on newly added files
-    $('.list').on('click', '.list-group-item', function() { loadFile(this.id) });
+    $('.list').on('click', '.list-group-item', function() {
+        // loadFile(this.id)
+        viewFile(this.id)
+    });
+
     $("button#save").click(function() { saveFile(filename, 0) });
     $("button#submit-fn").click(function() { saveAs() });
     $("button#delete").click(function() { deleteFile(filename) });
@@ -164,6 +168,38 @@ function loadFile(fileId_load) {
         console.log(errorThrown.toString());
     });
 };
+
+// load file content to view
+function viewFile(fileId_load) {
+    // fill global var fileId with function call parameter
+    fileId = fileId_load;
+    console.log('load file with id ' + fileId);
+
+    $.getJSON('getfile.php', {fileId: fileId})
+
+    .done(function(response, textStatus, jqXHR) {
+
+        console.log('file "' + response.filename + '" loaded');
+        filename = response.filename;
+
+        console.log(marked(response.content));
+        $('#editor-container').css('display', 'none', 'important');
+        $('#md-container').fadeIn(100).html(marked(response.content));
+
+        // TODO code duplicate
+        $('.list-group-item').removeClass('active');
+        $('#tag-add').removeClass('bottom-disabled');
+        $('.tag').removeClass('active');
+        $('#tag-rm').addClass('bottom-disabled');
+        tagId = '';
+        $('#' + fileId).addClass('active');
+    })
+
+    .fail(function(jqXHR, textStatus, errorThrown) {
+        console.log(errorThrown.toString());
+    });
+};
+
 
 // save file
 function saveFile(filename, save_as) {

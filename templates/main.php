@@ -202,6 +202,7 @@
   <div id="page-wrapper">
 
     <div id="editor-container"></div>
+    <div id="md-container"></div>
 
   </div>
   <!-- /#page-wrapper -->
@@ -217,6 +218,9 @@
 
 <!-- Bootstrap Core JavaScript -->
 <script src="/js/bootstrap.min.js"></script>
+
+<!-- marked markdown parser/compiler -->
+<script src='/js/marked.min.js'></script>
 
 <!-- Custom scrollbar -->
 <script src='/js/perfect-scrollbar.min.js'></script>
