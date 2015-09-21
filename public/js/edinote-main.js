@@ -28,9 +28,9 @@ $(function() {
     Ps.initialize(scrollContainer);
 
     // check which mode user is in
-    switchMode(true);
+    switchMode(true, false);
 
-    $("button#mode").click(function() { switchMode(false) });
+    $("button#mode").click(function() { switchMode(false, false) });
 
     /* file handling */
       // use .on 'click' with parent selected to recognize events also on
@@ -134,7 +134,7 @@ function newFile() {
         return;
     }
     if (mode === 'view') {
-        switchMode(false);
+        switchMode(false, true);
     }
     console.log('new empty document...');
     filename = "";
@@ -438,7 +438,7 @@ function alertUnsaved() {
 };
 
 // switch mode or just hide div of inactive mode, depending on call parameter
-function switchMode(init) {
+function switchMode(init, newfile) {
     $.ajax({ method: "POST", url: "mode.php", data: { init: init } })
 
     .done(function(response) {
@@ -456,6 +456,9 @@ function switchMode(init) {
                  * do not alter current editor content. */
                 if (editor.session.getUndoManager().isClean()) {
                     editor.getSession().setValue(fileContent, -1);
+                    if (newfile === true) {
+                        editor.getSession().setValue("");
+                    }
                 }
                 editor.focus();
             }
