@@ -26,7 +26,7 @@
   <link href='/css/perfect-scrollbar.min.css' rel='stylesheet'>
 
   <!-- Custom CSS -->
-  <link href="/css/main.css" rel="stylesheet">
+  <link href="/css/edinote-main.css" rel="stylesheet">
 
   <!-- PACE loading indicator CSS -->
   <link href="/css/pace.css" rel="stylesheet">
@@ -179,15 +179,15 @@
         </ul>
 
         <div class="btn-toolbar en-bottom" role="toolbar">
-          <div class="btn-group btn-group-xs" role="group">
+          <div class="btn-group btn-group-s" role="group">
             <button type="button" id="tag-add" class="btn btn-bottom bottom-disabled" data-toggle="tooltip" data-placement="right" title="Add Tag">
-              <span class="fui-plus-circle" aria-hidden="true"></span>
+              <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
             </button>
             <button type="button" id="tag-rm" class="btn btn-bottom bottom-disabled" data-toggle="tooltip" data-placement="right" title="Remove Tag">
-              <span class="fui-cross-circle" aria-hidden="true"></span>
+              <span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>
             </button>
             <button type="button" id="rename" class="btn btn-bottom bottom-disabled" data-toggle="tooltip" data-placement="right" title="Rename File">
-              <span class="fui-new" aria-hidden="true"></span>
+              <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
             </button>
           </div>
         </div>
@@ -228,16 +228,11 @@
 <!-- List.js for file list filter -->
 <script src='/js/list.min.js'></script>
 
-<!-- lazy loading
-<script src="/js/jquery.jscroll.min.js"></script>
-<script src="/js/jquery.endless-scroll.js"></script>
-<script src="/js/jquery.lazyload.min.js"></script> -->
-
 <!-- Ace editor source -->
 <script src="/js/ace-builds/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 
-<!-- App JavaScript -->
-<script src="/js/scripts.js"></script>
+<!-- Edinote app JavaScript -->
+<script src="/js/edinote-main.js"></script>
 
 </body>
 

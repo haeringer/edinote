@@ -19,14 +19,14 @@
   <!-- Bootstrap Core CSS -->
   <link href="/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Bootstrap login page template -->
-  <link href="/css/signin.css" rel="stylesheet">
+  <!-- Bootstrap sign-in page template -->
+  <link href="/css/bootstrap-login.css" rel="stylesheet">
 
   <!-- Flat UI CSS -->
   <link href="/flat-ui/dist/css/flat-ui.min.css" rel="stylesheet">
 
   <!-- Custom CSS -->
-  <link href="/css/main.css" rel="stylesheet">
+  <link href="/css/edinote-main.css" rel="stylesheet">
 
   <!-- jQuery -->
   <script src="/js/jquery.min.js"></script>
@@ -35,7 +35,7 @@
   <script src="/js/bootstrap.min.js"></script>
 
   <!-- edinote login js -->
-  <script src="/js/login.js"></script>
+  <script src="/js/edinote-login.js"></script>
 
 </head>
 
