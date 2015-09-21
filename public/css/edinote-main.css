@@ -33,7 +33,6 @@ body {
 
 /* ace editor container */
 #editor-container {
-    /* position: absolute; */
     transition: all 0.2s ease-in-out;
     top:  0px;
     left: 0px;
@@ -42,15 +41,9 @@ body {
 }
 
 #md-container {
-    display: none;
     padding: 20px;
     overflow: auto;
     transition: all 0.2s ease-in-out;
-    font-family: "Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;
-    font-size: 14px;
-    line-height: 1.4;
-    word-wrap: break-word;
-    color: #444;
 }
 
 /* Top navigation - hide default border to remove 1px line */
@@ -222,6 +215,14 @@ body {
     padding-left: 15px;
 }
 
+.btn.active {
+    background-color: #3498db;
+}
+
+.btn.active:hover {
+    background-color: #62B1E6;
+}
+
 .btn-bottom {
     background-color: #ECF0F1;
     color: #95A5A6;
@@ -306,6 +307,7 @@ a.list-group-item, li.list-group-item {
     background-color: red;
     color: #fff;
 }
+
 
 /* set color for placeholder text in input forms */
 .form-control::-webkit-input-placeholder { color: #95A5A6; }

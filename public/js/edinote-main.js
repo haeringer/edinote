@@ -1,8 +1,13 @@
 /**
- * all the stuff that happens when the page has loaded
+ * Edinote
+ *
+ * Ben Haeringer
+ * ben.haeringer@gmail.com
+ *
  */
-$(function() {
 
+// all the stuff that happens when the page has loaded
+$(function() {
     setHeight();
 
     // collapse sidebar on mobile/resize
@@ -23,20 +28,14 @@ $(function() {
     Ps.initialize(scrollContainer);
 
     // check which mode user is in
-    checkMode();
+    switchMode(true);
 
-    $("button#mode").click(function() { Mode() });
+    $("button#mode").click(function() { switchMode(false) });
 
     /* file handling */
-    // use .on instead of .click to recognize events also on newly added files
-    $('.list').on('click', '.list-group-item', function() {
-        if (mode === 'edit') {
-            loadFile(this.id);
-        }
-        else if (mode === 'view') {
-            viewFile(this.id);
-        }
-    });
+      // use .on 'click' with parent selected to recognize events also on
+      // newly added files
+    $('.list').on('click', '.list-group-item', function() { loadFile(this.id), false });
     $("button#save").click(function() { saveFile(filename, 0) });
     $("button#submit-fn").click(function() { saveAs() });
     $("button#delete").click(function() { deleteFile(filename) });
@@ -51,24 +50,21 @@ $(function() {
     enableReturn();
 
     // list.js filtering
-    var listOptions = {
-        valueNames: ['lgi-name','tags']
-    };
+    var listOptions = { valueNames: ['lgi-name','tags'] };
     var fileList = new List('sidebar-content', listOptions);
 
+    // loading indicator; show content once ready
     Pace.once('done', function() {
         console.log('main window loaded');
         $("#wrapper").fadeIn(100);
         editor.focus();
     });
 
-    // window.onbeforeunload = alertUnsaved();
     $(window).bind('beforeunload', function(){
         if (alertUnsaved() === false) {
             return 'Your document has not been saved yet.';
         }
     });
-
 });
 
 
@@ -131,11 +127,14 @@ var filename;
 var fileId;
 var tagId;
 var mode;
-var filecontent;
+var fileContent;
 
 function newFile() {
     if (alertUnsaved() === false) {
         return;
+    }
+    if (mode === 'view') {
+        switchMode(false);
     }
     console.log('new empty document...');
     filename = "";
@@ -143,15 +142,15 @@ function newFile() {
     editor.focus();
     $('.list-group-item').removeClass('active');
     $('#tag-add').addClass('bottom-disabled');
-    $('div').tooltip('hide');
 };
 
-// load file content into editor
+// load file content into editor or view
 function loadFile(fileId_load) {
     if (alertUnsaved() === false) {
+        // don't continue if user canceled continue alert
         return;
     }
-    // fill global var fileId with function call parameter
+
     fileId = fileId_load;
     console.log('load file with id ' + fileId);
 
@@ -161,15 +160,16 @@ function loadFile(fileId_load) {
 
         console.log('file "' + response.filename + '" loaded');
         filename = response.filename;
+        fileContent = response.content;
 
         if (mode === 'edit') {
             /* fill editor with response data returned from getfile.php and set
                cursor to beginning of file */
-            editor.getSession().setValue(response.content, -1);
+            editor.getSession().setValue(fileContent, -1);
             editor.focus();
         }
         else {
-            $('#md-container').html(marked(htmlEntities(response.content)));
+            $('#md-container').fadeIn(100).html(marked(htmlEntities(fileContent)));
         }
 
         $('.list-group-item').removeClass('active');
@@ -184,35 +184,6 @@ function loadFile(fileId_load) {
         console.log(errorThrown.toString());
     });
 };
-
-// load file content to view
-function viewFile(fileId_load) {
-    // fill global var fileId with function call parameter
-    fileId = fileId_load;
-    console.log('load file with id ' + fileId);
-
-    $.getJSON('getfile.php', {fileId: fileId})
-
-    .done(function(response, textStatus, jqXHR) {
-
-        console.log('file "' + response.filename + '" loaded');
-        filename = response.filename;
-        $('#md-container').html(marked(htmlEntities(response.content)));
-
-        // TODO code duplicate
-        $('.list-group-item').removeClass('active');
-        $('#tag-add').removeClass('bottom-disabled');
-        $('.tag').removeClass('active');
-        $('#tag-rm').addClass('bottom-disabled');
-        tagId = '';
-        $('#' + fileId).addClass('active');
-    })
-
-    .fail(function(jqXHR, textStatus, errorThrown) {
-        console.log(errorThrown.toString());
-    });
-};
-
 
 // save file
 function saveFile(filename, save_as) {
@@ -436,7 +407,10 @@ function removeTag() {
     });
 };
 
-// enable submitting modal form with return key
+
+/* various stuff */
+
+// enable submitting modal form with return key  TODO consolidate??
 function enableReturn() {
     $('#save-as').on('keypress', function(e) {
         if(e.keyCode === 13) {
@@ -455,7 +429,7 @@ function enableReturn() {
 // alert if user is about to leave unsaved file
 function alertUnsaved() {
     if (editor.session.getUndoManager().isClean()) {
-        console.log('leaving saved file...');
+        console.log('leaving saved or empty file..');
     }
     else {
         return (confirm('Your document has not been saved yet.\n\n'
@@ -463,53 +437,41 @@ function alertUnsaved() {
     }
 };
 
-// TODO integrate function as function parameter in switchMode() TODO!!
-function checkMode() {
-    $.ajax({ method: "GET", url: "checkmode.php" })
+// switch mode or just hide div of inactive mode, depending on call parameter
+function switchMode(init) {
+    $.ajax({ method: "POST", url: "mode.php", data: { init: init } })
 
     .done(function(response) {
-        console.log('checkmode.php returned ' + response);
 
         if (response === 'edit') {
             mode = 'edit';
-        }
-        else if (response === 'view') {
-            mode = 'view';
-            $('#editor-container').css('display', 'none', 'important');
-            $('#md-container').fadeIn(100);
-        }
-        else {
-            console.log('something went wrong');
-        }
-    })
-
-    .fail(function(jqXHR, textStatus, errorThrown) {
-        console.log(errorThrown.toString());
-    });
-};
-
-function Mode() {
-    $.ajax({ method: "GET", url: "mode.php" })
-
-    .done(function(response) {
-        console.log('switchmode.php returned ' + response);
-
-        if (response === 'edit') {
-            console.log('mode switched to "edit"');
-            mode = 'edit';
-            loadFile(fileId);
             $('#md-container').css('display', 'none', 'important');
-            $('#editor-container').fadeIn(100);
+            if (init === false) {
+                console.log('mode switched to "edit"');
+                $('#mode').removeClass('active');
+                $('#editor-container').fadeIn(100);
+
+                /* load file content into editor only if file is unchanged. If
+                 * view was switched while the file is being edited (= unsaved),
+                 * do not alter current editor content. */
+                if (editor.session.getUndoManager().isClean()) {
+                    editor.getSession().setValue(fileContent, -1);
+                }
+                editor.focus();
+            }
         }
         else if (response === 'view') {
-            console.log('mode switched to "view"');
             mode = 'view';
             $('#editor-container').css('display', 'none', 'important');
-            $('#md-container').fadeIn(100).html(marked(htmlEntities(editor.getValue())));
-            $('button#mode').blur();
+            $('#mode').addClass('active');
+            if (init === false) {
+                console.log('mode switched to "view"');
+                $('#md-container').fadeIn(100).html(marked(htmlEntities(editor.getValue())));
+                $('button#mode').blur();
+            }
         }
         else {
-            console.log('something went wrong');
+            console.log('mode.php returned ' + response);
         }
     })
 

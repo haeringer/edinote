@@ -16,6 +16,9 @@
       <title>Edinote</title>
   <?php endif ?>
 
+  <!-- PACE loading indicator CSS -->
+  <link href="/css/pace.css" rel="stylesheet">
+
   <!-- Bootstrap Core CSS -->
   <link href="/css/bootstrap.min.css" rel="stylesheet">
 
@@ -25,11 +28,11 @@
   <!-- Custom scrollbar CSS -->
   <link href='/css/perfect-scrollbar.min.css' rel='stylesheet'>
 
+  <!-- http://sindresorhus.com markdown CSS -->
+  <link href='/css/markdown.css' rel='stylesheet'>
+
   <!-- Custom CSS -->
   <link href="/css/edinote-main.css" rel="stylesheet">
-
-  <!-- PACE loading indicator CSS -->
-  <link href="/css/pace.css" rel="stylesheet">
 
 </head>
 
@@ -202,7 +205,7 @@
   <div id="page-wrapper">
 
     <div id="editor-container"></div>
-    <div id="md-container"></div>
+    <div class="markdown-body" id="md-container"></div>
 
   </div>
   <!-- /#page-wrapper -->
