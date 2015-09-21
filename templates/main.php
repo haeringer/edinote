@@ -233,6 +233,7 @@
 
 <!-- Ace editor source -->
 <script src="/js/ace-builds/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src='/js/ace-builds/src-min-noconflict/ext-modelist.js'></script>
 
 <!-- Edinote app JavaScript -->
 <script src="/js/edinote-main.js"></script>

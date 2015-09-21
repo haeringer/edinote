@@ -27,3 +27,15 @@ This README would normally document whatever steps are necessary to get your app
 
 * Repo owner or admin
 * Other community or team contact
+
+`some code`
+
+```
+var a = a;
+var b = b;
+function code() {
+    if (a === b) {
+        console.log("something's wrong");
+    }
+};
+```

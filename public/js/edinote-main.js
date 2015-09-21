@@ -48,6 +48,7 @@ $(function() {
     $("button#tag-rm").click(function() { removeTag() });
 
     enableReturn();
+    setSyntaxMode();
 
     // list.js filtering
     var listOptions = { valueNames: ['lgi-name','tags'] };
@@ -87,7 +88,29 @@ function setHeight() {
 
 // initiate ace editor without content
 var editor = ace.edit("editor-container");
-editor.getSession().setMode("ace/mode/markdown");
+
+// var modelist = $.getScript("ace-builds/src-min-noconflict/ext-modelist.js");
+// var syntaxMode = modelist.getModeForPath(filename).mode;
+// console.log(syntaxMode);
+// editor.getSession().setMode(syntaxMode);
+
+function setSyntaxMode() {
+    console.log('set syntax mode');
+    $.getScript("/js/ace-builds/src-min-noconflict/ext-modelist.js", function( data, textStatus, jqxhr ) {
+        // console.log( 'data: ' + data ); // Data returned
+        var modelist = data;
+        console.log( textStatus ); // Success
+        console.log( jqxhr.status ); // 200
+        console.log( "Load was performed." );
+
+        console.log(modelist);
+        var synMode = modelist.getModeForPath('test.md').mode;
+        console.log(synModemode);
+        editor.session.setMode(mode);
+    });
+}
+
+// editor.getSession().setMode("ace/mode/markdown");
 editor.setFontSize(16);
 // get rid of 'automatically scrolling cursor into view' error
 editor.$blockScrolling = Infinity;
@@ -126,14 +149,14 @@ editor.commands.addCommand({
 var filename;
 var fileId;
 var tagId;
-var mode;
-var fileContent;
+var enMode;
+var contents;
 
 function newFile() {
     if (alertUnsaved() === false) {
         return;
     }
-    if (mode === 'view') {
+    if (enMode === 'view') {
         switchMode(false, true);
     }
     console.log('new empty document...');
@@ -160,16 +183,16 @@ function loadFile(fileId_load) {
 
         console.log('file "' + response.filename + '" loaded');
         filename = response.filename;
-        fileContent = response.content;
+        contents = response.content;
 
-        if (mode === 'edit') {
+        if (enMode === 'edit') {
             /* fill editor with response data returned from getfile.php and set
                cursor to beginning of file */
-            editor.getSession().setValue(fileContent, -1);
+            editor.getSession().setValue(contents, -1);
             editor.focus();
         }
         else {
-            $('#md-container').fadeIn(100).html(marked(htmlEntities(fileContent)));
+            $('#md-container').fadeIn(100).html(marked(htmlEntities(contents)));
         }
 
         $('.list-group-item').removeClass('active');
@@ -188,7 +211,7 @@ function loadFile(fileId_load) {
 // save file
 function saveFile(filename, save_as) {
 
-    var contents = editor.getSession().getValue();
+    contents = editor.getSession().getValue();
 
     $.ajax({
         method: "POST",
@@ -220,6 +243,7 @@ function saveFile(filename, save_as) {
             // clear changed state of file
             editor.session.getUndoManager().markClean()
             fileState();
+            editor.focus();
             console.log("file saved");
             // if a new file was created (via parameter save_as = 1)
             if (save_as === 1) {
@@ -437,14 +461,14 @@ function alertUnsaved() {
     }
 };
 
-// switch mode or just hide div of inactive mode, depending on call parameter
+// switch edinote mode or just hide div of inactive mode, depending on call parameter
 function switchMode(init, newfile) {
     $.ajax({ method: "POST", url: "mode.php", data: { init: init } })
 
     .done(function(response) {
 
         if (response === 'edit') {
-            mode = 'edit';
+            enMode = 'edit';
             $('#md-container').css('display', 'none', 'important');
             if (init === false) {
                 console.log('mode switched to "edit"');
@@ -452,10 +476,10 @@ function switchMode(init, newfile) {
                 $('#editor-container').fadeIn(100);
 
                 /* load file content into editor only if file is unchanged. If
-                 * view was switched while the file is being edited (= unsaved),
+                 * mode was switched while the file is being edited (= unsaved),
                  * do not alter current editor content. */
                 if (editor.session.getUndoManager().isClean()) {
-                    editor.getSession().setValue(fileContent, -1);
+                    editor.getSession().setValue(contents, -1);
                     if (newfile === true) {
                         editor.getSession().setValue("");
                     }
@@ -464,7 +488,7 @@ function switchMode(init, newfile) {
             }
         }
         else if (response === 'view') {
-            mode = 'view';
+            enMode = 'view';
             $('#editor-container').css('display', 'none', 'important');
             $('#mode').addClass('active');
             if (init === false) {
