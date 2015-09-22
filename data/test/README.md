@@ -14,3 +14,4 @@ Web-based text editor. Work in progress!
 * fast search
 * tag support
 * mobile usability
+

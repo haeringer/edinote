@@ -66,6 +66,7 @@ require(['ace/ace', 'ace/ext/modelist'], function(ace) {
     editor.setHighlightActiveLine(false);
     editor.setDisplayIndentGuides(false);
     editor.setShowPrintMargin(false);
+    editor.getSession().setUseWrapMode(true);
 
     // get rid of "automatically scrolling cursor into view" error
     editor.$blockScrolling = Infinity;
@@ -139,7 +140,7 @@ function loadFile(fileId_load) {
             editor.focus();
         }
         else {
-            $('#md-container').fadeIn(100).html(marked(htmlEntities(contents)));
+            showCont(contents);
         }
 
         $('.list-group-item').removeClass('active');
@@ -153,6 +154,19 @@ function loadFile(fileId_load) {
     .fail(function(jqXHR, textStatus, errorThrown) {
         console.log(errorThrown.toString());
     });
+};
+
+// show content as markdown or plain text depending on file extension
+function showCont(cont) {
+    var ext = filename.substr((~-filename.lastIndexOf(".") >>> 0) + 2);
+    console.log('file extension: ' + ext)
+    if (ext === 'md') {
+        $('#md-container').fadeIn(100).removeClass('plain');
+        $('#md-container').html(marked(cont, { sanitize: true }));
+    }
+    else {
+        $('#md-container').fadeIn(100).addClass('plain').text(cont);
+    }
 };
 
 // save file
@@ -413,7 +427,7 @@ function switchMode(init, newfile) {
             $('#mode').addClass('active');
             if (init === false) {
                 console.log('mode switched to "view"');
-                $('#md-container').fadeIn(100).html(marked(htmlEntities(editor.getValue())));
+                showCont(editor.getValue());
                 $('button#mode').blur();
             }
         }
