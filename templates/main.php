@@ -195,20 +195,20 @@
           </div>
         </div>
 
-
       </div>
       <!-- /.sidebar-collapse -->
+
     </div>
     <!-- /.navbar-static-side -->
+
   </nav>
 
   <div id="page-wrapper">
 
     <div id="editor-container"></div>
-    <div class="markdown-body" id="md-container"></div>
+    <div id="md-container" class="markdown-body"></div>
 
   </div>
-  <!-- /#page-wrapper -->
 
 </div>
 <!-- /#wrapper -->
@@ -231,12 +231,8 @@
 <!-- List.js for file list filter -->
 <script src='/js/list.min.js'></script>
 
-<!-- Ace editor source -->
-<script src="/js/ace-builds/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-<script src='/js/ace-builds/src-min-noconflict/ext-modelist.js'></script>
-
-<!-- Edinote app JavaScript -->
-<script src="/js/edinote-main.js"></script>
+<!-- requireJS plus Edinote app JavaScript -->
+<script data-main="/js/edinote-main.js" src="/js/require.js"></script>
 
 </body>
 

@@ -6,36 +6,28 @@
  *
  */
 
-// all the stuff that happens when the page has loaded
+ // declare global variables
+ var editor;
+ var filename;
+ var fileId;
+ var tagId;
+ var contents;
+ var enMode;
+
+/******************************************************************************
+ * event listeners - run once DOM is ready
+ */
 $(function() {
-    setHeight();
-
-    // collapse sidebar on mobile/resize
-    $(window).bind("load resize", function() {
-        width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;
-        if (width < 768) {
-            $('div.navbar-collapse').addClass('collapse');
-        } else {
-            $('div.navbar-collapse').removeClass('collapse');
-        }
-    });
-
-    // enable bootstrap tooltips
-    $('[data-toggle="tooltip"]').tooltip({container: 'body'});
-
-    // custom scrollbar
-    var scrollContainer = document.getElementById('file-list');
-    Ps.initialize(scrollContainer);
-
-    // check which mode user is in
-    switchMode(true, false);
-
+    // Edinote mode switch
     $("button#mode").click(function() { switchMode(false, false) });
 
     /* file handling */
       // use .on 'click' with parent selected to recognize events also on
       // newly added files
-    $('.list').on('click', '.list-group-item', function() { loadFile(this.id), false });
+    $('.list').on('click', '.list-group-item', function() {
+        loadFile(this.id),
+        false
+    });
     $("button#save").click(function() { saveFile(filename, 0) });
     $("button#submit-fn").click(function() { saveAs() });
     $("button#delete").click(function() { deleteFile(filename) });
@@ -47,110 +39,65 @@ $(function() {
     $('.list-group-item').on('click', '.tag', function() { selectTag(this) });
     $("button#tag-rm").click(function() { removeTag() });
 
-    enableReturn();
-    setSyntaxMode();
-
-    // list.js filtering
-    var listOptions = { valueNames: ['lgi-name','tags'] };
-    var fileList = new List('sidebar-content', listOptions);
-
-    // loading indicator; show content once ready
-    Pace.once('done', function() {
-        console.log('main window loaded');
-        $("#wrapper").fadeIn(100);
-        editor.focus();
-    });
-
-    $(window).bind('beforeunload', function(){
-        if (alertUnsaved() === false) {
-            return 'Your document has not been saved yet.';
-        }
-    });
+    // bootstrap tooltips
+    $('[data-toggle="tooltip"]').tooltip({container: 'body'});
 });
 
 
-window.onresize = function(event) {
-    setHeight();
-}
-
-function setHeight() {
-    var editor_height = $(window).height() - 110;
-    var sidebar_height = editor_height - 100;
-    $("#editor-container").css("height", editor_height);
-    $("#md-container").css("height", editor_height);        // TODO
-    $("#file-list").css("max-height", sidebar_height);
-}
-
-
-/**
+/******************************************************************************
  * Ace editor integration
  */
 
-// initiate ace editor without content
-var editor = ace.edit("editor-container");
+// tell requireJS ace location
+require.config({ paths: { 'ace': '/js/ace' } });
 
-// var modelist = $.getScript("ace-builds/src-min-noconflict/ext-modelist.js");
-// var syntaxMode = modelist.getModeForPath(filename).mode;
-// console.log(syntaxMode);
-// editor.getSession().setMode(syntaxMode);
+// Load the ace module
+require(['ace/ace', 'ace/ext/modelist'], function(ace) {
+    // initiate the editor
+    editor = ace.edit("editor-container");
 
-function setSyntaxMode() {
-    console.log('set syntax mode');
-    $.getScript("/js/ace-builds/src-min-noconflict/ext-modelist.js", function( data, textStatus, jqxhr ) {
-        // console.log( 'data: ' + data ); // Data returned
-        var modelist = data;
-        console.log( textStatus ); // Success
-        console.log( jqxhr.status ); // 200
-        console.log( "Load was performed." );
-
-        console.log(modelist);
-        var synMode = modelist.getModeForPath('test.md').mode;
-        console.log(synModemode);
-        editor.session.setMode(mode);
+    editor.setOptions({
+        fontSize: 14,
+        theme: "ace/theme/tomorrow",
     });
-}
 
-// editor.getSession().setMode("ace/mode/markdown");
-editor.setFontSize(16);
-// get rid of 'automatically scrolling cursor into view' error
-editor.$blockScrolling = Infinity;
-editor.setOptions({
-    // maxLines: Infinity
-    fontSize: 14,
-    theme: "ace/theme/tomorrow",
+    // clean up editor layout
+    editor.renderer.setShowGutter(false);
+    editor.setHighlightActiveLine(false);
+    editor.setDisplayIndentGuides(false);
+    editor.setShowPrintMargin(false);
+
+    // get rid of "automatically scrolling cursor into view" error
+    editor.$blockScrolling = Infinity;
+
+    // register any changes made to a file
+    editor.on('input', function() { fileState() });
+
+    // bind saveFile() to ctrl-s
+    editor.commands.addCommand({
+        name: 'saveFile',
+        bindKey: {
+            win: 'Ctrl-S',
+            mac: 'Command-S',
+            sender: 'editor|cli'
+        },
+        // call saveFile() with parameter save_as = 0
+        exec: function () { saveFile(filename, 0) }
+    });
+
+    (function () {
+        var modelist = ace.require("ace/ext/modelist");
+        var filePath = 'init.txt';
+        var mode = modelist.getModeForPath(filePath).mode;
+        console.log(mode);
+        editor.session.setMode(mode);
+    }());
 });
-// clean up editor layout
-editor.renderer.setShowGutter(false);
-editor.setHighlightActiveLine(false);
-editor.setDisplayIndentGuides(false);
-editor.setShowPrintMargin(false);
 
-// register any changes made to a file
-editor.on('input', function() {
-    fileState();
-});
 
-// bind saveFile() to ctrl-s
-editor.commands.addCommand({
-    name: 'saveFile',
-    bindKey: {
-        win: 'Ctrl-S',
-        mac: 'Command-S',
-        sender: 'editor|cli'
-    },
-    // call saveFile() with parameter save_as = 0
-    exec: function () { saveFile(filename, 0) }
-});
-
-/**
+/******************************************************************************
  * File handling
  */
-
-var filename;
-var fileId;
-var tagId;
-var enMode;
-var contents;
 
 function newFile() {
     if (alertUnsaved() === false) {
@@ -327,7 +274,7 @@ function deleteFile(filename) {
 };
 
 
-/**
+/******************************************************************************
  * Tag handling
  */
 
@@ -432,36 +379,9 @@ function removeTag() {
 };
 
 
-/* various stuff */
-
-// enable submitting modal form with return key  TODO consolidate??
-function enableReturn() {
-    $('#save-as').on('keypress', function(e) {
-        if(e.keyCode === 13) {
-            e.preventDefault();
-            $('#submit-fn').trigger('click');
-        }
-    });
-    $('#save-tag').on('keypress', function(e) {
-        if(e.keyCode === 13) {
-            e.preventDefault();
-            $('#submit-tag').trigger('click');
-        }
-    });
-};
-
-// alert if user is about to leave unsaved file
-function alertUnsaved() {
-    if (editor.session.getUndoManager().isClean()) {
-        console.log('leaving saved or empty file..');
-    }
-    else {
-        return (confirm('Your document has not been saved yet.\n\n'
-                    + 'Are you sure you want to leave?') == true);
-    }
-};
-
-// switch edinote mode or just hide div of inactive mode, depending on call parameter
+/******************************************************************************
+ * switch edinote mode or just hide div of inactive mode, depending on call
+   parameter */
 function switchMode(init, newfile) {
     $.ajax({ method: "POST", url: "mode.php", data: { init: init } })
 
@@ -507,6 +427,85 @@ function switchMode(init, newfile) {
     });
 };
 
+// check which mode user is in at initial page load
+switchMode(true, false);
+
+
+/******************************************************************************
+ * various stuff
+ */
+
+ // loading indicator; show content once ready
+ Pace.once('done', function() {
+     $("#wrapper").fadeIn(100);
+     console.log('main window loaded');
+     editor.focus();
+ });
+
+// set height of editor/view mode container
+function setHeight() {
+    var editor_height = $(window).height() - 110;
+    var sidebar_height = editor_height - 100;
+    $("#editor-container").css("height", editor_height);
+    $("#md-container").css("height", editor_height);        // TODO
+    $("#file-list").css("max-height", sidebar_height);
+}
+setHeight();
+window.onresize = function(event) { setHeight() }
+
+// collapse sidebar on mobile/resize
+$(window).bind("load resize", function() {
+    width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;
+    if (width < 768) {
+        $('div.navbar-collapse').addClass('collapse');
+    } else {
+        $('div.navbar-collapse').removeClass('collapse');
+    }
+});
+
+// escape html
 function htmlEntities(str) {
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 };
+
+// enable submitting modal form with return key  TODO consolidate??
+function enableReturn() {
+    $('#save-as').on('keypress', function(e) {
+        if(e.keyCode === 13) {
+            e.preventDefault();
+            $('#submit-fn').trigger('click');
+        }
+    });
+    $('#save-tag').on('keypress', function(e) {
+        if(e.keyCode === 13) {
+            e.preventDefault();
+            $('#submit-tag').trigger('click');
+        }
+    });
+};
+enableReturn();
+
+// alert if user is about to leave unsaved file
+function alertUnsaved() {
+    if (editor.session.getUndoManager().isClean()) {
+        console.log('leaving saved or empty file..');
+    }
+    else {
+        return (confirm('Your document has not been saved yet.\n\n'
+                    + 'Are you sure you want to leave?') == true);
+    }
+};
+
+$(window).bind('beforeunload', function(){
+    if (alertUnsaved() === false) {
+        return 'Your document has not been saved yet.';
+    }
+});
+
+// custom scrollbar
+var scrollContainer = document.getElementById('file-list');
+Ps.initialize(scrollContainer);
+
+// list.js file filtering
+var listOptions = { valueNames: ['lgi-name','tags'] };
+var fileList = new List('sidebar-content', listOptions);
