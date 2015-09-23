@@ -32,6 +32,7 @@ $(function() {
     $("button#submit-fn").click(function() { saveAs() });
     $("button#delete").click(function() { deleteFile(filename) });
     $("button#new").click(function() { newFile() });
+    $("button#rename").click(function() { renameFile(filename) });
 
     /* tag handling */
     $('#tag-add').click(function() { tagFile() });
@@ -53,8 +54,6 @@ require.config({ paths: { 'ace': '/js/ace' } });
 
 // Load the ace module
 require(['enAce']);
-
-
 
 
 /******************************************************************************
@@ -107,6 +106,7 @@ function loadFile(fileId_load) {
         }
 
         $('.list-group-item').removeClass('active');
+        $('#rename').removeClass('bottom-disabled');
         $('#tag-add').removeClass('bottom-disabled');
         $('.tag').removeClass('active');
         $('#tag-rm').addClass('bottom-disabled');
@@ -250,6 +250,46 @@ function deleteFile(filename) {
     });
 };
 
+// rename file
+function renameFile(filename) {
+
+    $.ajax({
+        method: "POST",
+        url: "rename.php",
+        data: { filename: filename }
+    })
+
+    .done(function(response) {
+        console.log('rename.php returned ' + response);
+
+        if (response === '7') {
+            // '1' means var filename was empty -> new file needs to be created
+            $('.error').hide();
+            $('#RenameModal').modal('toggle');
+            $("#rename-input").val(filename);
+            var input = document.getElementById("rename");
+                input.focus();
+                input.setSelectionRange(0,1);
+        }
+        else if (response === '2') {
+            $("label#rename_exists").show();
+            $("input#rename-input").focus();
+            return 0;
+        }
+        else if (response === '3') {
+            console.log("couldn't write to database");
+        }
+        else {
+            editor.focus();
+            console.log("huh?");
+        }
+    })
+
+    .fail(function(jqXHR, textStatus, errorThrown) {
+        console.log(errorThrown.toString());
+    });
+};
+
 
 /******************************************************************************
  * Tag handling
@@ -376,6 +416,7 @@ function switchMode(init, newfile) {
                  * mode was switched while the file is being edited (= unsaved),
                  * do not alter current editor content. */
                 if (editor.session.getUndoManager().isClean()) {
+                    require(['enAce'], function(enAce) { enAce.aceMode(filename) });
                     editor.getSession().setValue(contents, -1);
                     if (newfile === true) {
                         editor.getSession().setValue("");

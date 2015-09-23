@@ -46,4 +46,8 @@ define(['ace/ace', 'ace/ext/modelist'], function(ace) {
         console.log('Syntax: ' + mode);
         editor.session.setMode(mode);
     };
+
+    return {
+        aceMode: aceMode
+    };
 });

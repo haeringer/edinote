@@ -90,6 +90,32 @@
 </div>
 <!-- /.TagModal -->
 
+<!-- RenameModal -->
+<div class="modal" id="RenameModal" tabindex="-1" role="dialog" aria-labelledby="RenameModalLabel">
+  <form name="renameFile" action="">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="TagModalLabel">Enter new file name:</h4>
+      </div>
+      <div class="modal-body">
+        <div class="input-group input-group-lg col-sm-12">
+          <input type="text" name="rename" class="form-control" id="rename-input">
+          <label class="error" for="filename" id="rename_empty"><br>Please enter a file name!</label>
+          <label class="error" for="filename" id="rename_exists"><br>File name already exists!</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+        <button type="button" class="btn btn-primary" id="submit-tag" >Ok</button>
+      </div>
+    </div>
+  </div>
+</form>
+</div>
+<!-- /.RenameModal -->
+
 <div id="wrapper">
 
   <!-- Navigation -->
