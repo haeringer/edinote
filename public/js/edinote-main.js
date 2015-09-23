@@ -52,48 +52,9 @@ $(function() {
 require.config({ paths: { 'ace': '/js/ace' } });
 
 // Load the ace module
-require(['ace/ace', 'ace/ext/modelist'], function(ace) {
-    // initiate the editor
-    editor = ace.edit("editor-container");
+require(['enAce']);
 
-    editor.setOptions({
-        fontSize: 14,
-        theme: "ace/theme/tomorrow",
-    });
 
-    // clean up editor layout
-    editor.renderer.setShowGutter(false);
-    editor.setHighlightActiveLine(false);
-    editor.setDisplayIndentGuides(false);
-    editor.setShowPrintMargin(false);
-    editor.getSession().setUseWrapMode(true);
-
-    // get rid of "automatically scrolling cursor into view" error
-    editor.$blockScrolling = Infinity;
-
-    // register any changes made to a file
-    editor.on('input', function() { fileState() });
-
-    // bind saveFile() to ctrl-s
-    editor.commands.addCommand({
-        name: 'saveFile',
-        bindKey: {
-            win: 'Ctrl-S',
-            mac: 'Command-S',
-            sender: 'editor|cli'
-        },
-        // call saveFile() with parameter save_as = 0
-        exec: function () { saveFile(filename, 0) }
-    });
-
-    (function () {
-        var modelist = ace.require("ace/ext/modelist");
-        var filePath = 'init.txt';
-        var mode = modelist.getModeForPath(filePath).mode;
-        console.log(mode);
-        editor.session.setMode(mode);
-    }());
-});
 
 
 /******************************************************************************
@@ -134,6 +95,8 @@ function loadFile(fileId_load) {
         contents = response.content;
 
         if (enMode === 'edit') {
+            // call aceMode() in enAce.js to set syntax highlighting
+            require(['enAce'], function(enAce) { enAce.aceMode(filename) });
             /* fill editor with response data returned from getfile.php and set
                cursor to beginning of file */
             editor.getSession().setValue(contents, -1);
@@ -483,7 +446,7 @@ function htmlEntities(str) {
 };
 
 // enable submitting modal form with return key  TODO consolidate??
-function enableReturn() {
+(function enableReturn() {
     $('#save-as').on('keypress', function(e) {
         if(e.keyCode === 13) {
             e.preventDefault();
@@ -496,8 +459,7 @@ function enableReturn() {
             $('#submit-tag').trigger('click');
         }
     });
-};
-enableReturn();
+}());
 
 // alert if user is about to leave unsaved file
 function alertUnsaved() {
