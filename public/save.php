@@ -2,21 +2,25 @@
 
     require(__DIR__ . "/../includes/config.php");
 
-    // if save.php was called with an empty filename, return 0 to js
-    if (empty($_POST["filename"])) {
-        echo 1;
-        exit;
-    }
-
     // TODO make user variables globally available somehow
     $usrdir = DATADIR . query("SELECT username FROM users WHERE id = ?", $_SESSION["id"])[0]['username'] . "/";
 
-    $filename = $_POST["filename"];
+    $rval = NULL;
+    $filename = NULL;
     $contents = $_POST["contents"];
     $save_as = $_POST["save_as"];
+    $rename = $_POST["rename"];
     $fileId = uniqid('fid_');
 
-    if ($save_as === '0') {
+    // if save.php was called with an empty filename, return 1
+    if (empty($_POST["filename"])) {
+        $rval = 1;
+    }
+    else {
+        $filename = $_POST["filename"];
+    }
+
+    if ($filename !== NULL && $save_as === 'false') {
         // write contents to file (overwrite file safely without asking, because
         // save.php was called from the same file)
         $return = file_put_contents($usrdir.$filename, $contents);
@@ -24,10 +28,10 @@
         // return values to calling js function
         if ($return !== false) {
             // writing to file was successful
-            echo $fileId;
+            $rval = 0;
         }
     }
-    else {
+    else if ($filename !== NULL && $save_as === 'true') {
         // save.php was called from save-as form (hence from a non-existing
         // file), therefore check if typed-in name does already exist.
         // If not write to file, if yes return error
@@ -39,7 +43,7 @@
         }
 
         if (in_array($filename, $files)) {
-            echo 2;
+            $rval = 2;
         }
         else {
             // write contents to a new file
@@ -54,14 +58,23 @@
 
                 if ($inserted !== false) {
                     // writing to file and database was successful
-                    echo $fileId;
+                    $rval = 0;
                 }
                 else {
                     // writing to database was unsuccessful
-                    echo 3;
+                    $rval = 3;
                 }
             }
         }
     }
+
+    // json response
+    $response = [
+        "rval" => $rval,
+        "fileId" => $fileId
+    ];
+
+    header("Content-type: application/json");
+    echo json_encode($response);
 
 ?>

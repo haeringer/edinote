@@ -28,11 +28,11 @@ $(function() {
         loadFile(this.id),
         false
     });
-    $("button#save").click(function() { saveFile(filename, 0) });
+    $("button#save").click(function() { saveFile(filename, false, false) });
+    $("button#rename").click(function() { saveFile(filename, false, true) });
     $("button#submit-fn").click(function() { saveAs() });
     $("button#delete").click(function() { deleteFile(filename) });
     $("button#new").click(function() { newFile() });
-    $("button#rename").click(function() { renameFile(filename) });
 
     /* tag handling */
     $('#tag-add').click(function() { tagFile() });
@@ -50,7 +50,11 @@ $(function() {
  */
 
 // tell requireJS ace location
-require.config({ paths: { 'ace': '/js/ace' } });
+require.config({
+    paths: { 'ace': '/js/ace' },
+    // bypass cache for development purposes
+    urlArgs: "bust=" + (new Date()).getTime()
+});
 
 // Load the ace module
 require(['enAce']);
@@ -133,20 +137,25 @@ function showCont(cont) {
 };
 
 // save file
-function saveFile(filename, save_as) {
+function saveFile(filename, save_as, rename) {
 
     contents = editor.getSession().getValue();
 
     $.ajax({
         method: "POST",
         url: "save.php",
-        data: { contents: contents, filename: filename, save_as: save_as }
+        data: {
+            contents: contents,
+            filename: filename,
+            save_as: save_as,
+            rename: rename
+        }
     })
 
     .done(function(response) {
-        console.log('save.php returned ' + response);
+        console.log('save.php returned ' + JSON.stringify(response));
 
-        if (response === '1') {
+        if (response.rval === 1) {
             // '1' means var filename was empty -> new file needs to be created
             $('.error').hide();
             $('#SaveModal').modal('toggle');
@@ -155,35 +164,39 @@ function saveFile(filename, save_as) {
                 input.focus();
                 input.setSelectionRange(0,8);
         }
-        else if (response === '2') {
+        else if (response.rval === 2) {
             $("label#filename_exists").show();
             $("input#save-as").focus();
             return 0;
         }
-        else if (response === '3') {
+        else if (response.rval === 3) {
             console.log("couldn't write to database");
         }
-        else {
+        else if (response.rval === 0) {
             // clear changed state of file
             editor.session.getUndoManager().markClean()
             fileState();
             editor.focus();
             console.log("file saved");
             // if a new file was created (via parameter save_as = 1)
-            if (save_as === 1) {
+            if (save_as === true) {
                 $('#SaveModal').modal('hide');
-                $('#new-file').after('<li class="list-group-item" id="' + response
+                $('#new-file').after('<li class="list-group-item" id="' + response.fileId
                 + '"><div class="lgi-name">' + filename.substring(0,30)
-                + '</div><div class="tags"><div id="tg_' + response + '"></div></div></li>');
-                $('#' + response).addClass('active');
+                + '</div><div class="tags"><div id="tg_' + response.fileId + '"></div></div></li>');
+                $('#' + response.fileId).addClass('active');
                 $('#tag-add').removeClass('bottom-disabled');
-                fileId = response;
+                fileId = response.fileId;
                 editor.focus();
             }
         }
+        else {
+            console.log('oops?!');
+        }
     })
 
-    .fail(function(jqXHR, textStatus, errorThrown) {
+    .fail(function(response, jqXHR, textStatus, errorThrown) {
+        console.log('save.php returned ' + response);
         console.log(errorThrown.toString());
     });
 };
@@ -205,8 +218,8 @@ function saveAs() {
     // certain characters in file name etc.)
 
     }
-    // call saveFile() with parameter save_as = 1
-    saveFile(filename, 1);
+    // call saveFile() with parameter save_as = true
+    saveFile(filename, true, 'hmm');
 };
 
 // enable/disable save button depending on file state
@@ -242,46 +255,6 @@ function deleteFile(filename) {
         }
         else if (response === '2') {
             console.log("couldn't delete file from file system");
-        }
-    })
-
-    .fail(function(jqXHR, textStatus, errorThrown) {
-        console.log(errorThrown.toString());
-    });
-};
-
-// rename file
-function renameFile(filename) {
-
-    $.ajax({
-        method: "POST",
-        url: "rename.php",
-        data: { filename: filename }
-    })
-
-    .done(function(response) {
-        console.log('rename.php returned ' + response);
-
-        if (response === '7') {
-            // '1' means var filename was empty -> new file needs to be created
-            $('.error').hide();
-            $('#RenameModal').modal('toggle');
-            $("#rename-input").val(filename);
-            var input = document.getElementById("rename");
-                input.focus();
-                input.setSelectionRange(0,1);
-        }
-        else if (response === '2') {
-            $("label#rename_exists").show();
-            $("input#rename-input").focus();
-            return 0;
-        }
-        else if (response === '3') {
-            console.log("couldn't write to database");
-        }
-        else {
-            editor.focus();
-            console.log("huh?");
         }
     })
 
@@ -383,7 +356,7 @@ function removeTag() {
             console.log("couldn't delete tag from database");
         }
         else {
-            console.log(tagId + " removed");
+            console.log(response.tag + " removed");
             $('#' + tagId).remove();
             $('#tag-rm').addClass('bottom-disabled');
             editor.focus();

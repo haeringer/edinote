@@ -36,8 +36,8 @@ define(['ace/ace', 'ace/ext/modelist'], function(ace) {
             mac: 'Command-S',
             sender: 'editor|cli'
         },
-        // call saveFile() with parameter save_as = 0
-        exec: function () { saveFile(filename, 0) }
+        // call saveFile() with parameter save_as = false
+        exec: function () { saveFile(filename, false, false) }
     });
 
     var aceMode = function (filename) {
