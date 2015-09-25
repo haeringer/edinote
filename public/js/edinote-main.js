@@ -13,7 +13,7 @@
  var tagId;
  var contents;
  var enMode;
- var rename;
+ var rename = false;
 
 /******************************************************************************
  * event listeners - run once DOM is ready
@@ -137,21 +137,45 @@ function showCont(cont) {
     }
 };
 
+
+// save-as function (called when 'save' is clicked in save-as modal)
+function saveAs() {
+    console.log('save as...');
+    $('.error').hide();
+    filename = $("input#save-as").val();
+  		if (filename == "") {
+        // TODO change input to bootstrap input error style
+        $("label#filename_empty").show();
+        $("input#save-as").focus();
+        return false;
+
+        // TODO extend input validation with .validate plugin (allow only
+        // certain characters in file name etc.)
+    }
+    saveFile(filename, true, false);
+};
+
 // save file
 function saveFile(filename, save_as, renameTrigger) {
 
-    rename = (renameTrigger === true) ? true : false;
+    var filename_old = '';
     contents = editor.getSession().getValue();
 
     if (filename === undefined || renameTrigger === true) {
+        // rename = (renameTrigger === true) ? true : false;
+        if (renameTrigger === true) {
+            rename = true;
+            filename_old = filename.string;
+            console.log(filename.string);
+        }
         // get new filename via saveAs()
         $('.error').hide();
         $('#SaveModal').modal('toggle');
         $("#save-as").val('new file.md');
 
         var input = document.getElementById("save-as");
-            input.focus();
-            input.setSelectionRange(0,8);
+        input.focus();
+        input.setSelectionRange(0,8);
     }
     else {
         $.ajax({
@@ -160,6 +184,7 @@ function saveFile(filename, save_as, renameTrigger) {
             data: {
                 contents: contents,
                 filename: filename,
+                filename_old: filename_old,
                 save_as: save_as,
                 rename: rename
             }
@@ -179,6 +204,13 @@ function saveFile(filename, save_as, renameTrigger) {
             }
             else if (response.rval === 3) {
                 console.log("couldn't write to database");
+            }
+            else if (response.rval === 4) {
+                console.log("file renamed");
+                rename = false;
+                $('#SaveModal').modal('hide');
+                $('#' + fileId).children('div.lgi-name').text(filename);
+                editor.focus();
             }
             else if (response.rval === 0) {
                 // clear changed state of file
@@ -207,23 +239,6 @@ function saveFile(filename, save_as, renameTrigger) {
             console.log(errorThrown.toString());
         });
     }
-};
-
-// save-as function (called when 'save' is clicked in save-as modal)
-function saveAs() {
-    console.log('save as...');
-    $('.error').hide();
-    filename = $("input#save-as").val();
-  		if (filename == "") {
-        // TODO change input to bootstrap input error style
-        $("label#filename_empty").show();
-        $("input#save-as").focus();
-        return false;
-
-        // TODO extend input validation with .validate plugin (allow only
-        // certain characters in file name etc.)
-    }
-    saveFile(filename, true);
 };
 
 // enable/disable save button depending on file state

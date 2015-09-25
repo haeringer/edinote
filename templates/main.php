@@ -49,7 +49,7 @@
       </div>
       <div class="modal-body">
         <div class="input-group input-group-lg col-sm-12">
-          <input type="text" name="filename" class="form-control" id="save-as" placeholder="Example.md" required>
+          <input type="text" name="filename" class="form-control" id="save-as" placeholder="Example.md">
           <label class="error" for="filename" id="filename_empty"><br>Please enter a file name!</label>
           <label class="error" for="filename" id="filename_exists"><br>File name already exists!</label>
         </div>

@@ -6,8 +6,9 @@
     $usrdir = DATADIR . query("SELECT username FROM users WHERE id = ?", $_SESSION["id"])[0]['username'] . "/";
 
     $rval = NULL;
-    $filename = NULL;
     $fileEl = NULL;
+    $filename = NULL;
+    $filename_old = $_POST["filename_old"];
     $contents = $_POST["contents"];
     $save_as = $_POST["save_as"];
     $rename = $_POST["rename"];
@@ -47,27 +48,50 @@
             $rval = 2;
         }
         else {
-            // write contents to a new file
-            $return = file_put_contents($usrdir.$filename, $contents);
+            if ($rename === 'false') {
+                // write contents to a new file
+                $return = file_put_contents($usrdir.$filename, $contents);
 
-            // return values to calling js function
-            if ($return !== false) {
+                // return values to calling js function
+                if ($return !== false) {
 
-                // add new file name to database
-                $inserted = query("INSERT INTO files (fileid, id, file, tag1, tag2, tag3)
-                    VALUES (?, ?, ?, NULL, NULL, NULL)", $fileId, $_SESSION["id"], $filename);
+                    // add new file name to database
+                    $inserted = query("INSERT INTO files (fileid, id, file, tag1, tag2, tag3)
+                        VALUES (?, ?, ?, NULL, NULL, NULL)", $fileId, $_SESSION["id"], $filename);
 
-                if ($inserted !== false) {
-                    // writing to file and database was successful
-                    $rval = 0;
+                    if ($inserted !== false) {
+                        // writing to file and database was successful
+                        $rval = 0;
 
-                    ob_start();
-                    include '../templates/file_template.php';
-                    $fileEl = ob_get_clean();
+                        ob_start();
+                        include '../templates/file_template.php';
+                        $fileEl = ob_get_clean();
+                    }
+                    else {
+                        // writing to database was unsuccessful
+                        $rval = 3;
+                    }
                 }
-                else {
-                    // writing to database was unsuccessful
-                    $rval = 3;
+            }
+            else if ($rename === 'true') {
+
+                $return = rename($usrdir.$filename_old,$usrdir.$filename);
+
+                // return values to calling js function
+                if ($return !== false) {
+
+                    // add new file name to database
+                    $updated = query("INSERT INTO files (fileid, id, file, tag1, tag2, tag3)
+                        VALUES (?, ?, ?, NULL, NULL, NULL)", $fileId, $_SESSION["id"], $filename);
+
+                    if ($updated !== false) {
+                        // renaming file and writing to database was successful
+                        $rval = 4;
+                    }
+                    else {
+                        // writing to database was unsuccessful
+                        $rval = 3;
+                    }
                 }
             }
         }
