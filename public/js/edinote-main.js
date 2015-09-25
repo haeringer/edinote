@@ -13,6 +13,7 @@
  var tagId;
  var contents;
  var enMode;
+ var rename;
 
 /******************************************************************************
  * event listeners - run once DOM is ready
@@ -30,7 +31,7 @@ $(function() {
     });
     $("button#save").click(function() { saveFile(filename, false, false) });
     $("button#rename").click(function() { saveFile(filename, false, true) });
-    $("button#submit-fn").click(function() { saveAs() });
+    $("button#submit-fn").click(function() { saveAs(rename) });
     $("button#delete").click(function() { deleteFile(filename) });
     $("button#new").click(function() { newFile() });
 
@@ -72,7 +73,7 @@ function newFile() {
         switchMode(false, true);
     }
     console.log('new empty document...');
-    filename = "";
+    filename = undefined;
     editor.getSession().setValue("");
     editor.focus();
     $('.list-group-item').removeClass('active');
@@ -137,68 +138,75 @@ function showCont(cont) {
 };
 
 // save file
-function saveFile(filename, save_as, rename) {
+function saveFile(filename, save_as, renameTrigger) {
 
+    rename = (renameTrigger === true) ? true : false;
     contents = editor.getSession().getValue();
 
-    $.ajax({
-        method: "POST",
-        url: "save.php",
-        data: {
-            contents: contents,
-            filename: filename,
-            save_as: save_as,
-            rename: rename
-        }
-    })
+    if (filename === undefined || renameTrigger === true) {
+        // get new filename via saveAs()
+        $('.error').hide();
+        $('#SaveModal').modal('toggle');
+        $("#save-as").val('new file.md');
 
-    .done(function(response) {
-        console.log('save.php returned ' + JSON.stringify(response));
-
-        if (response.rval === 1) {
-            // '1' means var filename was empty -> new file needs to be created
-            $('.error').hide();
-            $('#SaveModal').modal('toggle');
-            $("#save-as").val('new file.md');
-            var input = document.getElementById("save-as");
-                input.focus();
-                input.setSelectionRange(0,8);
-        }
-        else if (response.rval === 2) {
-            $("label#filename_exists").show();
-            $("input#save-as").focus();
-            return 0;
-        }
-        else if (response.rval === 3) {
-            console.log("couldn't write to database");
-        }
-        else if (response.rval === 0) {
-            // clear changed state of file
-            editor.session.getUndoManager().markClean()
-            fileState();
-            editor.focus();
-            console.log("file saved");
-            // if a new file was created (via parameter save_as = 1)
-            if (save_as === true) {
-                $('#SaveModal').modal('hide');
-                $('#new-file').after('<li class="list-group-item" id="' + response.fileId
-                + '"><div class="lgi-name">' + filename.substring(0,30)
-                + '</div><div class="tags"><div id="tg_' + response.fileId + '"></div></div></li>');
-                $('#' + response.fileId).addClass('active');
-                $('#tag-add').removeClass('bottom-disabled');
-                fileId = response.fileId;
-                editor.focus();
+        var input = document.getElementById("save-as");
+            input.focus();
+            input.setSelectionRange(0,8);
+    }
+    else {
+        $.ajax({
+            method: "POST",
+            url: "save.php",
+            data: {
+                contents: contents,
+                filename: filename,
+                save_as: save_as,
+                rename: rename
             }
-        }
-        else {
-            console.log('oops?!');
-        }
-    })
+        })
 
-    .fail(function(response, jqXHR, textStatus, errorThrown) {
-        console.log('save.php returned ' + response);
-        console.log(errorThrown.toString());
-    });
+        .done(function(response) {
+            console.log('rename: ' + rename);
+            console.log('save.php returned ' + JSON.stringify(response));
+
+            if (response.rval === 1) {
+                console.log('filename still empty?!')
+            }
+            else if (response.rval === 2) {
+                $("label#filename_exists").show();
+                $("input#save-as").focus();
+                return 0;
+            }
+            else if (response.rval === 3) {
+                console.log("couldn't write to database");
+            }
+            else if (response.rval === 0) {
+                // clear changed state of file
+                editor.session.getUndoManager().markClean()
+                fileState();
+                editor.focus();
+                console.log("file saved");
+                // if a new file was created (via parameter save_as = 1)
+                if (save_as === true) {
+                    $('#SaveModal').modal('hide');
+                    // insert new file element
+                    $('#new-file').after(response.fileEl);
+                    $('#' + response.fileId).addClass('active');
+                    $('#tag-add').removeClass('bottom-disabled');
+                    fileId = response.fileId;
+                    editor.focus();
+                }
+            }
+            else {
+                console.log('oops?!');
+            }
+        })
+
+        .fail(function(response, jqXHR, textStatus, errorThrown) {
+            console.log('save.php returned ' + JSON.stringify(response));
+            console.log(errorThrown.toString());
+        });
+    }
 };
 
 // save-as function (called when 'save' is clicked in save-as modal)
@@ -207,19 +215,15 @@ function saveAs() {
     $('.error').hide();
     filename = $("input#save-as").val();
   		if (filename == "") {
-        $("label#filename_empty").show();
-
         // TODO change input to bootstrap input error style
-
+        $("label#filename_empty").show();
         $("input#save-as").focus();
         return false;
 
-    // TODO extend input validation with .validate plugin (allow only
-    // certain characters in file name etc.)
-
+        // TODO extend input validation with .validate plugin (allow only
+        // certain characters in file name etc.)
     }
-    // call saveFile() with parameter save_as = true
-    saveFile(filename, true, 'hmm');
+    saveFile(filename, true);
 };
 
 // enable/disable save button depending on file state

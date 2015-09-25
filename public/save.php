@@ -7,6 +7,7 @@
 
     $rval = NULL;
     $filename = NULL;
+    $fileEl = NULL;
     $contents = $_POST["contents"];
     $save_as = $_POST["save_as"];
     $rename = $_POST["rename"];
@@ -59,6 +60,10 @@
                 if ($inserted !== false) {
                     // writing to file and database was successful
                     $rval = 0;
+
+                    ob_start();
+                    include '../templates/file_template.php';
+                    $fileEl = ob_get_clean();
                 }
                 else {
                     // writing to database was unsuccessful
@@ -71,7 +76,8 @@
     // json response
     $response = [
         "rval" => $rval,
-        "fileId" => $fileId
+        "fileId" => $fileId,
+        "fileEl" => $fileEl
     ];
 
     header("Content-type: application/json");

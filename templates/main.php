@@ -49,7 +49,7 @@
       </div>
       <div class="modal-body">
         <div class="input-group input-group-lg col-sm-12">
-          <input type="text" name="filename" class="form-control" id="save-as" placeholder="Example.md">
+          <input type="text" name="filename" class="form-control" id="save-as" placeholder="Example.md" required>
           <label class="error" for="filename" id="filename_empty"><br>Please enter a file name!</label>
           <label class="error" for="filename" id="filename_exists"><br>File name already exists!</label>
         </div>
@@ -168,12 +168,12 @@
                 ?>
                 <li class="list-group-item" id="<?=$files[$i]["fileid"]?>">
                   <div class="lgi-name"><?=substr($files[$i]["file"],0,29)?></div>
-                    <div class="tags">
-                      <div class="tag" id="tag1_<?=$files[$i]["fileid"]?>"><?=$files[$i]["tag1"]?></div>
-                      <div class="tag" id="tag2_<?=$files[$i]["fileid"]?>"><?=$files[$i]["tag2"]?></div>
-                      <div class="tag" id="tag3_<?=$files[$i]["fileid"]?>"><?=$files[$i]["tag3"]?></div>
-                      <div id="tg_<?=$files[$i]["fileid"]?>"></div>
-                    </div>
+                  <div class="tags">
+                    <div class="tag" id="tag1_<?=$files[$i]["fileid"]?>"><?=$files[$i]["tag1"]?></div>
+                    <div class="tag" id="tag2_<?=$files[$i]["fileid"]?>"><?=$files[$i]["tag2"]?></div>
+                    <div class="tag" id="tag3_<?=$files[$i]["fileid"]?>"><?=$files[$i]["tag3"]?></div>
+                    <div id="tg_<?=$files[$i]["fileid"]?>"></div>
+                  </div>
                 </li>
                 <?php
             }
