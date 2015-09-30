@@ -8,12 +8,12 @@
 
  // global variables
  var editor;
- var filename;
+ var filename = '';
  var filename_old = '';
  var fileId;
  var tagId;
  var contents;
- var enMode;
+ var viewmode;
  var rename = false;
 
 /******************************************************************************
@@ -73,7 +73,7 @@ function newFile() {
     if (alertUnsaved() === false) {
         return;
     }
-    if (enMode === 'view') {
+    if (viewmode === true) {
         switchMode(false, true);
     }
     console.log('new empty document...');
@@ -110,7 +110,7 @@ function loadFile(fileId_load) {
         filename = response.filename;
         contents = response.content;
         
-        if (enMode === 'edit') {
+        if (viewmode === false) {
             /* fill editor with response data returned from getfile.php and set
                cursor to beginning of file */
             editor.getSession().setValue(contents, -1);
@@ -391,49 +391,85 @@ function removeTag() {
  * switch edinote mode or just hide div of inactive mode, depending on call
    parameter */
 function switchMode(init, newfile) {
-    $.ajax({ method: "POST", url: "mode.php", data: { init: init } })
+    if (init === true) {
+        $.ajax({ method: "POST", url: "mode.php", data: { init: init } })
 
-    .done(function(response) {
-
-        if (response === 'edit') {
-            enMode = 'edit';
-            $('#md-container').css('display', 'none', 'important');
-            if (init === false) {
-                console.log('mode switched to "edit"');
-                $('#mode').removeClass('active');
-                $('#editor-container').fadeIn(100);
-
-                /* load file content into editor only if file is unchanged. If
-                 * mode was switched while the file is being edited (= unsaved),
-                 * do not alter current editor content. */
-                if (editor.session.getUndoManager().isClean()) {
-                    require(['enAce'], function(enAce) { enAce.aceMode(filename) });
-                    editor.getSession().setValue(contents, -1);
-                    if (newfile === true) {
-                        editor.getSession().setValue("");
-                    }
-                }
-                editor.focus();
+        .done(function(response) {
+    
+            if (response.viewmode_r === 'false') {
+                viewmode = false;
+                $('#md-container').css('display', 'none', 'important');
             }
+            else if (response.viewmode_r === 'true') {
+                viewmode = true;
+                $('#editor-container').css('display', 'none', 'important');
+                $('#mode').addClass('active');
+            }
+            else {
+                console.log('mode.php returned ' + JSON.stringify(response));
+            }
+        })
+    
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            console.log(errorThrown.toString());
+        });
+    }
+    else {
+        if (viewmode === true) {
+            $('#md-container').css('display', 'none', 'important');
+            console.log('mode switched to "edit"');
+            $('#mode').removeClass('active');
+            $('#editor-container').fadeIn(100);
+
+            /* load file content into editor only if file is unchanged. If
+             * mode was switched while the file is being edited (= unsaved),
+             * do not alter current editor content. */
+            if (editor.session.getUndoManager().isClean()) {
+                require(['enAce'], function(enAce) { enAce.aceMode(filename) });
+                editor.getSession().setValue(contents, -1);
+                if (newfile === true) {
+                    editor.getSession().setValue("");
+                }
+            }
+            editor.focus();
+            
+            $.ajax({ method: "POST", url: "mode.php", data: { init: init } })
+            .done(function(response) {
+                if (response.viewmode_r === 'false') {
+                    viewmode = false;
+                }
+                else {
+                    console.log('mode.php returned ' + JSON.stringify(response));
+                }
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown.toString());
+            });
         }
-        else if (response === 'view') {
-            enMode = 'view';
+        else if (viewmode === false) {
             $('#editor-container').css('display', 'none', 'important');
             $('#mode').addClass('active');
-            if (init === false) {
-                console.log('mode switched to "view"');
-                showCont(editor.getValue());
-                $('button#mode').blur();
-            }
+            console.log('mode switched to "view"');
+            showCont(editor.getValue());
+            $('button#mode').blur();
+            
+            $.ajax({ method: "POST", url: "mode.php", data: { init: init } })
+            .done(function(response) {
+                if (response.viewmode_r === 'true') {
+                    viewmode = true;
+                }
+                else {
+                    console.log('mode.php returned ' + JSON.stringify(response));
+                }
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown.toString());
+            });
         }
         else {
-            console.log('mode.php returned ' + response);
+            console.log(viewmode);
         }
-    })
-
-    .fail(function(jqXHR, textStatus, errorThrown) {
-        console.log(errorThrown.toString());
-    });
+    }
 }
 
 // check which mode user is in at initial page load

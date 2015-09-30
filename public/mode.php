@@ -1,12 +1,13 @@
 <?php
 
     require(__DIR__ . "/../includes/config.php");
-
+    
+    $rval = NULL;
     $init = $_POST["init"];
-    // var_dump($init);
-    $current_mode = query("SELECT mode FROM users WHERE id = ?", $_SESSION["id"])[0]['mode'];
 
-    if ($current_mode === false)
+    $viewmode = query("SELECT viewmode FROM users WHERE id = ?", $_SESSION["id"])[0]['viewmode'];
+
+    if ($viewmode === false)
     {
         http_response_code(503);
         exit;
@@ -14,28 +15,43 @@
 
     // switch mode if mode.php was called from switch button
     if ($init === 'false') {
-        if ($current_mode === 'edit') {
-            $changemode = query("UPDATE users SET mode = 'view' WHERE id = ?", $_SESSION["id"]);
+        if ($viewmode === 'false') {
+            $changemode = query("UPDATE users SET viewmode = 'true' WHERE id = ?", $_SESSION["id"]);
 
             if ($changemode !== false) {
-                echo 'view';
+                $viewmode = 'true';
+            }
+            else {
+                $rval = 1;
             }
         }
-        else if ($current_mode === 'view') {
-            $changemode = query("UPDATE users SET mode = 'edit' WHERE id = ?", $_SESSION["id"]);
+        else {
+            $changemode = query("UPDATE users SET viewmode = 'false' WHERE id = ?", $_SESSION["id"]);
 
             if ($changemode !== false) {
-                echo 'edit';
+                $viewmode = 'false';
+            }
+            else {
+                $rval = 1;
             }
         }
     }
     // if mode.php was called from initial page load, just spit out current mode
-    else if ($init === 'true') {
-        echo $current_mode;
-    }
+    // else if ($init === 'true') {
+    //     $viewmode = $current_mode;
+    // }
 
     else {
-        echo 1;
+        $rval = 2;
     }
+    
+    // json response
+    $response = [
+        "rval" => $rval,
+        "viewmode_r" => $viewmode
+    ];
+
+    header("Content-type: application/json");
+    echo json_encode($response);
 
 ?>
