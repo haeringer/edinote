@@ -6,10 +6,10 @@
  *
  */
 
- // declare global variables
+ // global variables
  var editor;
  var filename;
- var filename_old;
+ var filename_old = '';
  var fileId;
  var tagId;
  var contents;
@@ -17,7 +17,7 @@
  var rename = false;
 
 /******************************************************************************
- * event listeners - run once DOM is ready
+ * event listeners etc. - run once DOM is ready
  */
 $(function() {
     // Edinote mode switch
@@ -28,7 +28,7 @@ $(function() {
       // newly added files
     $('.list').on('click', '.list-group-item', function() {
         loadFile(this.id),
-        false
+        false;
     });
     $("button#save").click(function() { saveFile(filename, false, false) });
     $("button#rename").click(function() { saveFile(filename, false, true) });
@@ -58,7 +58,7 @@ $(function() {
 require.config({
     paths: { 'ace': '/js/ace' },
     // bypass cache for development purposes
-    urlArgs: "bust=" + (new Date()).getTime()
+    // urlArgs: "bust=" + (new Date()).getTime()
 });
 
 // Load the ace module
@@ -82,7 +82,7 @@ function newFile() {
     editor.focus();
     $('.list-group-item').removeClass('active');
     $('#tag-add').addClass('bottom-disabled');
-};
+}
 
 // load file content into editor or view
 function loadFile(fileId_load) {
@@ -94,26 +94,6 @@ function loadFile(fileId_load) {
     fileId = fileId_load;
     console.log('load file with id ' + fileId);
 
-    $.getJSON('getfile.php', {fileId: fileId})
-
-    .done(function(response, textStatus, jqXHR) {
-
-        console.log('file "' + response.filename + '" loaded');
-        filename = response.filename;
-        contents = response.content;
-
-        if (enMode === 'edit') {
-            // call aceMode() in enAce.js to set syntax highlighting
-            require(['enAce'], function(enAce) { enAce.aceMode(filename) });
-            /* fill editor with response data returned from getfile.php and set
-               cursor to beginning of file */
-            editor.getSession().setValue(contents, -1);
-            editor.focus();
-        }
-        else {
-            showCont(contents);
-        }
-
         $('.list-group-item').removeClass('active');
         $('#rename').removeClass('bottom-disabled');
         $('#tag-add').removeClass('bottom-disabled');
@@ -121,17 +101,37 @@ function loadFile(fileId_load) {
         $('#tag-rm').addClass('bottom-disabled');
         tagId = '';
         $('#' + fileId).addClass('active');
+
+    $.getJSON('getfile.php', {fileId: fileId})
+
+    .done(function(response, textStatus, jqXHR) {
+
+        console.log('file "' + response.filename + '" loaded');
+        filename = response.filename;
+        contents = response.content;
+        
+        if (enMode === 'edit') {
+            /* fill editor with response data returned from getfile.php and set
+               cursor to beginning of file */
+            editor.getSession().setValue(contents, -1);
+            editor.focus();
+            // call aceMode() in enAce.js to set syntax highlighting
+            require(['enAce'], function(enAce) { enAce.aceMode(filename) });
+        }
+        else {
+            showCont(contents);
+        }
     })
 
     .fail(function(jqXHR, textStatus, errorThrown) {
         console.log(errorThrown.toString());
     });
-};
+}
 
 // show content as markdown or plain text depending on file extension
 function showCont(cont) {
     var ext = filename.substr((~-filename.lastIndexOf(".") >>> 0) + 2);
-    console.log('file extension: ' + ext)
+    console.log('file extension: ' + ext);
     if (ext === 'md') {
         $('#md-container').fadeIn(100).removeClass('plain');
         $('#md-container').html(marked(cont, { sanitize: true }));
@@ -139,8 +139,7 @@ function showCont(cont) {
     else {
         $('#md-container').fadeIn(100).addClass('plain').text(cont);
     }
-};
-
+}
 
 // save-as function (called when 'save' is clicked in save-as modal)
 function saveAs() {
@@ -157,7 +156,7 @@ function saveAs() {
         // certain characters in file name etc.)
     }
     saveFile(filename, true, false);
-};
+}
 
 // save file
 function saveFile(filename, save_as, renameTrigger) {
@@ -197,7 +196,7 @@ function saveFile(filename, save_as, renameTrigger) {
             console.log('save.php returned ' + JSON.stringify(response));
 
             if (response.rval === 1) {
-                console.log('filename still empty?!')
+                console.log('filename still empty?!');
             }
             else if (response.rval === 2) {
                 $("label#filename_exists").show();
@@ -216,7 +215,7 @@ function saveFile(filename, save_as, renameTrigger) {
             }
             else if (response.rval === 0) {
                 // clear changed state of file
-                editor.session.getUndoManager().markClean()
+                editor.session.getUndoManager().markClean();
                 fileState();
                 editor.focus();
                 console.log("file saved");
@@ -241,7 +240,7 @@ function saveFile(filename, save_as, renameTrigger) {
             console.log(errorThrown.toString());
         });
     }
-};
+}
 
 // enable/disable save button depending on file state
 function fileState() {
@@ -251,7 +250,7 @@ function fileState() {
     else {
         $('#save').removeClass("disabled");
     }
-};
+}
 
 // delete file
 function deleteFile(filename) {
@@ -282,7 +281,7 @@ function deleteFile(filename) {
     .fail(function(jqXHR, textStatus, errorThrown) {
         console.log(errorThrown.toString());
     });
-};
+}
 
 
 /******************************************************************************
@@ -297,11 +296,11 @@ function tagFile() {
     $('div').tooltip('hide');
     $('input#save-tag').focus();
 
-};
+}
 
 function saveTag() {
     console.log('save tag on file ' + filename);
-    tag = $("input#save-tag").val();
+    var tag = $("input#save-tag").val();
       if (tag == "") {
         $("label#tag_empty").show();
 
@@ -345,7 +344,7 @@ function saveTag() {
     .fail(function(jqXHR, textStatus, errorThrown) {
         console.log(errorThrown.toString());
     });
-};
+}
 
 function selectTag(tagId_obj) {
     tagId = $(tagId_obj).attr('id');
@@ -354,7 +353,7 @@ function selectTag(tagId_obj) {
     $('.tag').removeClass('active');
     $('#tag-rm').removeClass('bottom-disabled');
     $('#' + tagId).addClass('active');
-};
+}
 
 function removeTag() {
     console.log('remove Tag ' + tagId);
@@ -385,7 +384,7 @@ function removeTag() {
     .fail(function(jqXHR, textStatus, errorThrown) {
         console.log(errorThrown.toString());
     });
-};
+}
 
 
 /******************************************************************************
@@ -435,7 +434,7 @@ function switchMode(init, newfile) {
     .fail(function(jqXHR, textStatus, errorThrown) {
         console.log(errorThrown.toString());
     });
-};
+}
 
 // check which mode user is in at initial page load
 switchMode(true, false);
@@ -445,7 +444,7 @@ switchMode(true, false);
  * various stuff
  */
 
-// loading indicator; show content once ready
+// loading indicator: show content once ready
 Pace.once('done', function() {
     require(['enAce'], function() { 
         $("#wrapper").fadeIn(100);
@@ -463,11 +462,11 @@ function setHeight() {
     $("#file-list").css("max-height", sidebar_height);
 }
 setHeight();
-window.onresize = function(event) { setHeight() }
+window.onresize = function(event) { setHeight() };
 
 // collapse sidebar on mobile/resize
 $(window).bind("load resize", function() {
-    width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;
+    var width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;
     if (width < 768) {
         $('div.navbar-collapse').addClass('collapse');
     } else {
@@ -500,7 +499,7 @@ function alertUnsaved() {
         return (confirm('Your document has not been saved yet.\n\n'
                     + 'Are you sure you want to leave?') == true);
     }
-};
+}
 
 $(window).bind('beforeunload', function(){
     if (alertUnsaved() === false) {
@@ -514,4 +513,4 @@ Ps.initialize(scrollContainer);
 
 // list.js file filtering
 var listOptions = { valueNames: ['lgi-name','tags'] };
-var fileList = new List('sidebar-content', listOptions);
+new List('sidebar-content', listOptions);
