@@ -38,7 +38,10 @@ $(function() {
     /* tag handling */
     $('#tag-add').click(function() { tagFile() });
     $("button#submit-tag").click(function() { saveTag() });
-    $('.list-group-item').on('click', '.tag', function() { selectTag(this) });
+    $('.list-group-item').on('click', '.tag', function(evt) { 
+        // prevent selection of parent (file loading)
+        evt.stopPropagation();
+        selectTag(this) });
     $("button#tag-rm").click(function() { removeTag() });
 
     // bootstrap tooltips
@@ -346,8 +349,6 @@ function saveTag() {
 };
 
 function selectTag(tagId_obj) {
-    // prevent selection of parent (file loading)
-    event.stopPropagation();
     tagId = $(tagId_obj).attr('id');
     console.log('tag: ' + tagId);
 
@@ -445,12 +446,14 @@ switchMode(true, false);
  * various stuff
  */
 
- // loading indicator; show content once ready
- Pace.once('done', function() {
-     $("#wrapper").fadeIn(100);
-     console.log('main window loaded');
-     editor.focus();
- });
+// loading indicator; show content once ready
+Pace.once('done', function() {
+    require(['enAce'], function() { 
+        $("#wrapper").fadeIn(100);
+        console.log('main window loaded');
+        editor.focus();
+    });
+});
 
 // set height of editor/view mode container
 function setHeight() {
@@ -472,11 +475,6 @@ $(window).bind("load resize", function() {
         $('div.navbar-collapse').removeClass('collapse');
     }
 });
-
-// escape html
-function htmlEntities(str) {
-    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-};
 
 // enable submitting modal form with return key  TODO consolidate??
 (function enableReturn() {
