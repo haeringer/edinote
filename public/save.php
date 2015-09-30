@@ -81,8 +81,8 @@
                 if ($return !== false) {
 
                     // add new file name to database
-                    $updated = query("INSERT INTO files (fileid, id, file, tag1, tag2, tag3)
-                        VALUES (?, ?, ?, NULL, NULL, NULL)", $fileId, $_SESSION["id"], $filename);
+                    $updated = query("UPDATE files SET file = ? WHERE id = ? AND file = ?"
+                    , $filename, $_SESSION["id"], $filename_old);
 
                     if ($updated !== false) {
                         // renaming file and writing to database was successful

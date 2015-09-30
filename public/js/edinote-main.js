@@ -9,6 +9,7 @@
  // declare global variables
  var editor;
  var filename;
+ var filename_old;
  var fileId;
  var tagId;
  var contents;
@@ -161,15 +162,13 @@ function saveAs() {
 // save file
 function saveFile(filename, save_as, renameTrigger) {
 
-    var filename_old = '';
     contents = editor.getSession().getValue();
 
     if (filename === undefined || renameTrigger === true) {
         // rename = (renameTrigger === true) ? true : false;
         if (renameTrigger === true) {
             rename = true;
-            filename_old = filename.string;
-            console.log(filename.string);
+            filename_old = filename.slice(0);
         }
         // get new filename via saveAs()
         $('.error').hide();
