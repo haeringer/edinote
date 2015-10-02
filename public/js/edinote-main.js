@@ -7,13 +7,13 @@
  */
 
  // global variables
+ var viewmode;
  var editor;
- var filename = '';
- var filename_old = '';
  var fileId;
  var tagId;
- var contents;
- var viewmode;
+ var filename = '';
+ var filename_old = '';
+ var contents = '';
  var rename = false;
 
 /******************************************************************************
@@ -32,6 +32,7 @@ $(function() {
     });
     $("button#save").click(function() { saveFile(filename, false, false) });
     $("button#rename").click(function() { saveFile(filename, false, true) });
+    $('#SaveModal').on('hide.bs.modal', function () { rename = false });
     $("button#submit-fn").click(function() { saveAs(rename) });
     $("button#delete").click(function() { deleteFile(filename) });
     $("button#new").click(function() { newFile() });
@@ -77,7 +78,7 @@ function newFile() {
         switchMode(false, true);
     }
     console.log('new empty document...');
-    filename = undefined;
+    filename = '';
     editor.getSession().setValue("");
     editor.focus();
     $('.list-group-item').removeClass('active');
@@ -164,7 +165,6 @@ function saveFile(filename, save_as, renameTrigger) {
     contents = editor.getSession().getValue();
 
     if (filename === undefined || renameTrigger === true) {
-        // rename = (renameTrigger === true) ? true : false;
         if (renameTrigger === true) {
             rename = true;
             filename_old = filename.slice(0);
@@ -316,23 +316,21 @@ function saveTag() {
     $.ajax({
       method: "POST",
       url: "settag.php",
-      data: { tag: tag, filename: filename }
+      data: { tag: tag, filename: filename, fileId: fileId }
     })
 
     .done(function(response) {
-        console.log('settag.php returned ' + response);
+        console.log('settag.php returned ' + JSON.stringify(response));
 
-        if (response === '0') {
+        if (response.rval === 0) {
             $('#TagModal').modal('hide');
-
-            // TODO insert tagId (tag3_fid_...) somehow??
-            $('#tg_' + fileId).before('<div class="tag">' + tag + '</div>');
-            console.log('TagId: ' + 'tg_' + fileId);
+            $('#' + response.tagId).text(tag);
+            console.log('file tagged');
         }
-        else if (response === '2') {
+        else if (response.rval === 2) {
             console.log('database query failed');
         }
-        else if (response === '3') {
+        else if (response.rval === 3) {
             console.log('tag slots are full');
             $("label#tags_full").show();
         }
@@ -484,6 +482,7 @@ switchMode(true, false);
 Pace.once('done', function() {
     require(['enAce'], function() { 
         $("#wrapper").fadeIn(100);
+        $("#wrapper").removeClass('hide');
         console.log('main window loaded');
         editor.focus();
     });

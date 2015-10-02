@@ -12,6 +12,9 @@ body {
 
 #wrapper {
     width: 100%;
+}
+
+.hide {
     display: none;
 }
 
@@ -33,7 +36,6 @@ body {
 
 /* ace editor container */
 #editor-container {
-    transition: all 0.2s ease-in-out;
     top:  0px;
     left: 0px;
     bottom: 0px;
@@ -41,13 +43,17 @@ body {
 }
 
 #md-container {
+    word-wrap: break-word;
     padding: 20px;
     overflow: auto;
-    transition: all 0.2s ease-in-out;
 }
 
 .plain {
-    white-space: pre;
+    white-space: -moz-pre-wrap; /* Firefox */
+    white-space: -pre-wrap; /* ancient Opera */
+    white-space: -o-pre-wrap; /* newer Opera */
+    white-space: pre-wrap; /* Chrome; W3C standard */
+    word-wrap: break-word; /* IE */
 }
 
 /* Top navigation - hide default border to remove 1px line */

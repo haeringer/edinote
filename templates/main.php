@@ -90,7 +90,7 @@
 </div>
 <!-- /.TagModal -->
 
-<div id="wrapper">
+<div id="wrapper" class="hide" >
 
   <!-- Navigation -->
   <nav class="navbar navbar-fixed-top" role="navigation">
@@ -217,7 +217,7 @@
 <script src="/js/jquery.min.js"></script>
 
 <!-- PACE loading indicator -->
-<script src="/js/pace.min.js"></script>
+<script data-pace-options='{ "ajax": false }' src="/js/pace.min.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
 <script src="/js/bootstrap.min.js"></script>
