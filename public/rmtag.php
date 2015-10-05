@@ -2,28 +2,34 @@
 
     require(__DIR__ . "/../includes/config.php");
 
+    $rval = NULL;
+    
     if (empty($_POST["tagId"])) {
-        echo 1;
+        $rval = 1;
         exit;
     }
 
     $fileId = substr($_POST["tagId"], -17);
     $tag = substr($_POST["tagId"], 0, 4);
-    $response = [
-        "file" => $fileId,
-        "tag" => $tag
-    ];
 
     // using $tag within query because it doesn't work as a parameter
     $rmtag = query("UPDATE files SET {$tag} = NULL WHERE id = ? AND fileid = ?"
                     , $_SESSION["id"], $fileId);
 
     if ($rmtag !== false) {
-        header("Content-type: application/json");
-        echo json_encode($response);
+        $rval = 0;
     }
     else {
-        echo 2;
+        $rval = 2;
     }
+    
+    $response = [
+        "rval" => $rval,
+        "file" => $fileId,
+        "tag" => $tag
+    ];
+    
+    header("Content-type: application/json");
+    echo json_encode($response);
 
 ?>

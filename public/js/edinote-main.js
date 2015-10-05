@@ -164,7 +164,7 @@ function saveFile(filename, save_as, renameTrigger) {
 
     contents = editor.getSession().getValue();
 
-    if (filename === undefined || renameTrigger === true) {
+    if (filename === '' || renameTrigger === true) {
         if (renameTrigger === true) {
             rename = true;
             filename_old = filename.slice(0);
@@ -263,17 +263,17 @@ function deleteFile(filename) {
     })
 
     .done(function(response) {
-        console.log('delete.php returned ' + response);
+        console.log('delete.php returned ' + JSON.stringify(response));
 
-        if (response === '0') {
+        if (response.rval === 0) {
             console.log("file " + filename + " deleted");
             $('#' + fileId).remove();
             newFile();
         }
-        else if (response === '1') {
+        else if (response.rval === 1) {
             console.log("couldn't delete file from database");
         }
-        else if (response === '2') {
+        else if (response.rval === 2) {
             console.log("couldn't delete file from file system");
         }
     })
@@ -363,17 +363,17 @@ function removeTag() {
     })
 
     .done(function(response) {
-            console.log('rmtag.php returned ' + response);
+            console.log('rmtag.php returned ' + JSON.stringify(response));
 
-        if (response === '1') {
+        if (response.rval === 1) {
             console.log("tag ID was empty");
         }
-        else if (response === '2') {
+        else if (response.rval === 2) {
             console.log("couldn't delete tag from database");
         }
         else {
             console.log(response.tag + " removed");
-            $('#' + tagId).remove();
+            $('#' + tagId).empty();
             $('#tag-rm').addClass('bottom-disabled');
             editor.focus();
         }
