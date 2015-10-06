@@ -6,15 +6,69 @@
  *
  */
 
- // global variables
- var viewmode;
- var editor;
- var fileId;
- var tagId;
- var filename = '';
- var filename_old = '';
- var contents = '';
- var rename = false;
+// global variables
+var editor;
+var viewmode;
+var fileId;
+var tagId;
+var filename = '';
+var filename_old = '';
+var contents = '';
+var rename = false;
+
+define([
+    'jquery',
+    'ace/ace',
+    'ace/ext/modelist',
+    'bootstrap'
+    ], function($, ace) {
+
+
+/******************************************************************************
+ * Ace Editor integration
+ */
+
+// initiate the editor
+editor = ace.edit("editor-container");
+
+editor.setOptions({
+    fontSize: 14,
+    theme: "ace/theme/tomorrow",
+});
+
+// clean up editor layout
+editor.renderer.setShowGutter(false);
+editor.setHighlightActiveLine(false);
+editor.setDisplayIndentGuides(false);
+editor.setShowPrintMargin(false);
+editor.getSession().setUseWrapMode(true);
+
+// get rid of "automatically scrolling cursor into view" error
+editor.$blockScrolling = Infinity;
+
+// register any changes made to a file
+editor.on('input', function() { fileState() });
+
+// bind saveFile() to ctrl-s
+editor.commands.addCommand({
+    name: 'saveFile',
+    bindKey: {
+        win: 'Ctrl-S',
+        mac: 'Command-S',
+        sender: 'editor|cli'
+    },
+    // call saveFile() with parameter save_as = false
+    exec: function () { saveFile(filename, false, false) }
+});
+
+var aceMode = function (filename) {
+    var modelist = ace.require("ace/ext/modelist");
+    var mode = modelist.getModeForPath(filename).mode;
+    console.log('Syntax: ' + mode);
+    editor.session.setMode(mode);
+};
+
+
 
 /******************************************************************************
  * event listeners etc. - run once DOM is ready
@@ -48,22 +102,12 @@ $(function() {
 
     // bootstrap tooltips
     $('[data-toggle="tooltip"]').tooltip({container: 'body'});
+    
+    // stop progress bar and blend in UI
+    require(['nprogress'], function(NProgress) { NProgress.done() });
+    $("#wrapper").delay(1000).fadeIn(500, function() { editor.focus() });
+    console.log('main window loaded');
 });
-
-
-/******************************************************************************
- * Ace editor integration
- */
-
-// tell requireJS ace location
-require.config({
-    paths: { 'ace': '/js/ace' },
-    // bypass cache for development purposes
-    // urlArgs: "bust=" + (new Date()).getTime()
-});
-
-// Load the ace module
-require(['enAce']);
 
 
 /******************************************************************************
@@ -116,8 +160,8 @@ function loadFile(fileId_load) {
                cursor to beginning of file */
             editor.getSession().setValue(contents, -1);
             editor.focus();
-            // call aceMode() in enAce.js to set syntax highlighting
-            require(['enAce'], function(enAce) { enAce.aceMode(filename) });
+            // set syntax highlighting
+            aceMode(filename);
         }
         else {
             showCont(contents);
@@ -135,7 +179,9 @@ function showCont(cont) {
     console.log('file extension: ' + ext);
     if (ext === 'md') {
         $('#md-container').fadeIn(100).removeClass('plain');
-        $('#md-container').html(marked(cont, { sanitize: true }));
+        require(['marked'], function(marked) {
+            $('#md-container').html(marked(cont, { sanitize: true }));
+        });
     }
     else {
         $('#md-container').fadeIn(100).addClass('plain').text(cont);
@@ -423,7 +469,7 @@ function switchMode(init, newfile) {
              * mode was switched while the file is being edited (= unsaved),
              * do not alter current editor content. */
             if (editor.session.getUndoManager().isClean()) {
-                require(['enAce'], function(enAce) { enAce.aceMode(filename) });
+                aceMode(filename);
                 editor.getSession().setValue(contents, -1);
                 if (newfile === true) {
                     editor.getSession().setValue("");
@@ -478,22 +524,12 @@ switchMode(true, false);
  * various stuff
  */
 
-// loading indicator: show content once ready
-Pace.once('done', function() {
-    require(['enAce'], function() { 
-        $("#wrapper").fadeIn(100);
-        $("#wrapper").removeClass('hide');
-        console.log('main window loaded');
-        editor.focus();
-    });
-});
-
 // set height of editor/view mode container
 function setHeight() {
     var editor_height = $(window).height() - 110;
     var sidebar_height = editor_height - 100;
     $("#editor-container").css("height", editor_height);
-    $("#md-container").css("height", editor_height);        // TODO
+    $("#md-container").css("height", editor_height);
     $("#file-list").css("max-height", sidebar_height);
 }
 setHeight();
@@ -544,8 +580,17 @@ $(window).bind('beforeunload', function(){
 
 // custom scrollbar
 var scrollContainer = document.getElementById('file-list');
-Ps.initialize(scrollContainer);
+require(['perfect-scrollbar'], function(Ps) { 
+    Ps.initialize(scrollContainer);
+});
+
 
 // list.js file filtering
 var listOptions = { valueNames: ['lgi-name','tags'] };
-new List('sidebar-content', listOptions);
+require(['list'], function(List) { 
+    new List('sidebar-content', listOptions);
+});
+
+
+// end of define()
+});

@@ -16,8 +16,8 @@
       <title>Edinote</title>
   <?php endif ?>
 
-  <!-- PACE loading indicator CSS -->
-  <link href="/css/pace.css" rel="stylesheet">
+  <!-- NProgress loading indicator CSS -->
+  <link href="/css/nprogress.css" rel="stylesheet">
 
   <!-- Bootstrap Core CSS -->
   <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -90,7 +90,7 @@
 </div>
 <!-- /.TagModal -->
 
-<div id="wrapper" class="hide" >
+<div id="wrapper" class="en-hide" >
 
   <!-- Navigation -->
   <nav class="navbar navbar-fixed-top" role="navigation">
@@ -213,26 +213,8 @@
 </div>
 <!-- /#wrapper -->
 
-<!-- jQuery -->
-<script src="/js/jquery.min.js"></script>
-
-<!-- PACE loading indicator -->
-<script data-pace-options='{ "ajax": false }' src="/js/pace.min.js"></script>
-
-<!-- Bootstrap Core JavaScript -->
-<script src="/js/bootstrap.min.js"></script>
-
-<!-- marked markdown parser/compiler -->
-<script src='/js/marked.min.js'></script>
-
-<!-- Custom scrollbar -->
-<script src='/js/perfect-scrollbar.min.js'></script>
-
-<!-- List.js for file list filter -->
-<script src='/js/list.min.js'></script>
-
 <!-- requireJS plus Edinote app JavaScript -->
-<script data-main="/js/edinote-main.js" src="/js/require.js"></script>
+<script data-main="/js/require-base.js" src="/js/require.js"></script>
 
 </body>
 

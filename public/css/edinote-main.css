@@ -14,7 +14,7 @@ body {
     width: 100%;
 }
 
-.hide {
+.en-hide {
     display: none;
 }
 
@@ -40,12 +40,14 @@ body {
     left: 0px;
     bottom: 0px;
     right: 0px;
+    height: 10px;
 }
 
 #md-container {
     word-wrap: break-word;
     padding: 20px;
     overflow: auto;
+    height: 10px;
 }
 
 .plain {
