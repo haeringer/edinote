@@ -104,7 +104,6 @@
           <p>Change your password</p>
           <input type="password" name="pw" class="form-control" placeholder="New password" id="save-pw">
           <input type="password" name="pw-confirm" class="form-control" placeholder="Confirmation" id="confirm-pw">
-          <label class="error" id="pw-confirm-empty"><br>Please confirm your new password!</label>
           <label class="error" id="pw-confirm-nomatch"><br>Password confirmation does not match!</label>
 
         </div>

@@ -101,7 +101,8 @@ $(function() {
     $("button#tag-rm").click(function() { removeTag() });
     
     // account settings
-    $("#btn-settings").click(function() { Settings() });
+    $("#btn-settings").click(function() { showSettings() });
+    $("button#submit-acnt").click(function() { Settings() });
 
     // bootstrap tooltips
     $('[data-toggle="tooltip"]').tooltip({container: 'body'});
@@ -121,66 +122,62 @@ $(function() {
     console.log('main window loaded');
 });
 
-
-function Settings() {
+function showSettings() {
     $('.error').hide();
     $('#AcntModal').modal('toggle');
     $('div').tooltip('hide');
     $('input#save-pw').focus();
-    $("button#submit-acnt").click(function() { 
-        console.log('save settings') 
-        var pw = $("input#save-pw").val();
-        var conf = $("input#confirm-pw").val();
-        if ((pw !== conf) || (pw === "" && conf !== "")) {
-            $('.error').hide();
-            $("label#pw-confirm-nomatch").show();
-            $("input#save-pw").focus();
-            return false;
-        } else if (conf === "" && pw !== "") {
-            $('.error').hide();
-            $("label#pw-confirm-empty").show();
-            $("input#confirm-pw").focus();
-            return false;
-        } else if (pw === "" && conf === "") {
+}
+
+function Settings() {
+    console.log('save settings');
+    var pw = $("input#save-pw").val();
+    var conf = $("input#confirm-pw").val();
+    if (pw !== conf) {
+        $('.error').hide();
+        $("label#pw-confirm-nomatch").show();
+        $("input#save-pw").focus();
+        return false;
+    } else if (pw === "" && conf === "") {
+        $('#AcntModal').modal('hide');
+        console.log('password was not changed');
+        return false;
+    }
+    
+    $.ajax({
+        method: "POST",
+        url: "account.php",
+        data: { pw: pw, conf: conf }
+    })
+    
+    .done(function(response) {
+        console.log('account.php returned ' + JSON.stringify(response));
+    
+        if (response.rval === 0) {
             $('#AcntModal').modal('hide');
-            console.log('password was not changed');
-            return false;
+            console.log('password successfully changed');
         }
-        
-        $.ajax({
-            method: "POST",
-            url: "account.php",
-            data: { pw: pw, conf: conf }
-        })
-        
-        .done(function(response) {
-            console.log('account.php returned ' + JSON.stringify(response));
-        
-            if (response.rval === 0) {
-                $('#AcntModal').modal('hide');
-                console.log('password successfully changed');
-            }
-            else if (response.rval === 1) {
-                console.log('pw empty');
-            }
-            else if (response.rval === 2) {
-                console.log('confirm empty');
-            }
-            else if (response.rval === 3) {
-                console.log('no match');
-            }
-            else if (response.rval === 4) {
-                console.log('SQL query error');
-            } else {
-                console.log('oops?');
-            }
-        })
-        
-        .fail(function(jqXHR, textStatus, errorThrown) {
-            console.log(errorThrown.toString());
-        });
+        else if (response.rval === 1) {
+            console.log('pw empty');
+        }
+        else if (response.rval === 2) {
+            console.log('confirm empty');
+        }
+        else if (response.rval === 3) {
+            console.log('no match');
+        }
+        else if (response.rval === 4) {
+            console.log('SQL query error');
+        } else {
+            console.log('oops?');
+        }
+    })
+    
+    .fail(function(jqXHR, textStatus, errorThrown) {
+        console.log(errorThrown.toString());
     });
 }
+
 
 /******************************************************************************
  * File handling
