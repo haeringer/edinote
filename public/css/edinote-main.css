@@ -1,8 +1,14 @@
-/*
- * Some rules based on SB Admin 2 Bootstrap Admin Theme (http://startbootstrap.com)
- * Code licensed under the Apache License v2.0.
- * For details, see http://www.apache.org/licenses/LICENSE-2.0.
+/**
+ * Edinote main css
+ *
+ * Ben Haeringer
+ * ben.haeringer@gmail.com
+ *
  */
+
+/* Some rules are based on SB Admin 2 Bootstrap Admin Theme 
+ * (http://startbootstrap.com) */
+
 
 body {
     background-color: #ECF0F1;
@@ -158,9 +164,16 @@ body {
   }
 }
 
-/*
- * custom css
- */
+.dropdown-menu {
+    min-width: 150px;
+    padding: 10px 0px;
+    margin: 8px -8px;
+    background-color: #ECF0F1;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.176);
+}
+
+
 .brand {
     display: none;
 }
@@ -192,7 +205,7 @@ body {
     z-index: 2;
     position: absolute;
     height: 10px;
-    margin-left: 10px; 
+    margin-left: 10px;
 }
 
 .list-shadow-top {
@@ -232,11 +245,11 @@ body {
     background-color: #3498DB;
 }
 
-.btn.login-btn:hover {
+.confirm-btn:hover {
     background-color: #62B1E6;
 }
 
-.btn.login-btn:focus {
+.confirm-btn:focus {
     background-color: #3498DB;
 }
 

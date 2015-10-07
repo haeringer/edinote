@@ -12,15 +12,6 @@
     require_once("constants.php");
 
     /**
-     * Apologizes to user with message.
-     */
-    function apologize($message)
-    {
-        render("apology.php", ["message" => $message]);
-        exit;
-    }
-
-    /**
      * Facilitates debugging by dumping contents of variable
      * to browser.
      */

@@ -1,42 +1,40 @@
 <?php
 
-    /* controller for user account page where he can change his password */
-
-    // configuration
     require("../includes/config.php");
 
-    // initialize variable for showing message on page or not
-    $pw_success = false;
+    $rval = 5;
 
-    if ($_SERVER["REQUEST_METHOD"] == "GET")
-    {
-        render("account_form.php", ["title" => "Your Account", "pw_success" => $pw_success]);
+    if ($_POST["pw"] === NULL) {
+        // password is empty
+        $rval = 1;
     }
-
-    // change password button was pressed
-    else if ($_SERVER["REQUEST_METHOD"] == "POST")
-    {
-        // display error messages in case of wrong information by registrant
-        if ($_POST["password"] == NULL)
-        {
-            apologize("Password is empty!");
-        }
-        if ($_POST["confirmation"] == NULL)
-        {
-            apologize("Please confirm your password!");
-        }
-        if ($_POST["password"] !== $_POST["confirmation"])
-        {
-            apologize("Confirmation does not match password!");
-        }
-
+    else if ($_POST["conf"] === NULL) {
+        // confirmation is empty
+        $rval = 2;
+    }
+    else if ($_POST["pw"] !== $_POST["conf"]) {
+        // confirmation does not match password
+        $rval = 3;
+    }
+    else {
         // update user's password
-        query("UPDATE users SET hash = ? WHERE id = ?",
-        crypt($_POST["password"]), $_SESSION["id"]);
-
-        $pw_success = true;
-
-        render("account_form.php", ["title" => "Your Account", "pw_success" => $pw_success]);
+        $updatePw = query("UPDATE users SET hash = ? WHERE id = ?"
+                        , crypt($_POST["pw"]), $_SESSION["id"]);
+        
+        if ($updatePw !== false) {
+            $rval = 0;
+        } else {
+            $rval = 4;
+        }
     }
+
+    // build array for ajax response
+    $response = [
+        "rval" => $rval
+    ];
+
+    // spit out content as json
+    header("Content-type: application/json");
+    echo json_encode($response);
 
 ?>

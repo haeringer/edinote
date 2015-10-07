@@ -1,5 +1,5 @@
 /**
- * Edinote
+ * Edinote main app
  *
  * Ben Haeringer
  * ben.haeringer@gmail.com
@@ -99,6 +99,9 @@ $(function() {
         evt.stopPropagation();
         selectTag(this) });
     $("button#tag-rm").click(function() { removeTag() });
+    
+    // account settings
+    $("#btn-settings").click(function() { Settings() });
 
     // bootstrap tooltips
     $('[data-toggle="tooltip"]').tooltip({container: 'body'});
@@ -118,6 +121,66 @@ $(function() {
     console.log('main window loaded');
 });
 
+
+function Settings() {
+    $('.error').hide();
+    $('#AcntModal').modal('toggle');
+    $('div').tooltip('hide');
+    $('input#save-pw').focus();
+    $("button#submit-acnt").click(function() { 
+        console.log('save settings') 
+        var pw = $("input#save-pw").val();
+        var conf = $("input#confirm-pw").val();
+        if ((pw !== conf) || (pw === "" && conf !== "")) {
+            $('.error').hide();
+            $("label#pw-confirm-nomatch").show();
+            $("input#save-pw").focus();
+            return false;
+        } else if (conf === "" && pw !== "") {
+            $('.error').hide();
+            $("label#pw-confirm-empty").show();
+            $("input#confirm-pw").focus();
+            return false;
+        } else if (pw === "" && conf === "") {
+            $('#AcntModal').modal('hide');
+            console.log('password was not changed');
+            return false;
+        }
+        
+        $.ajax({
+            method: "POST",
+            url: "account.php",
+            data: { pw: pw, conf: conf }
+        })
+        
+        .done(function(response) {
+            console.log('account.php returned ' + JSON.stringify(response));
+        
+            if (response.rval === 0) {
+                $('#AcntModal').modal('hide');
+                console.log('password successfully changed');
+            }
+            else if (response.rval === 1) {
+                console.log('pw empty');
+            }
+            else if (response.rval === 2) {
+                console.log('confirm empty');
+            }
+            else if (response.rval === 3) {
+                console.log('no match');
+            }
+            else if (response.rval === 4) {
+                console.log('SQL query error');
+            } else {
+                console.log('oops?');
+            }
+        })
+        
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            console.log(errorThrown.toString());
+        });
+    });
+}
 
 /******************************************************************************
  * File handling
@@ -200,14 +263,10 @@ function saveAs() {
     console.log('save as...');
     $('.error').hide();
     filename = $("input#save-as").val();
-  		if (filename == "") {
-        // TODO change input to bootstrap input error style
+  		if (filename === "") {
         $("label#filename_empty").show();
         $("input#save-as").focus();
         return false;
-
-        // TODO extend input validation with .validate plugin (allow only
-        // certain characters in file name etc.)
     }
     saveFile(filename, true, false);
 }
@@ -351,22 +410,16 @@ function tagFile() {
 function saveTag() {
     console.log('save tag on file ' + filename);
     var tag = $("input#save-tag").val();
-      if (tag == "") {
+      if (tag === "") {
         $("label#tag_empty").show();
-
-        // TODO change input to bootstrap input error style
-
         $("input#save-tag").focus();
         return false;
-
-        // TODO extend input validation with .validate plugin (allow only
-        // certain characters in file name etc.)
       }
 
     $.ajax({
-      method: "POST",
-      url: "settag.php",
-      data: { tag: tag, filename: filename, fileId: fileId }
+        method: "POST",
+        url: "settag.php",
+        data: { tag: tag, filename: filename, fileId: fileId }
     })
 
     .done(function(response) {

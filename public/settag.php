@@ -14,10 +14,10 @@
         $rval = 1;
     }
 
-    // check which tag slot is free
+    // get tag slots
     $tags = query("SELECT tag1,tag2,tag3 FROM files WHERE id = ? AND file = ?",
             $_SESSION["id"], $filename);
-
+    // try all tag slots
     // TODO - consolidate?! (loop)
     if ($tags[0]['tag1'] === NULL) {
         $tag_num = 'tag1';
@@ -33,16 +33,15 @@
         $tag_num = 'tag3';
         $tagged = query("UPDATE files SET tag3 = ? WHERE id = ? AND file = ?",
                     $_POST["tag"], $_SESSION["id"], $filename);
-    }
-    else {
+    } else {
         $rval = 3;
     }
 
-    if ($tagged !== false) {
+    if ($rval !== 3 && $tagged !== false) {
         $rval = 0;
         $tagId = $tag_num . '_' . $fileId;
     }
-    else {
+    else if ($rval !== 3 && $tagged === false) {
         $rval = 2;
     }
 

@@ -50,13 +50,13 @@
       <div class="modal-body">
         <div class="input-group input-group-lg col-sm-12">
           <input type="text" name="filename" class="form-control" id="save-as" placeholder="Example.md">
-          <label class="error" for="filename" id="filename_empty"><br>Please enter a file name!</label>
-          <label class="error" for="filename" id="filename_exists"><br>File name already exists!</label>
+          <label class="error" id="filename_empty"><br>Please enter a file name!</label>
+          <label class="error" id="filename_exists"><br>File name already exists!</label>
         </div>
       </div>
       <div class="modal-footer">
         <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
-        <button type="button" class="btn btn-primary" id="submit-fn" >Save</button>
+        <button type="button" class="btn btn-primary confirm-btn" id="submit-fn" >Save</button>
       </div>
     </div>
   </div>
@@ -76,19 +76,48 @@
       <div class="modal-body">
         <div class="input-group input-group-lg col-sm-12">
           <input type="text" name="tag" class="form-control" id="save-tag">
-          <label class="error" for="tag" id="tag_empty"><br>Please enter a tag!</label>
-          <label class="error" for="tag" id="tags_full"><br>Sorry, you can assign only up to three tags per file!</label>
+          <label class="error" id="tag_empty"><br>Please enter a tag!</label>
+          <label class="error" id="tags_full"><br>Sorry, you can assign only up to three tags per file!</label>
         </div>
       </div>
       <div class="modal-footer">
         <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
-        <button type="button" class="btn btn-primary" id="submit-tag" >Ok</button>
+        <button type="button" class="btn btn-primary confirm-btn" id="submit-tag" >Ok</button>
       </div>
     </div>
   </div>
 </form>
 </div>
 <!-- /.TagModal -->
+
+<!-- AcntModal -->
+<div class="modal" id="AcntModal" tabindex="-1" role="dialog" aria-labelledby="AcntModalLabel">
+  <form name="Acnt" action="">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="AcntModalLabel">Account Settings</h4>
+      </div>
+      <div class="modal-body">
+        <div class="input-group input-group-lg col-sm-12">
+          <p>Change your password</p>
+          <input type="password" name="pw" class="form-control" placeholder="New password" id="save-pw">
+          <input type="password" name="pw-confirm" class="form-control" placeholder="Confirmation" id="confirm-pw">
+          <label class="error" id="pw-confirm-empty"><br>Please confirm your new password!</label>
+          <label class="error" id="pw-confirm-nomatch"><br>Password confirmation does not match!</label>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+        <button type="button" class="btn btn-primary confirm-btn" id="submit-acnt" >Ok</button>
+      </div>
+    </div>
+  </div>
+</form>
+</div>
+<!-- /.AcntModal -->
 
 <div id="wrapper" class="en-hide" >
 
@@ -136,13 +165,8 @@
           <i class="glyphicon glyphicon-user"></i> <i class="glyphicon glyphicon-chevron-down"></i>
         </a>
         <ul class="dropdown-menu dropdown-user">
-          <li><a href="#"><i class="glyphicon glyphicon-user"></i> User Profile</a>
-          </li>
-          <li><a href="#"><i class="fui-gear"></i> Settings</a>
-          </li>
-          <li class="divider"></li>
-          <li><a href="logout.php"><i class="fui-export"></i> Logout</a>
-          </li>
+          <li><a href="#" id="btn-settings"><i class="fui-gear"></i> Settings</a></li>
+          <li><a href="logout.php"><i class="fui-export"></i> Logout</a></li>
         </ul>
         <!-- /.dropdown-user -->
       </li>

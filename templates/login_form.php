@@ -54,7 +54,7 @@
       <input type="checkbox" value="remember-me"> Remember me
     </label>
   </div> -->
-  <button id="submit-login" class="btn btn-lg btn-primary btn-block login-btn" type="button">Log in</button>
+  <button id="submit-login" class="btn btn-lg btn-primary btn-block confirm-btn" type="button">Log in</button>
   </br>
   <div class="alert alert-danger invalid-login">Invalid username/password!</div>
   <div class="alert alert-danger empty-username">Please enter a username!</div>
