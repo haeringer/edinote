@@ -103,6 +103,15 @@ $(function() {
     // bootstrap tooltips
     $('[data-toggle="tooltip"]').tooltip({container: 'body'});
     
+    // sidebar shadows
+    $('#file-list').scroll(function() {
+        if($(this).scrollTop()) {
+            $('#ls-top').addClass('list-shadow list-shadow-top');
+        } else {
+            $('#ls-top').removeClass('list-shadow list-shadow-top');
+        }
+    });
+    
     // stop progress bar and blend in UI
     require(['nprogress'], function(NProgress) { NProgress.done() });
     $("#wrapper").delay(1000).fadeIn(500, function() { editor.focus() });
@@ -162,8 +171,7 @@ function loadFile(fileId_load) {
             editor.focus();
             // set syntax highlighting
             aceMode(filename);
-        }
-        else {
+        } else {
             showCont(contents);
         }
     })
@@ -182,8 +190,7 @@ function showCont(cont) {
         require(['marked'], function(marked) {
             $('#md-container').html(marked(cont, { sanitize: true }));
         });
-    }
-    else {
+    } else {
         $('#md-container').fadeIn(100).addClass('plain').text(cont);
     }
 }
@@ -223,8 +230,7 @@ function saveFile(filename, save_as, renameTrigger) {
         var input = document.getElementById("save-as");
         input.focus();
         input.setSelectionRange(0,8);
-    }
-    else {
+    } else {
         $.ajax({
             method: "POST",
             url: "save.php",
@@ -269,14 +275,13 @@ function saveFile(filename, save_as, renameTrigger) {
                 if (save_as === true) {
                     $('#SaveModal').modal('hide');
                     // insert new file element
-                    $('#new-file').after(response.fileEl);
+                    $('#list-top').after(response.fileEl);
                     $('#' + response.fileId).addClass('active');
                     $('#tag-add').removeClass('bottom-disabled');
                     fileId = response.fileId;
                     editor.focus();
                 }
-            }
-            else {
+            } else {
                 console.log('oops?!');
             }
         })
@@ -292,8 +297,7 @@ function saveFile(filename, save_as, renameTrigger) {
 function fileState() {
     if (editor.session.getUndoManager().isClean()) {
         $('#save').addClass("disabled");
-    }
-    else {
+    } else {
         $('#save').removeClass("disabled");
     }
 }
@@ -379,8 +383,7 @@ function saveTag() {
         else if (response.rval === 3) {
             console.log('tag slots are full');
             $("label#tags_full").show();
-        }
-        else {
+        } else {
             console.log("couldn't save tag for any reason");
         }
     })
@@ -416,8 +419,7 @@ function removeTag() {
         }
         else if (response.rval === 2) {
             console.log("couldn't delete tag from database");
-        }
-        else {
+        } else {
             console.log(response.tag + " removed");
             $('#' + tagId).empty();
             $('#tag-rm').addClass('bottom-disabled');
@@ -448,8 +450,7 @@ function switchMode(init, newfile) {
                 viewmode = true;
                 $('#editor-container').css('display', 'none', 'important');
                 $('#mode').addClass('active');
-            }
-            else {
+            } else {
                 console.log('mode.php returned ' + JSON.stringify(response));
             }
         })
@@ -457,8 +458,7 @@ function switchMode(init, newfile) {
         .fail(function(jqXHR, textStatus, errorThrown) {
             console.log(errorThrown.toString());
         });
-    }
-    else {
+    } else {
         if (viewmode === true) {
             $('#md-container').css('display', 'none', 'important');
             console.log('mode switched to "edit"');
@@ -501,16 +501,14 @@ function switchMode(init, newfile) {
             .done(function(response) {
                 if (response.viewmode_r === 'true') {
                     viewmode = true;
-                }
-                else {
+                } else {
                     console.log('mode.php returned ' + JSON.stringify(response));
                 }
             })
             .fail(function(jqXHR, textStatus, errorThrown) {
                 console.log(errorThrown.toString());
             });
-        }
-        else {
+        } else {
             console.log(viewmode);
         }
     }
@@ -524,16 +522,23 @@ switchMode(true, false);
  * various stuff
  */
 
-// set height of editor/view mode container
-function setHeight() {
+// set height of editor/view mode container + width of some sidebar elements
+function setSize() {
     var editor_height = $(window).height() - 110;
     var sidebar_height = editor_height - 100;
     $("#editor-container").css("height", editor_height);
     $("#md-container").css("height", editor_height);
     $("#file-list").css("max-height", sidebar_height);
+    
+    var filesWidth = $(window).width() - 22;
+    if (filesWidth < 768) {
+        $('.list-width').css('width', filesWidth);
+    } else {
+        $('.list-width').css('width', '228');
+    }
 }
-setHeight();
-window.onresize = function(event) { setHeight() };
+setSize();
+window.onresize = function(event) { setSize() };
 
 // collapse sidebar on mobile/resize
 $(window).bind("load resize", function() {
@@ -565,8 +570,7 @@ $(window).bind("load resize", function() {
 function alertUnsaved() {
     if (editor.session.getUndoManager().isClean()) {
         console.log('leaving saved or empty file..');
-    }
-    else {
+    } else {
         return (confirm('Your document has not been saved yet.\n\n'
                     + 'Are you sure you want to leave?') == true);
     }

@@ -28,7 +28,7 @@
   <!-- Custom scrollbar CSS -->
   <link href='/css/perfect-scrollbar.min.css' rel='stylesheet'>
 
-  <!-- http://sindresorhus.com markdown CSS -->
+  <!-- Github markdown CSS -->
   <link href='/css/markdown.css' rel='stylesheet'>
 
   <!-- Custom CSS -->
@@ -159,27 +159,28 @@
             <input type="text" class="search form-control" placeholder="Search...">
           </li>
         </ul>
+        <div id="ls-top" class="list-width"></div>
         <ul class="list pre-scrollable" id="file-list">
 
-          <div id="new-file"></div>
+          <div id="list-top"></div>
 
-          <?php
-            for ($i = 0; $i < sizeof($files); $i++) {
-                ?>
-                <li class="list-group-item" id="<?=$files[$i]["fileid"]?>">
-                  <div class="lgi-name"><?=substr($files[$i]["file"],0,29)?></div>
-                  <div class="tags">
-                    <div class="tag" id="tag1_<?=$files[$i]["fileid"]?>"><?=$files[$i]["tag1"]?></div>
-                    <div class="tag" id="tag2_<?=$files[$i]["fileid"]?>"><?=$files[$i]["tag2"]?></div>
-                    <div class="tag" id="tag3_<?=$files[$i]["fileid"]?>"><?=$files[$i]["tag3"]?></div>
-                    <div id="tg_<?=$files[$i]["fileid"]?>"></div>
-                  </div>
-                </li>
-                <?php
-            }
-          ?>
+          <?php for ($i = 0; $i < sizeof($files); $i++) { ?>
+            <li class="list-group-item" id="<?=$files[$i]["fileid"]?>">
+              <div class="lgi-name"><?=substr($files[$i]["file"],0,29)?></div>
+              <div class="tags">
+                <div class="tag" id="tag1_<?=$files[$i]["fileid"]?>">
+                  <?=$files[$i]["tag1"]?></div>
+                <div class="tag" id="tag2_<?=$files[$i]["fileid"]?>">
+                  <?=$files[$i]["tag2"]?></div>
+                <div class="tag" id="tag3_<?=$files[$i]["fileid"]?>">
+                  <?=$files[$i]["tag3"]?></div>
+                <div id="tg_<?=$files[$i]["fileid"]?>"></div>
+              </div>
+            </li>
+          <?php } ?>
 
         </ul>
+        <div class="list-shadow list-shadow-bottom list-width"></div>
 
         <div class="btn-toolbar en-bottom" role="toolbar">
           <div class="btn-group btn-group-s" role="group">
