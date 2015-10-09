@@ -62,6 +62,8 @@ body {
     white-space: -o-pre-wrap; /* newer Opera */
     white-space: pre-wrap; /* Chrome; W3C standard */
     word-wrap: break-word; /* IE */
+    font-family: "Lucida Console", "Ubuntu Mono", "Lucida Sans Typewriter", monospace;
+    font-size: 14px;
 }
 
 /* Top navigation - hide default border to remove 1px line */
