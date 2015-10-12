@@ -66,6 +66,12 @@ body {
     font-size: 14px;
 }
 
+/* override flatUI/bootstrap with values for markdown*/
+p {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
 /* Top navigation - hide default border to remove 1px line */
 .navbar-fixed-top {
     border: 0;
@@ -238,14 +244,16 @@ body {
     margin: 0px 0px 0px 0px;
 }
 
-#save.disabled {
+.navbar-btn.disabled {
     background-color: #AEBCC1;
 }
 
-#save {
-    /*background-color: #FF8080;*/
-    background-color: #3498DB;
-}
+/*#save.navbar-btn:not([disabled]) {*/
+/*    background-color: red;*/
+    /*background-color: #3498DB;*/
+/*}*/
+
+/*.navbtn-active*/
 
 .confirm-btn:hover {
     background-color: #62B1E6;
@@ -303,6 +311,8 @@ body {
     overflow: auto;
     z-index: 1;
     position: relative;
+    max-height: 48px;
+    overflow: hidden !important;
 }
 
 .sidebar .list-group-item:hover {

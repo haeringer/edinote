@@ -17,7 +17,7 @@
   <?php endif ?>
 
   <!-- NProgress loading indicator CSS -->
-  <link href="/css/nprogress.css" rel="stylesheet">
+  <link href="/css/nprogress-init.css" rel="stylesheet">
 
   <!-- Bootstrap Core CSS -->
   <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -137,7 +137,7 @@
           <button type="button" id="new" class="btn btn-default navbar-btn" data-toggle="tooltip" data-placement="bottom" title="New">
             <span class="fui-plus" aria-hidden="true"></span>
           </button>
-          <button type="button" id="delete" class="btn btn-default navbar-btn" data-toggle="tooltip" data-placement="bottom" title="Delete">
+          <button type="button" id="delete" class="btn btn-default navbar-btn disabled" data-toggle="tooltip" data-placement="bottom" title="Delete">
             <span class="fui-cross" aria-hidden="true"></span>
           </button>
           <button type="button" id="save" class="btn btn-default navbar-btn disabled" data-toggle="tooltip" data-placement="bottom" title="Save">
@@ -189,7 +189,7 @@
 
           <?php for ($i = 0; $i < sizeof($files); $i++) { ?>
             <li class="list-group-item" id="<?=$files[$i]["fileid"]?>">
-              <div class="lgi-name"><?=substr($files[$i]["file"],0,29)?></div>
+              <div class="lgi-name"><?=$files[$i]["file"]?></div>
               <div class="tags">
                 <div class="tag" id="tag1_<?=$files[$i]["fileid"]?>">
                   <?=$files[$i]["tag1"]?></div>
@@ -197,7 +197,6 @@
                   <?=$files[$i]["tag2"]?></div>
                 <div class="tag" id="tag3_<?=$files[$i]["fileid"]?>">
                   <?=$files[$i]["tag3"]?></div>
-                <div id="tg_<?=$files[$i]["fileid"]?>"></div>
               </div>
             </li>
           <?php } ?>

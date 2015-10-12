@@ -14,14 +14,16 @@ var tagId;
 var filename = '';
 var filename_old = '';
 var contents = '';
+var ext;
 var rename = false;
 
 define([
     'jquery',
+    'nprogress',
     'ace/ace',
     'ace/ext/modelist',
     'bootstrap'
-    ], function($, ace) {
+    ], function($, NProgress, ace) {
 
 
 /******************************************************************************
@@ -117,8 +119,17 @@ $(function() {
     });
     
     // stop progress bar and blend in UI
-    require(['nprogress'], function(NProgress) { NProgress.done() });
-    $("#wrapper").delay(1000).fadeIn(500, function() { editor.focus() });
+    NProgress.done();
+    $("#wrapper").delay(1000).fadeIn(500, function() { 
+        editor.focus();
+        NProgress.configure({
+            minimum: 0.3,
+            speed: 150,
+            trickleRate: 0.1,
+            trickleSpeed: 20,
+        });
+        $('link[href="/css/nprogress-init.css"]').attr('href','/css/nprogress.css');
+    });
     console.log('main window loaded');
 });
 
@@ -192,6 +203,7 @@ function newFile() {
     }
     console.log('new empty document...');
     filename = '';
+    enableDelete();
     editor.getSession().setValue("");
     editor.focus();
     $('.list-group-item').removeClass('active');
@@ -205,16 +217,17 @@ function loadFile(fileId_load) {
         return;
     }
 
+    NProgress.start();
     fileId = fileId_load;
     console.log('load file with id ' + fileId);
 
-        $('.list-group-item').removeClass('active');
-        $('#rename').removeClass('bottom-disabled');
-        $('#tag-add').removeClass('bottom-disabled');
-        $('.tag').removeClass('active');
-        $('#tag-rm').addClass('bottom-disabled');
-        tagId = '';
-        $('#' + fileId).addClass('active');
+    $('.list-group-item').removeClass('active');
+    $('#rename').removeClass('bottom-disabled');
+    $('#tag-add').removeClass('bottom-disabled');
+    $('.tag').removeClass('active');
+    $('#tag-rm').addClass('bottom-disabled');
+    tagId = '';
+    $('#' + fileId).addClass('active');
 
     $.getJSON('getfile.php', {fileId: fileId})
 
@@ -223,7 +236,9 @@ function loadFile(fileId_load) {
         console.log('file "' + response.filename + '" loaded');
         filename = response.filename;
         contents = response.content;
-        
+        ext = filename.substr((~-filename.lastIndexOf(".") >>> 0) + 2);
+        enableDelete();
+
         if (viewmode === false) {
             /* fill editor with response data returned from getfile.php and set
                cursor to beginning of file */
@@ -234,6 +249,7 @@ function loadFile(fileId_load) {
         } else {
             showCont(contents);
         }
+        NProgress.done();
     })
 
     .fail(function(jqXHR, textStatus, errorThrown) {
@@ -243,8 +259,6 @@ function loadFile(fileId_load) {
 
 // show content as markdown or plain text depending on file extension
 function showCont(cont) {
-    var ext = filename.substr((~-filename.lastIndexOf(".") >>> 0) + 2);
-    console.log('file extension: ' + ext);
     if (ext === 'md') {
         $('#md-container').fadeIn(100).removeClass('plain');
         require(['marked'], function(marked) {
@@ -271,21 +285,27 @@ function saveAs() {
 // save file
 function saveFile(filename, save_as, renameTrigger) {
 
+    NProgress.start();
     contents = editor.getSession().getValue();
 
     if (filename === '' || renameTrigger === true) {
-        if (renameTrigger === true) {
-            rename = true;
-            filename_old = filename.slice(0);
-        }
         // get new filename via saveAs()
         $('.error').hide();
         $('#SaveModal').modal('toggle');
         $("#save-as").val('new file.md');
-
+        if (renameTrigger === true) {
+            rename = true;
+            filename_old = filename.slice(0);
+            $("#save-as").val(filename_old);
+        }
         var input = document.getElementById("save-as");
-        input.focus();
+        if (renameTrigger === true) {
+            var nameLng = filename_old.length - ext.length - 1;
+            input.setSelectionRange(0,nameLng);
+        } else {
         input.setSelectionRange(0,8);
+        }
+        input.focus();
     } else {
         $.ajax({
             method: "POST",
@@ -329,12 +349,14 @@ function saveFile(filename, save_as, renameTrigger) {
                 console.log("file saved");
                 // if a new file was created (via parameter save_as = 1)
                 if (save_as === true) {
+                    enableDelete();
                     $('#SaveModal').modal('hide');
                     // insert new file element
                     $('#list-top').after(response.fileEl);
                     $('#' + response.fileId).addClass('active');
                     $('#tag-add').removeClass('bottom-disabled');
                     fileId = response.fileId;
+                    aceMode(filename);
                     editor.focus();
                 }
             } else {
@@ -346,15 +368,16 @@ function saveFile(filename, save_as, renameTrigger) {
             console.log('save.php returned ' + JSON.stringify(response));
             console.log(errorThrown.toString());
         });
+        NProgress.done();
     }
 }
 
 // enable/disable save button depending on file state
 function fileState() {
     if (editor.session.getUndoManager().isClean()) {
-        $('#save').addClass("disabled");
+        $('#save').addClass("disabled").removeClass("active");
     } else {
-        $('#save').removeClass("disabled");
+        $('#save').removeClass("disabled").addClass("active");
     }
 }
 
@@ -615,6 +638,14 @@ $(window).bind("load resize", function() {
         }
     });
 }());
+
+function enableDelete() {
+    if (filename !== '') {
+        $('#delete').removeClass("disabled");
+    } else {
+        $('#delete').addClass("disabled");
+    }
+}
 
 // alert if user is about to leave unsaved file
 function alertUnsaved() {

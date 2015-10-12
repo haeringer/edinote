@@ -1,5 +1,0 @@
-lorem,
-
-ipsum
-
-und so weiter...
