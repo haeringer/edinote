@@ -14,7 +14,7 @@ Edinote is a web-based note taking application. It aims to be simple and fast, w
 * A real good text editor (Ace)
 * Formatted Markdown view
 * Syntax highlighting
-* **no** WYSIWYG
+* **no** WYSIWYG - it's Markdown
 * Keyboard shortcuts
 * Mobile usability
 * Multi-user support

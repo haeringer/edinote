@@ -1,3 +1,5 @@
+## Juniper JunOS command reference
+
 When it comes to CLI syntax and handling, some network hardware vendors more or less try to copy or at least lean on Cisco's IOS. Some may call it lame, but it definitely makes life easier, because you get on an unknown device and the chance to just guess the right commands is pretty high. Juniper is different. Being mainly used to Cisco and Enterasys, I was pretty much lost - although there are still similarities. Here's an overview of some basic commands for Juniper's JunOS, especially for people coming from Cisco IOS ;) 
 First Hint: Auto-completion is done with Space instead of Tab.
 

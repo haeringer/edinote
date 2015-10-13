@@ -1,3 +1,5 @@
+## Configuring an Ethernet bridge on Debian
+
 In some cases it may be needed to configure an Ethernet interface as a networking brigde, for example it is a common setup for some virtualization hosts/hypervisors. With the bridge it is achieved that
 the guest systems can communicate with the outside through the interface eth0, each guest having its own IP address. When configured as a bridge, your interface acts as sort of a network switch.   Here's how to configure a static bridge (there's another way, using the brctl command, but that configuration would be lost after a reboot).
 

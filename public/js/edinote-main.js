@@ -345,6 +345,7 @@ function saveFile(filename, save_as, renameTrigger) {
                 // clear changed state of file
                 editor.session.getUndoManager().markClean();
                 fileState();
+                ext = filename.substr((~-filename.lastIndexOf(".") >>> 0) + 2);
                 editor.focus();
                 console.log("file saved");
                 // if a new file was created (via parameter save_as = 1)

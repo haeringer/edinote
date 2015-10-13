@@ -1,3 +1,5 @@
+## Getting a new IOS on a Cisco 836 router
+
 Some time ago I was struggling with getting a new IOS version on a 836 router. From the newer 800 series routers, 876 or 881 etc., I was used to configure a VLAN on one of the Ethernet interfaces; then you're able to reach the interface via TFTP at the IP address of the VLAN. The problem with the 836 is that it doesn't support VLANs, so your interface doesn't have an IP address. The solution is to copy the IOS in **ROMmon mode**.
 
 1. Connect your NIC with Ethernet interface 1 of the router (it has to be \#1)

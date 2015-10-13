@@ -153,7 +153,7 @@
 
     </div>
 
-    <a class="navbar-brand brand" href="#"><img alt="Brand" src="../img/logo-b-1.png"></a>
+    <a class="navbar-brand brand" href="#"><img alt="Edinote" src="../img/logo-b-1.png"></a>
     <!-- /.navbar-header -->
 
     <!-- Non-collapsing right-side stuff (dropdown) -->

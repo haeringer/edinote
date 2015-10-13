@@ -1,9 +1,11 @@
 <?php
 
     /**
-     * constants.php
+     * Edinote constants
      *
-     * Global constants.
+     * Ben Haeringer
+     * ben.haeringer@gmail.com
+     *
      */
 
     // database type: mysql or sqlite

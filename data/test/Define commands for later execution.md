@@ -1,3 +1,5 @@
+## Define commands for later execution
+
 Sometimes it can be critical to configure a remote device, e.g. if you have to configure something on the network interface over which you reach the machine. But there are ways to ensure that you won't be locked out forever in case something goes wrong.
 
 **On Linux**, there's the commmand "at". You can define commands for later execution with it, without setting up a cron job. For example, if you have to change something on /etc/network/interfaces, you only need to make a backup of the previous configuration and tell the system to copy back the backup at a specific time.

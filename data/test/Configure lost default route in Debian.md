@@ -1,3 +1,5 @@
+## Configure lost default route in Debian
+
 Recently, my Debian server had no internet connection anymore and I didn't know why.
 
 I was able to ping the default gateway, and it was also configured in /etc/network/interfaces.

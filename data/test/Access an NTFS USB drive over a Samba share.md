@@ -1,3 +1,5 @@
+## Access an NTFS USB drive over a Samba share
+
 I needed to plug an NTFS formatted USB harddisk into my Debian home server (with Samba file services already running on it) and access it from my PCs in the network. To achieve full read/write access for the Windows users, you need the driver NTFS-3G.
 
 Install ntfs-3g

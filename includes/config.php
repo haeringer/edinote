@@ -1,10 +1,10 @@
 <?php
 
     /**
-     * config.php
+     * Edinote config.php - based on CS50 pset7
      *
-     * Computer Science 50
-     * Problem Set 7
+     * Ben Haeringer
+     * ben.haeringer@gmail.com
      *
      * Configures pages.
      */
@@ -20,8 +20,8 @@
     // enable sessions
     session_start();
 
-    // require authentication for all pages except /login.php, /logout.php, and /register.php
-    if (!in_array($_SERVER["PHP_SELF"], ["/login.php", "/logout.php", "/register.php"]))
+    // require authentication for all pages except /login.php and /logout.php
+    if (!in_array($_SERVER["PHP_SELF"], ["/login.php", "/logout.php"]))
     {
         if (empty($_SESSION["id"]))
         {

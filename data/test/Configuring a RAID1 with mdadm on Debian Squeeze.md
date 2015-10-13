@@ -1,3 +1,5 @@
+## Configuring a RAID1 with mdadm on Debian Squeeze
+
 Generally I have always thought software raids to be insecure, difficult to handle and more a risk than a safety measure. But a RAID1 with the Linux software **mdadm** is a safe mirror of your harddisk - in case of a HD failure, you can put the remaining disk into any computer and boot from it. And it's easy to handle. One way to configure it on Debian is with the Debian installer during the OS installation, which will be described here.
 
 First, a brief explanation of how software raids work - this is needed to understand the installation process. In a hardware raid, devices exist as hard disks. In a software raid, those devices are partitions that are marked as “Physical volumes for RAID”. Those partitions are then combined into a software RAID array. This array contains normal partitions as they are present on every normal non-raid hard disk.  

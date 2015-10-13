@@ -1,3 +1,5 @@
+## How to set up a DLNA (UPnP) Media Server with MiniDLNA
+
 MiniDLNA is a Linux server software with the aim of being fully compliant with DLNA/UPnP-AV clients. It is developed by a NETGEAR employee for the ReadyNAS product line. It is a great, lightweight, fast and simple alternative to older media servers like TwonkyServer or Mediatomb. This is about how to set up MiniDLNA on a Debian-based Linux.  
 
 Download source code:

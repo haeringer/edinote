@@ -2,9 +2,7 @@
 
     require(__DIR__ . "/../includes/config.php");
 
-    // TODO make user variables globally available somehow
-    $usrdir = DATADIR . query("SELECT username FROM users WHERE id = ?", $_SESSION["id"])[0]['username'] . "/";
-
+    $usrdir = $_SESSION['usrdir'];
     $fileId = $_GET["fileId"];
 
     // getfile wasn't called properly with a file id

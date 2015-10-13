@@ -27,7 +27,7 @@ require.config({
 require(['nprogress'], function(NProgress) {
     NProgress.configure({
         minimum: 0.1,
-        speed: 800,
+        speed: 1000,
         trickle: true,
         trickleRate: 2,
         trickleSpeed: 800,

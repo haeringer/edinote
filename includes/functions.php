@@ -1,12 +1,12 @@
 <?php
 
     /**
-     * functions.php
+     * Edinote functions.php - based on CS50 pset7
      *
-     * Computer Science 50
-     * Problem Set 7
+     * Ben Haeringer
+     * ben.haeringer@gmail.com
      *
-     * Helper functions.
+     * Helper functions
      */
 
     require_once("constants.php");
