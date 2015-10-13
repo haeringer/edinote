@@ -17,7 +17,7 @@
   <?php endif ?>
 
   <!-- NProgress loading indicator CSS -->
-  <link href="/css/nprogress-init.css" rel="stylesheet">
+  <link href="/css/nprogress.css" rel="stylesheet">
 
   <!-- Bootstrap Core CSS -->
   <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -152,7 +152,7 @@
       </div>
 
     </div>
-
+    <div id='loading-spinner'><img alt="loading..." src="../img/loading.gif"></div>
     <a class="navbar-brand brand" href="#"><img alt="Edinote" src="../img/logo-b-1.png"></a>
     <!-- /.navbar-header -->
 

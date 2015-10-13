@@ -186,6 +186,15 @@ p {
     display: none;
 }
 
+#loading-spinner {
+    display: none;
+    position: absolute;
+    /*top: 80px;*/
+    /*right: 25px;*/
+    top: 5px;
+    right: 290px;
+}
+
  @media(min-width:768px) {
      .brand {
          position: absolute;

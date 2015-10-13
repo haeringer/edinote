@@ -19,11 +19,10 @@ var rename = false;
 
 define([
     'jquery',
-    'nprogress',
     'ace/ace',
     'ace/ext/modelist',
     'bootstrap'
-    ], function($, NProgress, ace) {
+    ], function($, ace) {
 
 
 /******************************************************************************
@@ -119,16 +118,10 @@ $(function() {
     });
     
     // stop progress bar and blend in UI
-    NProgress.done();
+    require(['nprogress'], function(NProgress) { NProgress.done() });
+    
     $("#wrapper").delay(1000).fadeIn(500, function() { 
         editor.focus();
-        NProgress.configure({
-            minimum: 0.3,
-            speed: 150,
-            trickleRate: 0.1,
-            trickleSpeed: 20,
-        });
-        $('link[href="/css/nprogress-init.css"]').attr('href','/css/nprogress.css');
     });
     console.log('main window loaded');
 });
@@ -217,7 +210,7 @@ function loadFile(fileId_load) {
         return;
     }
 
-    NProgress.start();
+    $('#loading-spinner').show();
     fileId = fileId_load;
     console.log('load file with id ' + fileId);
 
@@ -249,7 +242,7 @@ function loadFile(fileId_load) {
         } else {
             showCont(contents);
         }
-        NProgress.done();
+        $('#loading-spinner').fadeOut(500);
     })
 
     .fail(function(jqXHR, textStatus, errorThrown) {
@@ -285,7 +278,7 @@ function saveAs() {
 // save file
 function saveFile(filename, save_as, renameTrigger) {
 
-    NProgress.start();
+    $('#loading-spinner').show();
     contents = editor.getSession().getValue();
 
     if (filename === '' || renameTrigger === true) {
@@ -369,7 +362,7 @@ function saveFile(filename, save_as, renameTrigger) {
             console.log('save.php returned ' + JSON.stringify(response));
             console.log(errorThrown.toString());
         });
-        NProgress.done();
+        $('#loading-spinner').fadeOut(500);
     }
 }
 
