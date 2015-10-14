@@ -25,7 +25,7 @@ $(function() {
 				password: password
 			},
 			beforeSend: function() {
-				$("#submit-login").html('Connecting...');
+				$("#submit-login").html('Connecting...').addClass('disabled');
 			}
 		})
 
@@ -76,9 +76,9 @@ function submit(e) {
 }
 
 function submitBtnRevert() {
-	$("#submit-login").delay(1000)
+	$("#submit-login").delay(500)
 	.queue(function(n) {
-		$(this).html("Log in");
+		$(this).html("Log in").removeClass('disabled');
 		n();
 	});
 }

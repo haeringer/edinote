@@ -5,8 +5,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="">
-  <meta name="author" content="">
+  <meta name="description" content="Edinote">
+  <meta name="author" content="Ben Haeringer">
   <link rel="shortcut icon" href="../img/favicon-1.ico?v=1" type="image/x-icon">
   <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
 
@@ -30,12 +30,6 @@
 
   <!-- jQuery -->
   <script src="/js/jquery.min.js"></script>
-
-  <!-- Bootstrap Core JavaScript -->
-  <script src="/js/bootstrap.min.js"></script>
-
-  <!-- edinote login js -->
-  <script src="/js/edinote-login.js"></script>
 
 </head>
 
@@ -61,6 +55,12 @@
   <div class="alert alert-danger empty-password">Please enter a password!</div>
 </form>
 </div>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- edinote login js -->
+<script src="/js/edinote-login.js"></script>
 
 </body>
 

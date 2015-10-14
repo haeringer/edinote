@@ -257,13 +257,6 @@ p {
     background-color: #AEBCC1;
 }
 
-/*#save.navbar-btn:not([disabled]) {*/
-/*    background-color: red;*/
-    /*background-color: #3498DB;*/
-/*}*/
-
-/*.navbtn-active*/
-
 .confirm-btn:hover {
     background-color: #62B1E6;
 }
@@ -393,4 +386,13 @@ a.list-group-item, li.list-group-item {
 .navbar-header:after,
 .navbar:after {
     content: none;
+}
+
+#submit-login:hover {
+    background-color: #62B1E6;
+    transition: none !important;
+}
+
+#submit-login.disabled {
+    background-color: #8BC4E9;
 }
