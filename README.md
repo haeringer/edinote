@@ -1,7 +1,7 @@
 # Edinote #
 
 Edinote is a web-based note taking application. It aims to be simple and fast, 
-while still providing some nice features like tagging and markdown support, and
+while still providing some nice features like tagging and markdown support, and 
 an easy setup for your own web server.
 
 
@@ -16,18 +16,19 @@ an easy setup for your own web server.
 * A real good text editor (Ace)
 * Formatted Markdown view
 * Syntax highlighting
-* **no** WYSIWYG!
+* **no** WYSIWYG - it's Markdown ;)
 * Keyboard shortcuts
 * Mobile usability
 * Multi-user support
 
 
-**Demo:** [(coming soon)](http://demo.edinote.org)
+**Demo:** [(coming soon)](https://demo.edinote.org)
 
 
 ## Installation
 
-The first release is still under development. Please stay stuned!
+First release is still under development. Please stay stuned.
+
 
 ## Technologies used
 
@@ -42,6 +43,5 @@ Edinote depends on the following languages, frameworks and libraries:
 * Bootstrap
 * FlatUI
 * marked
-* nprogress
 * perfect-scrollbar
-* List.js
+* nprogress

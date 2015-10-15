@@ -179,7 +179,7 @@
 
         <ul class="nav" id="side-menu">
           <li class="sidebar-search">
-            <input type="text" class="search form-control" placeholder="Search...">
+            <input type="text" class="search form-control" placeholder="Search..." id="filter">
           </li>
         </ul>
         <div id="ls-top" class="list-width"></div>
@@ -237,7 +237,7 @@
 <!-- /#wrapper -->
 
 <!-- requireJS plus Edinote app JavaScript -->
-<script data-main="/js/require-base.js" src="/js/require.js"></script>
+<script data-main="/js/edinote-base.js" src="/js/require.js"></script>
 
 </body>
 

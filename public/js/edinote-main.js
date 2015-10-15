@@ -117,6 +117,9 @@ $(function() {
         }
     });
     
+    // file search
+    $("#filter").keyup(function () { Search() });
+    
     // stop progress bar and blend in UI
     require(['nprogress'], function(NProgress) { NProgress.done() });
     
@@ -125,6 +128,7 @@ $(function() {
     });
     console.log('main window loaded');
 });
+
 
 function showSettings() {
     $('.error').hide();
@@ -664,11 +668,33 @@ require(['perfect-scrollbar'], function(Ps) {
 });
 
 
-// list.js file filtering
-var listOptions = { valueNames: ['lgi-name','tags'] };
-require(['list'], function(List) { 
-    new List('sidebar-content', listOptions);
-});
+// file list search/filter function
+function Search() {
+    console.log('searching...');
+    var searchTerm = $("#filter").val();
+    var listItem = $('#file-list').children('li');
+
+    // extend the default :contains functionality to be case insensitive
+    $.extend($.expr[':'], {
+        'containsi': function(elem, i, match, array) {
+            return (elem.textContent || elem.innerText || '').toLowerCase()
+            .indexOf((match[3] || "").toLowerCase()) >= 0;
+        }
+    });
+
+    // make the search less exact by searching all words and not full strings
+    var searchSplit = searchTerm.replace(/ /g, "'):containsi('");
+
+    // actual search: filter out / hide unmatched items 
+    $("#file-list li").not(":containsi('" + searchSplit + "')").each(function(e)   {
+          $(this).addClass('en-hide');
+    });
+
+    // bring items back into view
+    $("#file-list li:containsi('" + searchSplit + "')").each(function(e) {
+          $(this).removeClass('en-hide');
+    });
+}
 
 
 // end of define()
