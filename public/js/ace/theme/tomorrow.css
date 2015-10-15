@@ -95,7 +95,7 @@
 .ace-tomorrow .ace_support.ace_function,
 .ace-tomorrow .ace_variable {
   /* en: */
-  color: #197E89
+  color: #C82829
 }
 
 .ace-tomorrow .ace_support.ace_class,
@@ -115,7 +115,7 @@
 .ace-tomorrow .ace_meta.ace_tag,
 .ace-tomorrow .ace_string.ace_regexp,
 .ace-tomorrow .ace_variable {
-  color: #C82829
+  color: #996633
 }
 
 .ace-tomorrow .ace_comment {

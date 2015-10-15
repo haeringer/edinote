@@ -11,7 +11,7 @@ A more IOS-like `show run` without the hierarchy structure:
 
     > show configuration | display set
 
-Go into config mode (`conf t`):<!--more-->
+Go into config mode (`conf t`):
 
     > configure
 

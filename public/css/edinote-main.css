@@ -192,16 +192,19 @@ p {
     /*top: 80px;*/
     /*right: 25px;*/
     top: 5px;
-    right: 290px;
+    right: 80px;
 }
 
  @media(min-width:768px) {
      .brand {
-         position: absolute;
-         right: 80px;
-         bottom: 5px;
-         display: block;
+        position: absolute;
+        right: 80px;
+        bottom: 5px;
+        display: block;
      }
+     #loading-spinner {
+        right: 290px;
+    }
 }
 
 * {
