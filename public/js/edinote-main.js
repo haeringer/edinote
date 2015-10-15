@@ -387,6 +387,7 @@ function fileState() {
 
 // delete file
 function deleteFile(filename) {
+    $('#loading-spinner').fadeIn(100);
     console.log('deleting file ' + filename);
 
     $.ajax({
@@ -414,6 +415,7 @@ function deleteFile(filename) {
     .fail(function(jqXHR, textStatus, errorThrown) {
         console.log(errorThrown.toString());
     });
+    $('#loading-spinner').fadeOut(500);
 }
 
 

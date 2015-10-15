@@ -336,10 +336,11 @@ a.list-group-item, li.list-group-item {
 }
 
 .lgi-name {
-    padding: 13px;
+    padding: 0px 13px 0px 13px;
     line-height: 3;
     width: auto;
-    display: inline;
+    display: inline-block;
+    word-break: break-all;
 }
 
 .tags {
