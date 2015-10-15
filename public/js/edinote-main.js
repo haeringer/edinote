@@ -16,13 +16,15 @@ var filename_old = '';
 var contents = '';
 var ext;
 var rename = false;
+var scrollContainer;
 
 define([
     'jquery',
+    'perfect-scrollbar',
     'ace/ace',
     'ace/ext/modelist',
     'bootstrap'
-    ], function($, ace) {
+    ], function($, Ps, ace) {
 
 
 /******************************************************************************
@@ -120,6 +122,10 @@ $(function() {
     // file search
     $("#filter").keyup(function () { Search() });
     
+    // custom scrollbar
+    scrollContainer = document.getElementById('file-list');
+    Ps.initialize(scrollContainer);
+    
     // stop progress bar and blend in UI
     require(['nprogress'], function(NProgress) { NProgress.done() });
     
@@ -214,7 +220,7 @@ function loadFile(fileId_load) {
         return;
     }
 
-    $('#loading-spinner').show();
+    $('#loading-spinner').fadeIn(100);
     fileId = fileId_load;
     console.log('load file with id ' + fileId);
 
@@ -282,7 +288,7 @@ function saveAs() {
 // save file
 function saveFile(filename, save_as, renameTrigger) {
 
-    $('#loading-spinner').show();
+    $('#loading-spinner').fadeIn(100);
     contents = editor.getSession().getValue();
 
     if (filename === '' || renameTrigger === true) {
@@ -661,16 +667,8 @@ $(window).bind('beforeunload', function(){
     }
 });
 
-// custom scrollbar
-var scrollContainer = document.getElementById('file-list');
-require(['perfect-scrollbar'], function(Ps) { 
-    Ps.initialize(scrollContainer);
-});
-
-
 // file list search/filter function
 function Search() {
-    console.log('searching...');
     var searchTerm = $("#filter").val();
     var listItem = $('#file-list').children('li');
 
@@ -694,6 +692,8 @@ function Search() {
     $("#file-list li:containsi('" + searchSplit + "')").each(function(e) {
           $(this).removeClass('en-hide');
     });
+
+    Ps.update(scrollContainer);
 }
 
 
