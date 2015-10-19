@@ -8,7 +8,7 @@
 
 require.config({
     // bypass js cache for development purposes
-    urlArgs: "bust=" + (new Date()).getTime(),
+    // urlArgs: "bust=" + (new Date()).getTime(),
     paths: {
         'ace': '/js/ace',
         'bootstrap': 'bootstrap.min',
@@ -30,7 +30,7 @@ require(['nprogress'], function(NProgress) {
         speed: 800,
         trickle: true,
         trickleRate: 0.1,
-        trickleSpeed: 100,
+        trickleSpeed: 500,
         showSpinner: false
     });
     NProgress.start();

@@ -38,6 +38,7 @@ Edinote depends on the following languages, frameworks and libraries:
 * jQuery
 * PHP
 * SQlite
+* MySQL
 * Ace
 * RequireJS
 * Bootstrap
@@ -45,3 +46,4 @@ Edinote depends on the following languages, frameworks and libraries:
 * marked
 * perfect-scrollbar
 * nprogress
+* CS50

@@ -84,8 +84,8 @@ $(function() {
       // use .on 'click' with parent selected to recognize events also on
       // newly added files
     $('.list').on('click', '.list-group-item', function() {
-        loadFile(this.id),
-        false;
+        loadFile(this.id);
+        // false;
     });
     $("button#save").click(function() { saveFile(filename, false, false) });
     $("button#rename").click(function() { saveFile(filename, false, true) });
@@ -97,7 +97,7 @@ $(function() {
     /* tag handling */
     $('#tag-add').click(function() { tagFile() });
     $("button#submit-tag").click(function() { saveTag() });
-    $('.list-group-item').on('click', '.tag', function(evt) { 
+    $('.list').on('click', '.tag', function(evt) { 
         // prevent selection of parent (file loading)
         evt.stopPropagation();
         selectTag(this) });
@@ -225,12 +225,12 @@ function loadFile(fileId_load) {
     console.log('load file with id ' + fileId);
 
     $('.list-group-item').removeClass('active');
+    $('#' + fileId).addClass('active');
     $('#rename').removeClass('bottom-disabled');
     $('#tag-add').removeClass('bottom-disabled');
     $('.tag').removeClass('active');
     $('#tag-rm').addClass('bottom-disabled');
     tagId = '';
-    $('#' + fileId).addClass('active');
 
     $.getJSON('getfile.php', {fileId: fileId})
 
@@ -252,12 +252,12 @@ function loadFile(fileId_load) {
         } else {
             showCont(contents);
         }
-        $('#loading-spinner').fadeOut(500);
     })
 
     .fail(function(jqXHR, textStatus, errorThrown) {
         console.log(errorThrown.toString());
     });
+    $('#loading-spinner').fadeOut(500);
 }
 
 // show content as markdown or plain text depending on file extension
@@ -287,8 +287,6 @@ function saveAs() {
 
 // save file
 function saveFile(filename, save_as, renameTrigger) {
-
-    $('#loading-spinner').fadeIn(100);
     contents = editor.getSession().getValue();
 
     if (filename === '' || renameTrigger === true) {
@@ -355,6 +353,7 @@ function saveFile(filename, save_as, renameTrigger) {
                 if (save_as === true) {
                     enableDelete();
                     $('#SaveModal').modal('hide');
+                    $('#loading-spinner').fadeIn(100);
                     // insert new file element
                     $('#list-top').after(response.fileEl);
                     $('#' + response.fileId).addClass('active');
@@ -362,6 +361,7 @@ function saveFile(filename, save_as, renameTrigger) {
                     fileId = response.fileId;
                     aceMode(filename);
                     editor.focus();
+                    $('#loading-spinner').fadeOut(500);
                 }
             } else {
                 console.log('oops?!');
@@ -372,7 +372,6 @@ function saveFile(filename, save_as, renameTrigger) {
             console.log('save.php returned ' + JSON.stringify(response));
             console.log(errorThrown.toString());
         });
-        $('#loading-spinner').fadeOut(500);
     }
 }
 
