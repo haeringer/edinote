@@ -8,7 +8,7 @@
 
 require.config({
     // bypass js cache for development purposes
-    // urlArgs: "bust=" + (new Date()).getTime(),
+    urlArgs: "bust=" + (new Date()).getTime(),
     paths: {
         'ace': '/js/ace',
         'bootstrap': 'bootstrap.min',

@@ -50,9 +50,9 @@
   </div> -->
   <button id="submit-login" class="btn btn-lg btn-primary btn-block confirm-btn" type="button">Log in</button>
   </br>
-  <div class="alert alert-danger invalid-login">Invalid username/password!</div>
-  <div class="alert alert-danger empty-username">Please enter a username!</div>
-  <div class="alert alert-danger empty-password">Please enter a password!</div>
+  <div class="alert alert-danger invalid-login en-hide">Invalid username/password!</div>
+  <div class="alert alert-danger empty-username en-hide">Please enter a username!</div>
+  <div class="alert alert-danger empty-password en-hide">Please enter a password!</div>
 </form>
 </div>
 

@@ -7,9 +7,6 @@
  */
 
 $(function() {
-
-	$(".alert").css('display', 'none', 'important');
-
 	$("#submit-login").click(function() {
 
 		console.log('trying to log user in....');
