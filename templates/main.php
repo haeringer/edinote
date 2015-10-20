@@ -100,13 +100,34 @@
         <h4 class="modal-title" id="AcntModalLabel">Account Settings</h4>
       </div>
       <div class="modal-body">
+        
+        <div class="btn-group" data-toggle="buttons">
+          <h6>Default file extension</h6>
+          <label class="btn btn-primary en-radio" id="opt-md">
+            <input type="radio" name="opt-md" autocomplete="off">.md (Markdown)
+          </label>
+          <label class="btn btn-primary en-radio" id="opt-txt">
+            <input type="radio" name="opt-txt" autocomplete="off">.txt (Text)
+          </label>
+        </div>
+        
+        <!--<h6>Default file extension</h6>-->
+        <!--<input type="hidden" name="opt-ext" value="" id="opt-ext-input" />-->
+        <!--<div class="btn-group" data-toggle="buttons-radio">  -->
+        <!--  <button id="opt-ext-md" type="button" data-toggle="button" name="opt-ext" value="md" class="btn btn-primary en-radio active">.md (Markdown)</button>-->
+        <!--  <button id="opt-ext-txt" type="button" data-toggle="button" name="opt-ext" value="txt" class="btn btn-primary en-radio">.txt (Text)</button>-->
+        <!--</div>-->
+        
+        <hr></hr>
+        
         <div class="input-group input-group-lg col-sm-12">
-          <p>Change your password</p>
+          <h6>Change password</h6>
           <input type="password" name="pw" class="form-control" placeholder="New password" id="save-pw">
           <input type="password" name="pw-confirm" class="form-control" placeholder="Confirmation" id="confirm-pw">
           <label class="error" id="pw-confirm-nomatch"><br>Password confirmation does not match!</label>
-
+          <label class="error" id="pw-demo"><br>Password change not allowed in demo.</label>
         </div>
+        
       </div>
       <div class="modal-footer">
         <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->

@@ -1,6 +1,6 @@
 ## Find out the primary nameserver for a domain
 
-To find out the primary nameserver for a specific domain, there's a very handy command in nslookup: `set querytype=soa`
+To find out the primary nameserver for a specific domain, there's a handy command in nslookup: `set querytype=soa`
 
 Example on Windows cmd - look for the "primary name server" output line (on Linux it's called "origin"):
 

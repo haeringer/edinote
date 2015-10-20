@@ -260,24 +260,18 @@ p {
     background-color: #AEBCC1;
 }
 
-.confirm-btn:hover {
+.confirm-btn:hover,
+.btn.active:hover {
     background-color: #62B1E6;
 }
 
-.confirm-btn:focus {
+.confirm-btn:focus,
+.btn.active {
     background-color: #3498DB;
 }
 
 .btn-toolbar {
     padding-left: 15px;
-}
-
-.btn.active {
-    background-color: #3498db;
-}
-
-.btn.active:hover {
-    background-color: #62B1E6;
 }
 
 .btn-bottom {
@@ -399,4 +393,15 @@ a.list-group-item, li.list-group-item {
 
 #submit-login.disabled {
     background-color: #8BC4E9;
+}
+
+.en-radio.active,
+.en-radio.active:hover,
+.en-radio.active.focus,
+.en-radio.focus {
+    background-color: #8BC4E9;
+}
+
+.en-radio:hover {
+    background-color: #62B1E6;
 }

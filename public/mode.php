@@ -39,14 +39,6 @@
             }
         }
     }
-    // if mode.php was called from initial page load, just spit out current mode
-    // else if ($init === 'true') {
-    //     $viewmode = $current_mode;
-    // }
-
-    else {
-        $rval = 2;
-    }
     
     // json response
     $response = [

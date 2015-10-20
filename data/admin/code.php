@@ -1,51 +1,38 @@
 <?php
 
-    // configuration
-    require("../includes/config.php"); 
+    require(__DIR__ . "/../includes/config.php");
 
-    // if user reached page via GET (as by clicking a link or via redirect)
-    if ($_SERVER["REQUEST_METHOD"] == "GET")
+    $usrdir = $_SESSION['usrdir'];
+    $fileId = $_GET["fileId"];
+
+    // getfile wasn't called properly with a file id
+    if (empty($fileId))
     {
-        // else render form
-        render("login_form.php", ["title" => "Log In"]);
+        http_response_code(400);
+        exit;
     }
 
-    // else if user reached page via POST (as by submitting a form via POST)
-    else if ($_SERVER["REQUEST_METHOD"] == "POST")
+    // get name of file
+    $filename = query("SELECT file FROM files WHERE fileid = ?", $fileId)[0]['file'];
+
+    // extract content of file
+    $content = file_get_contents($usrdir.$filename);
+
+    // ensure content extraction did work
+    if ($content === false)
     {
-        // validate submission
-        if (empty($_POST["username"]))
-        {
-            apologize("You must provide your username.");
-        }
-        else if (empty($_POST["password"]))
-        {
-            apologize("You must provide your password.");
-        }
-
-        // query database for user
-        $rows = query("SELECT * FROM users WHERE username = ?", $_POST["username"]);
-
-        // if we found user, check password
-        if (count($rows) == 1)
-        {
-            // first (and only) row
-            $row = $rows[0];
-
-            // compare hash of user's input against hash that's in database
-            if (crypt($_POST["password"], $row["hash"]) == $row["hash"])
-            {
-                // remember that user's now logged in by storing user's ID in session
-                $_SESSION["id"] = $row["id"];
-
-                // redirect to portfolio
-                redirect("/");
-            }
-        }
-
-        // else apologize
-        apologize("Invalid username and/or password.");
+        http_response_code(503);
+        exit;
     }
+
+    // build array for ajax response
+    $response = [
+        "content" => $content,
+        "filename" => $filename
+    ];
+
+    // spit out content as json
+    header("Content-type: application/json");
+    echo json_encode($response);
 
 ?>
-

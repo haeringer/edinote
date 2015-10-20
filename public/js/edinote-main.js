@@ -15,6 +15,7 @@ var filename = '';
 var filename_old = '';
 var contents = '';
 var ext;
+var extDefault = '';
 var rename = false;
 var scrollContainer;
 
@@ -106,6 +107,8 @@ $(function() {
     // account settings
     $("#btn-settings").click(function() { showSettings() });
     $("button#submit-acnt").click(function() { Settings() });
+    $('#opt-md').on('click', function() { extDefault = 'md' });
+    $('#opt-txt').on('click', function() { extDefault = 'txt' });
 
     // bootstrap tooltips
     $('[data-toggle="tooltip"]').tooltip({container: 'body'});
@@ -145,6 +148,58 @@ function showSettings() {
 
 function Settings() {
     console.log('save settings');
+    chPassword();
+    defaultExt(false);
+}
+
+
+/******************************************************************************
+ * set default file extension
+ */
+function defaultExt(init) {
+    if (init === true) {
+        $.ajax({ method: "POST", url: "defaultExt.php", data: { 
+            init: init, extDefault: extDefault } 
+        })
+        .done(function(response) {
+            console.log('default file extension: ' + response.ext);
+            extDefault = response.ext;
+            if (extDefault === 'md') {
+                $('#opt-md').addClass('active');
+            } else {
+                $('#opt-txt').addClass('active');
+            }
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            console.log(errorThrown.toString());
+        });
+    } else {
+        $.ajax({ method: "POST", url: "defaultExt.php", data: { 
+            init: init, extDefault: extDefault } 
+        })
+        .done(function(response) {
+            if (response.rval === 0) {
+                console.log('changed default extension to ' + extDefault);
+            }
+            else {
+                console.log('oops');
+            }
+            
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            console.log(errorThrown.toString());
+        });
+    }
+}
+
+// check which mode user is in at initial page load
+defaultExt(true);
+
+
+/******************************************************************************
+ * Change password
+ */
+function chPassword() {
     var pw = $("input#save-pw").val();
     var conf = $("input#confirm-pw").val();
     if (pw !== conf) {
@@ -160,12 +215,12 @@ function Settings() {
     
     $.ajax({
         method: "POST",
-        url: "account.php",
+        url: "password.php",
         data: { pw: pw, conf: conf }
     })
     
     .done(function(response) {
-        console.log('account.php returned ' + JSON.stringify(response));
+        console.log('password.php returned ' + JSON.stringify(response));
     
         if (response.rval === 0) {
             $('#AcntModal').modal('hide');
@@ -182,8 +237,11 @@ function Settings() {
         }
         else if (response.rval === 4) {
             console.log('SQL query error');
-        } else {
-            console.log('oops?');
+        } 
+        else if (response.rval === 5) {
+            console.log('not allowed in demo');
+            $('.error').hide();
+            $("label#pw-demo").show();
         }
     })
     
@@ -293,7 +351,7 @@ function saveFile(filename, save_as, renameTrigger) {
         // get new filename via saveAs()
         $('.error').hide();
         $('#SaveModal').modal('toggle');
-        $("#save-as").val('new file.md');
+        $("#save-as").val('new file.' + extDefault);
         if (renameTrigger === true) {
             rename = true;
             filename_old = filename.slice(0);

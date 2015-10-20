@@ -1,6 +1,8 @@
 # Edinote #
 
-Edinote is a web-based note taking application. It aims to be simple and fast, while still providing some nice features like tagging and markdown support, and an easy setup for your own web server.
+Edinote is a web-based note taking application. It aims to be simple and fast, 
+while still providing some nice features like tagging and markdown support, and 
+an easy setup for your own web server.
 
 
 ### Features ###
@@ -36,6 +38,7 @@ Edinote depends on the following languages, frameworks and libraries:
 * jQuery
 * PHP
 * SQlite
+* MySQL
 * Ace
 * RequireJS
 * Bootstrap
@@ -43,3 +46,4 @@ Edinote depends on the following languages, frameworks and libraries:
 * marked
 * perfect-scrollbar
 * nprogress
+* CS50
