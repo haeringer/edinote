@@ -16,9 +16,11 @@
             $rval = 2;
         }
         else {
-            $del = query("DELETE FROM users WHERE username = ?", $name);
+            $id = query("SELECT id FROM users WHERE username = ?", $name)[0]['id'];
+            $del_u = query("DELETE FROM users WHERE username = ?", $name);
+            $del_f = query("DELETE FROM files WHERE id = ?", $id);
 
-            if ($del === false)
+            if (($del_u === false) || ($del_f === false))
             {
                 // something went wrong
                 $rval = 3;

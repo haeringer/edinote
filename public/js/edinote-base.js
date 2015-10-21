@@ -11,7 +11,7 @@ console.log = function() {};
 
 require.config({
     // enable this for development purposes (bypass js cache)
-    urlArgs: "bust=" + (new Date()).getTime(),
+    // urlArgs: "bust=" + (new Date()).getTime(),
     paths: {
         'ace': '/js/ace',
         'bootstrap': 'bootstrap.min',
