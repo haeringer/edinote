@@ -117,6 +117,8 @@ $(function() {
         $('#submit-acnt').fadeIn("slow");
     });
     $('#useradd').click(function() { userAdd() });
+    $('#userdel').click(function() { userDel() });
+
 
     // bootstrap tooltips
     $('[data-toggle="tooltip"]').tooltip({container: 'body'});
@@ -273,7 +275,7 @@ function userAdd() {
 
     if (name === "" || pw === "") {
         $('.alert').hide();
-        $("#fields-empty").show();
+        $("#ua-empty").show();
         return false;
     }
 
@@ -288,6 +290,7 @@ function userAdd() {
         console.log('useradd.php returned ' + JSON.stringify(response));
 
         if (response.rval === 0) {
+            $("#ud-name").append('<option value="' + name + '">' + name + '</option>');
             console.log('user successfully created');
             $('.alert').hide();
             $("#ua-success").show();
@@ -301,7 +304,60 @@ function userAdd() {
         else if (response.rval === 3) {
             console.log('username already exists!');
             $('.alert').hide();
-            $("#username-exists").show();
+            $("#ua-exists").show();
+        } else {
+            console.log('oops');
+        }
+    })
+
+    .fail(function(jqXHR, textStatus, errorThrown) {
+        console.log(errorThrown.toString());
+    });
+    $('#loading-spinner').fadeOut(500);
+}
+
+
+/******************************************************************************
+ * admin settings: delete user
+ */
+function userDel() {
+    var name = $('#ud-name option:selected').text();
+    console.log('delete user ' + name);
+
+    if (name === "Select...") {
+        $('.alert').hide();
+        $("#ud-empty").show();
+        return false;
+    }
+    if (confirm('All data of user "' + name
+        + '" will be deleted.\nAre you sure?') === false) {
+        return false;
+    }
+
+    $('#loading-spinner').fadeIn(100);
+    $.ajax({
+        method: "POST",
+        url: "userdel.php",
+        data: { name: name }
+    })
+
+    .done(function(response) {
+        console.log('userdel.php returned ' + JSON.stringify(response));
+
+        if (response.rval === 0) {
+            $("#ud-name option[value='" + name + "']").remove();
+            console.log('user successfully deleted');
+            $('.alert').hide();
+            $("#ud-success").show();
+        }
+        else if (response.rval === 1) {
+            console.log('you are not admin');
+        }
+        else if (response.rval === 2) {
+            console.log('no user was selected');
+        }
+        else if (response.rval === 3) {
+            console.log('database query failed');
         } else {
             console.log('oops');
         }

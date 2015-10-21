@@ -12,7 +12,6 @@
         $rval = 1;
     }
     else {
-        // error messages in case of wrong information
         if (($name === NULL) || ($pw === NULL)) {
             // not all fields have been filled
             $rval = 2;

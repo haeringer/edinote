@@ -139,17 +139,17 @@
                   </div>
                 </div>
               </form>
-                  <div class="alert alert-info" id="fields-empty"><br>Please fill out username and password!</div>
-                  <div class="alert alert-danger" id="username-exists"><br>Username already exists!</div>
-                  <div class="alert alert-success" id="ua-success"><br>User successfully created.</div>
+              <div class="alert alert-info" id="ua-empty"><br>Please fill out username and password!</div>
+              <div class="alert alert-danger" id="ua-exists"><br>Username already exists!</div>
+              <div class="alert alert-success" id="ua-success"><br>User successfully created.</div>
 
               <hr></hr>
               <h6>Delete user</h6>
               <form action="userdel.php" method="post">
                 <fieldset>
                   <div class="form-group">
-                    <select class="form-control" name="users">
-                      <option value="">&nbsp;</option>
+                    <select id="ud-name" class="form-control" name="users">
+                      <option value="">Select...</option>
                       <?php foreach ($users as $user): ?>
                         <option value="<?= $user['username'] ?>"><?= $user["username"] ?></option>
                       <?php endforeach ?>
@@ -160,6 +160,9 @@
                   </div>
                 </fieldset>
               </form>
+              <div class="alert alert-info" id="ud-empty"><br>No user selected!</div>
+              <div class="alert alert-success" id="ud-success"><br>User successfully deleted.</div>
+
             </div>
             <?php endif; ?>
 
