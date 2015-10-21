@@ -4,7 +4,6 @@
     
     $rval = NULL;
     $init = $_POST["init"];
-    // $extDefault = $_POST["extDefault"];
 
     $defaultExt = query("SELECT defaultext FROM users WHERE id = ?"
                         , $_SESSION["id"])[0]['defaultext'];

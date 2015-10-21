@@ -9,12 +9,7 @@
   <meta name="author" content="">
   <link rel="shortcut icon" href="../img/favicon-1.ico?v=1" type="image/x-icon">
   <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
-
-  <?php if (isset($title)): ?>
-      <title><?= htmlspecialchars($title) ?></title>
-  <?php else: ?>
-      <title>Edinote</title>
-  <?php endif ?>
+  <title>&#60;Edinote&#62;</title>
 
   <!-- NProgress loading indicator CSS -->
   <link href="/css/nprogress.css" rel="stylesheet">
@@ -97,40 +92,83 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="AcntModalLabel">Account Settings</h4>
+        <h4 class="modal-title" id="AcntModalLabel">Settings</h4>
       </div>
       <div class="modal-body">
         
-        <div class="btn-group" data-toggle="buttons">
-          <h6>Default file extension</h6>
-          <label class="btn btn-primary en-radio" id="opt-md">
-            <input type="radio" name="opt-md" autocomplete="off">.md (Markdown)
-          </label>
-          <label class="btn btn-primary en-radio" id="opt-txt">
-            <input type="radio" name="opt-txt" autocomplete="off">.txt (Text)
-          </label>
+        <div>
+          <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#user">User Account</a></li>
+            <?php if ($admin === 'true'): ?>
+              <li><a data-toggle="tab" href="#admin">Admin</a></li>
+            <?php endif; ?>
+          </ul>
+        
+          <div class="tab-content">
+            
+            <div id="user" class="tab-pane fade in active">
+              <div class="btn-group" data-toggle="buttons">
+                <h6>Default file extension</h6>
+                <label class="btn btn-primary en-radio" id="opt-md">
+                  <input type="radio" name="opt-md" autocomplete="off">.md (Markdown)
+                </label>
+                <label class="btn btn-primary en-radio" id="opt-txt">
+                  <input type="radio" name="opt-txt" autocomplete="off">.txt (Text)
+                </label>
+              </div>
+              <hr></hr>
+              <div class="input-group input-group-lg col-sm-12">
+                <h6>Change password</h6>
+                <input type="password" name="pw" class="form-control" placeholder="New password" id="save-pw">
+                <input type="password" name="pw-confirm" class="form-control" placeholder="Confirmation" id="confirm-pw">
+                <label class="error" id="pw-confirm-nomatch"><br>Password confirmation does not match!</label>
+                <label class="error" id="pw-demo"><br>Password change not allowed in demo.</label>
+              </div>
+            </div>
+            
+            <?php if ($admin === 'true'): ?>
+            <div id="admin" class="tab-pane fade">
+              <h6>Add user</h6>
+              <form action="useradd.php" method="post">
+                <div class="input-group input-group-lg col-sm-12">
+                  <input autofocus class="form-control" name="username" placeholder="Username" type="text"/>
+                  <input class="form-control" name="password" placeholder="Password" type="password"/>
+                  <input class="form-control" name="confirmation" placeholder="Confirmation" type="password"/>
+                  <label class="error" id="fields_empty"><br>Please fill out all fields!</label>
+                  <label class="error" id="ua-pw-confirm-nomatch"><br>Password confirmation does not match!</label>
+                  <label class="error" id="username_exists"><br>File name already exists!</label>
+                  <button id="useradd" type="button" class="btn btn-primary confirm-btn pull-right">Create</button>
+                  <div class="checkbox">
+                    <label class="en-label"><input type="checkbox" value="">Admin</label>
+                  </div>
+                </div>
+              </form>
+              <hr></hr>
+              <h6>Delete user</h6>
+              <form action="userdel.php" method="post">
+                <fieldset>
+                  <div class="form-group">
+                    <select class="form-control" name="users">
+                      <option value="">&nbsp;</option>
+                      <?php foreach ($users as $user): ?>
+                        <option value="<?= $user['username'] ?>"><?= $user["username"] ?></option>
+                      <?php endforeach ?>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <button id="userdel" type="button" class="btn btn-primary confirm-btn pull-right">Delete</button>
+                  </div>
+                </fieldset>
+              </form>
+            </div>
+            <?php endif; ?>
+            
+          </div>
         </div>
-        
-        <!--<h6>Default file extension</h6>-->
-        <!--<input type="hidden" name="opt-ext" value="" id="opt-ext-input" />-->
-        <!--<div class="btn-group" data-toggle="buttons-radio">  -->
-        <!--  <button id="opt-ext-md" type="button" data-toggle="button" name="opt-ext" value="md" class="btn btn-primary en-radio active">.md (Markdown)</button>-->
-        <!--  <button id="opt-ext-txt" type="button" data-toggle="button" name="opt-ext" value="txt" class="btn btn-primary en-radio">.txt (Text)</button>-->
-        <!--</div>-->
-        
-        <hr></hr>
-        
-        <div class="input-group input-group-lg col-sm-12">
-          <h6>Change password</h6>
-          <input type="password" name="pw" class="form-control" placeholder="New password" id="save-pw">
-          <input type="password" name="pw-confirm" class="form-control" placeholder="Confirmation" id="confirm-pw">
-          <label class="error" id="pw-confirm-nomatch"><br>Password confirmation does not match!</label>
-          <label class="error" id="pw-demo"><br>Password change not allowed in demo.</label>
-        </div>
-        
+
       </div>
       <div class="modal-footer">
-        <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+        <button type="button" class="btn btn-default en-hide" id="close-modal" data-dismiss="modal">Close</button> 
         <button type="button" class="btn btn-primary confirm-btn" id="submit-acnt" >Ok</button>
       </div>
     </div>

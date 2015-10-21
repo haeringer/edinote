@@ -6,8 +6,7 @@
  *
  */
 
-/* Some rules are based on SB Admin 2 Bootstrap Admin Theme 
- * (http://startbootstrap.com) */
+/* Some rules are based on SB Admin 2 Theme (startbootstrap.com) */
 
 
 body {
@@ -404,4 +403,26 @@ a.list-group-item, li.list-group-item {
 
 .en-radio:hover {
     background-color: #62B1E6;
+}
+
+#useradd,
+#userdel {
+    margin-top: 5px;
+}
+
+.checkbox {
+    height: 0px;
+}
+
+.en-label {
+    margin-top: 14px;
+    font-size: 16px;
+    line-height: 1.5;
+    padding-left: 0px !important;
+    /*float: right;*/
+    /*margin-right: 20px;*/
+}
+
+.form-group {
+    margin-bottom: 0px;
 }

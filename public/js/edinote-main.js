@@ -104,11 +104,19 @@ $(function() {
         selectTag(this) });
     $("button#tag-rm").click(function() { removeTag() });
     
-    // account settings
+    // settings
     $("#btn-settings").click(function() { showSettings() });
     $("button#submit-acnt").click(function() { Settings() });
     $('#opt-md').on('click', function() { extDefault = 'md' });
     $('#opt-txt').on('click', function() { extDefault = 'txt' });
+    $('a[href="#admin"]').on('show.bs.tab', function () {
+        $('#submit-acnt').hide();
+        $('#close-modal').fadeIn("slow");
+    });
+    $('a[href="#user"]').on('show.bs.tab', function () {
+        $('#close-modal').hide();
+        $('#submit-acnt').fadeIn("slow");
+    });
 
     // bootstrap tooltips
     $('[data-toggle="tooltip"]').tooltip({container: 'body'});
@@ -147,6 +155,7 @@ function showSettings() {
 }
 
 function Settings() {
+    $('#loading-spinner').fadeIn(100);
     console.log('save settings');
     chPassword();
     defaultExt(false);
@@ -179,7 +188,7 @@ function defaultExt(init) {
         })
         .done(function(response) {
             if (response.rval === 0) {
-                console.log('changed default extension to ' + extDefault);
+                console.log('default file extension: ' + extDefault);
             }
             else {
                 console.log('oops');
@@ -189,10 +198,11 @@ function defaultExt(init) {
         .fail(function(jqXHR, textStatus, errorThrown) {
             console.log(errorThrown.toString());
         });
+        $('#loading-spinner').fadeOut(500);
     }
 }
 
-// check which mode user is in at initial page load
+// check default file extension at initial page load
 defaultExt(true);
 
 
@@ -248,6 +258,7 @@ function chPassword() {
     .fail(function(jqXHR, textStatus, errorThrown) {
         console.log(errorThrown.toString());
     });
+    $('#loading-spinner').fadeOut(500);
 }
 
 
