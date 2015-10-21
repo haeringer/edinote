@@ -6,9 +6,12 @@
  *
  */
 
+// disable this for development purposes (enable console logging)
+// console.log = function() {};
+
 require.config({
-    // bypass js cache for development purposes
-    urlArgs: "bust=" + (new Date()).getTime(),
+    // enable this for development purposes (bypass js cache)
+    // urlArgs: "bust=" + (new Date()).getTime(),
     paths: {
         'ace': '/js/ace',
         'bootstrap': 'bootstrap.min',
@@ -18,7 +21,7 @@ require.config({
         'perfect-scrollbar': 'perfect-scrollbar.min',
         'list': 'list.min'
     },
-    shim: { 
+    shim: {
         "bootstrap" : { "deps" : ['jquery'] }
     }
 });

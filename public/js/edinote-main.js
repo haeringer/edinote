@@ -86,7 +86,6 @@ $(function() {
       // newly added files
     $('.list').on('click', '.list-group-item', function() {
         loadFile(this.id);
-        // false;
     });
     $("button#save").click(function() { saveFile(filename, false, false) });
     $("button#rename").click(function() { saveFile(filename, false, true) });
@@ -98,17 +97,17 @@ $(function() {
     /* tag handling */
     $('#tag-add').click(function() { tagFile() });
     $("button#submit-tag").click(function() { saveTag() });
-    $('.list').on('click', '.tag', function(evt) { 
+    $('.list').on('click', '.tag', function(evt) {
         // prevent selection of parent (file loading)
         evt.stopPropagation();
         selectTag(this) });
     $("button#tag-rm").click(function() { removeTag() });
-    
+
     // settings
     $("#btn-settings").click(function() { showSettings() });
     $("button#submit-acnt").click(function() { Settings() });
-    $('#opt-md').on('click', function() { extDefault = 'md' });
-    $('#opt-txt').on('click', function() { extDefault = 'txt' });
+    $('#opt-md').click(function() { extDefault = 'md' });
+    $('#opt-txt').click(function() { extDefault = 'txt' });
     $('a[href="#admin"]').on('show.bs.tab', function () {
         $('#submit-acnt').hide();
         $('#close-modal').fadeIn("slow");
@@ -117,10 +116,11 @@ $(function() {
         $('#close-modal').hide();
         $('#submit-acnt').fadeIn("slow");
     });
+    $('#useradd').click(function() { userAdd() });
 
     // bootstrap tooltips
     $('[data-toggle="tooltip"]').tooltip({container: 'body'});
-    
+
     // sidebar shadows
     $('#file-list').scroll(function() {
         if($(this).scrollTop()) {
@@ -129,18 +129,18 @@ $(function() {
             $('#ls-top').removeClass('list-shadow list-shadow-top');
         }
     });
-    
+
     // file search
     $("#filter").keyup(function () { Search() });
-    
+
     // custom scrollbar
     scrollContainer = document.getElementById('file-list');
     Ps.initialize(scrollContainer);
-    
+
     // stop progress bar and blend in UI
     require(['nprogress'], function(NProgress) { NProgress.done() });
-    
-    $("#wrapper").delay(1000).fadeIn(500, function() { 
+
+    $("#wrapper").delay(1000).fadeIn(500, function() {
         editor.focus();
     });
     console.log('main window loaded');
@@ -148,7 +148,7 @@ $(function() {
 
 
 function showSettings() {
-    $('.error').hide();
+    $('.alert').hide();
     $('#AcntModal').modal('toggle');
     $('div').tooltip('hide');
     $('input#save-pw').focus();
@@ -167,8 +167,8 @@ function Settings() {
  */
 function defaultExt(init) {
     if (init === true) {
-        $.ajax({ method: "POST", url: "defaultExt.php", data: { 
-            init: init, extDefault: extDefault } 
+        $.ajax({ method: "POST", url: "defaultExt.php", data: {
+            init: init, extDefault: extDefault }
         })
         .done(function(response) {
             console.log('default file extension: ' + response.ext);
@@ -183,8 +183,8 @@ function defaultExt(init) {
             console.log(errorThrown.toString());
         });
     } else {
-        $.ajax({ method: "POST", url: "defaultExt.php", data: { 
-            init: init, extDefault: extDefault } 
+        $.ajax({ method: "POST", url: "defaultExt.php", data: {
+            init: init, extDefault: extDefault }
         })
         .done(function(response) {
             if (response.rval === 0) {
@@ -193,7 +193,7 @@ function defaultExt(init) {
             else {
                 console.log('oops');
             }
-            
+
         })
         .fail(function(jqXHR, textStatus, errorThrown) {
             console.log(errorThrown.toString());
@@ -213,8 +213,8 @@ function chPassword() {
     var pw = $("input#save-pw").val();
     var conf = $("input#confirm-pw").val();
     if (pw !== conf) {
-        $('.error').hide();
-        $("label#pw-confirm-nomatch").show();
+        $('.alert').hide();
+        $("#pw-confirm-nomatch").show();
         $("input#save-pw").focus();
         return false;
     } else if (pw === "" && conf === "") {
@@ -222,16 +222,16 @@ function chPassword() {
         console.log('password was not changed');
         return false;
     }
-    
+
     $.ajax({
         method: "POST",
         url: "password.php",
         data: { pw: pw, conf: conf }
     })
-    
+
     .done(function(response) {
         console.log('password.php returned ' + JSON.stringify(response));
-    
+
         if (response.rval === 0) {
             $('#AcntModal').modal('hide');
             console.log('password successfully changed');
@@ -247,14 +247,66 @@ function chPassword() {
         }
         else if (response.rval === 4) {
             console.log('SQL query error');
-        } 
+        }
         else if (response.rval === 5) {
             console.log('not allowed in demo');
-            $('.error').hide();
-            $("label#pw-demo").show();
+            $('.alert').hide();
+            $("#pw-demo").show();
         }
     })
-    
+
+    .fail(function(jqXHR, textStatus, errorThrown) {
+        console.log(errorThrown.toString());
+    });
+    $('#loading-spinner').fadeOut(500);
+}
+
+
+/******************************************************************************
+ * admin settings: add user
+ */
+function userAdd() {
+    console.log('create user');
+    var name = $("input#ua-name").val();
+    var pw = $("input#ua-pw").val();
+    var adm = $("#ua-admin").is(":checked");
+
+    if (name === "" || pw === "") {
+        $('.alert').hide();
+        $("#fields-empty").show();
+        return false;
+    }
+
+    $('#loading-spinner').fadeIn(100);
+    $.ajax({
+        method: "POST",
+        url: "useradd.php",
+        data: { name: name, pw: pw, adm: adm }
+    })
+
+    .done(function(response) {
+        console.log('useradd.php returned ' + JSON.stringify(response));
+
+        if (response.rval === 0) {
+            console.log('user successfully created');
+            $('.alert').hide();
+            $("#ua-success").show();
+        }
+        else if (response.rval === 1) {
+            console.log('you are not admin');
+        }
+        else if (response.rval === 2) {
+            console.log('not all fields have been filled');
+        }
+        else if (response.rval === 3) {
+            console.log('username already exists!');
+            $('.alert').hide();
+            $("#username-exists").show();
+        } else {
+            console.log('oops');
+        }
+    })
+
     .fail(function(jqXHR, textStatus, errorThrown) {
         console.log(errorThrown.toString());
     });
@@ -344,10 +396,10 @@ function showCont(cont) {
 // save-as function (called when 'save' is clicked in save-as modal)
 function saveAs() {
     console.log('save as...');
-    $('.error').hide();
+    $('.alert').hide();
     filename = $("input#save-as").val();
-  		if (filename === "") {
-        $("label#filename_empty").show();
+    if (filename === "") {
+        $("#filename_empty").show();
         $("input#save-as").focus();
         return false;
     }
@@ -360,7 +412,7 @@ function saveFile(filename, save_as, renameTrigger) {
 
     if (filename === '' || renameTrigger === true) {
         // get new filename via saveAs()
-        $('.error').hide();
+        $('.alert').hide();
         $('#SaveModal').modal('toggle');
         $("#save-as").val('new file.' + extDefault);
         if (renameTrigger === true) {
@@ -397,7 +449,7 @@ function saveFile(filename, save_as, renameTrigger) {
                 console.log('filename still empty?!');
             }
             else if (response.rval === 2) {
-                $("label#filename_exists").show();
+                $("#filename_exists").show();
                 $("input#save-as").focus();
                 return 0;
             }
@@ -494,7 +546,7 @@ function deleteFile(filename) {
 // set tag
 function tagFile() {
     console.log('tag file ' + filename);
-    $('.error').hide();
+    $('.alert').hide();
     $('#TagModal').modal('toggle');
     $('div').tooltip('hide');
     $('input#save-tag').focus();
@@ -505,7 +557,7 @@ function saveTag() {
     console.log('save tag on file ' + filename);
     var tag = $("input#save-tag").val();
       if (tag === "") {
-        $("label#tag_empty").show();
+        $("#tag_empty").show();
         $("input#save-tag").focus();
         return false;
       }
@@ -529,7 +581,7 @@ function saveTag() {
         }
         else if (response.rval === 3) {
             console.log('tag slots are full');
-            $("label#tags_full").show();
+            $("#tags_full").show();
         } else {
             console.log("couldn't save tag for any reason");
         }
@@ -588,7 +640,7 @@ function switchMode(init, newfile) {
         $.ajax({ method: "POST", url: "mode.php", data: { init: init } })
 
         .done(function(response) {
-    
+
             if (response.viewmode_r === 'false') {
                 viewmode = false;
                 $('#md-container').css('display', 'none', 'important');
@@ -601,7 +653,7 @@ function switchMode(init, newfile) {
                 console.log('mode.php returned ' + JSON.stringify(response));
             }
         })
-    
+
         .fail(function(jqXHR, textStatus, errorThrown) {
             console.log(errorThrown.toString());
         });
@@ -623,7 +675,7 @@ function switchMode(init, newfile) {
                 }
             }
             editor.focus();
-            
+
             $.ajax({ method: "POST", url: "mode.php", data: { init: init } })
             .done(function(response) {
                 if (response.viewmode_r === 'false') {
@@ -643,7 +695,7 @@ function switchMode(init, newfile) {
             console.log('mode switched to "view"');
             showCont(editor.getValue());
             $('button#mode').blur();
-            
+
             $.ajax({ method: "POST", url: "mode.php", data: { init: init } })
             .done(function(response) {
                 if (response.viewmode_r === 'true') {
@@ -676,7 +728,7 @@ function setSize() {
     $("#editor-container").css("height", editor_height);
     $("#md-container").css("height", editor_height);
     $("#file-list").css("max-height", sidebar_height);
-    
+
     var filesWidth = $(window).width() - 22;
     if (filesWidth < 768) {
         $('.list-width').css('width', filesWidth);
@@ -727,7 +779,7 @@ function alertUnsaved() {
         console.log('leaving saved or empty file..');
     } else {
         return (confirm('Your document has not been saved yet.\n\n'
-                    + 'Are you sure you want to leave?') == true);
+                    + 'Are you sure you want to leave?') === true);
     }
 }
 
@@ -740,7 +792,7 @@ $(window).bind('beforeunload', function(){
 // file list search/filter function
 function Search() {
     var searchTerm = $("#filter").val();
-    var listItem = $('#file-list').children('li');
+    // var listItem = $('#file-list').children('li');
 
     // extend the default :contains functionality to be case insensitive
     $.extend($.expr[':'], {
@@ -753,7 +805,7 @@ function Search() {
     // make the search less exact by searching all words and not full strings
     var searchSplit = searchTerm.replace(/ /g, "'):containsi('");
 
-    // actual search: filter out / hide unmatched items 
+    // actual search: filter out / hide unmatched items
     $("#file-list li").not(":containsi('" + searchSplit + "')").each(function(e)   {
           $(this).addClass('en-hide');
     });

@@ -426,3 +426,9 @@ a.list-group-item, li.list-group-item {
 .form-group {
     margin-bottom: 0px;
 }
+
+.alert {
+    padding: 25px 0px 25px 15px;
+    margin-top: 5px;
+    line-height: 0px;
+}

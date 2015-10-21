@@ -45,9 +45,9 @@
       <div class="modal-body">
         <div class="input-group input-group-lg col-sm-12">
           <input type="text" name="filename" class="form-control" id="save-as" placeholder="Example.md">
-          <label class="error" id="filename_empty"><br>Please enter a file name!</label>
-          <label class="error" id="filename_exists"><br>File name already exists!</label>
         </div>
+      <div class="alert alert-info" id="filename_empty"><br>Please enter a file name!</div>
+      <div class="alert alert-danger" id="filename_exists"><br>File name already exists!</div>
       </div>
       <div class="modal-footer">
         <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
@@ -71,9 +71,9 @@
       <div class="modal-body">
         <div class="input-group input-group-lg col-sm-12">
           <input type="text" name="tag" class="form-control" id="save-tag">
-          <label class="error" id="tag_empty"><br>Please enter a tag!</label>
-          <label class="error" id="tags_full"><br>Sorry, you can assign only up to three tags per file!</label>
         </div>
+        <div class="alert alert-info" id="tag_empty"><br>Please enter a tag!</div>
+        <div class="alert alert-warning" id="tags_full"><br>Sorry, you can assign only up to three tags per file!</div>
       </div>
       <div class="modal-footer">
         <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
@@ -95,7 +95,7 @@
         <h4 class="modal-title" id="AcntModalLabel">Settings</h4>
       </div>
       <div class="modal-body">
-        
+
         <div>
           <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#user">User Account</a></li>
@@ -103,9 +103,9 @@
               <li><a data-toggle="tab" href="#admin">Admin</a></li>
             <?php endif; ?>
           </ul>
-        
+
           <div class="tab-content">
-            
+
             <div id="user" class="tab-pane fade in active">
               <div class="btn-group" data-toggle="buttons">
                 <h6>Default file extension</h6>
@@ -121,28 +121,28 @@
                 <h6>Change password</h6>
                 <input type="password" name="pw" class="form-control" placeholder="New password" id="save-pw">
                 <input type="password" name="pw-confirm" class="form-control" placeholder="Confirmation" id="confirm-pw">
-                <label class="error" id="pw-confirm-nomatch"><br>Password confirmation does not match!</label>
-                <label class="error" id="pw-demo"><br>Password change not allowed in demo.</label>
               </div>
+              <div class="alert alert-danger" id="pw-confirm-nomatch"><br>Password confirmation does not match!</div>
+              <div class="alert alert-info" id="pw-demo"><br>Password change not allowed in demo.</div>
             </div>
-            
+
             <?php if ($admin === 'true'): ?>
             <div id="admin" class="tab-pane fade">
               <h6>Add user</h6>
               <form action="useradd.php" method="post">
                 <div class="input-group input-group-lg col-sm-12">
-                  <input autofocus class="form-control" name="username" placeholder="Username" type="text"/>
-                  <input class="form-control" name="password" placeholder="Password" type="password"/>
-                  <input class="form-control" name="confirmation" placeholder="Confirmation" type="password"/>
-                  <label class="error" id="fields_empty"><br>Please fill out all fields!</label>
-                  <label class="error" id="ua-pw-confirm-nomatch"><br>Password confirmation does not match!</label>
-                  <label class="error" id="username_exists"><br>File name already exists!</label>
+                  <input autofocus class="form-control" id="ua-name" name="username" placeholder="Username" type="text"/>
+                  <input class="form-control" id="ua-pw" name="password" placeholder="Password" type="password"/>
                   <button id="useradd" type="button" class="btn btn-primary confirm-btn pull-right">Create</button>
                   <div class="checkbox">
-                    <label class="en-label"><input type="checkbox" value="">Admin</label>
+                    <label class="en-label"><input type="checkbox" id="ua-admin" name="admin-check" value="">Admin</label>
                   </div>
                 </div>
               </form>
+                  <div class="alert alert-info" id="fields-empty"><br>Please fill out username and password!</div>
+                  <div class="alert alert-danger" id="username-exists"><br>Username already exists!</div>
+                  <div class="alert alert-success" id="ua-success"><br>User successfully created.</div>
+
               <hr></hr>
               <h6>Delete user</h6>
               <form action="userdel.php" method="post">
@@ -162,13 +162,13 @@
               </form>
             </div>
             <?php endif; ?>
-            
+
           </div>
         </div>
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default en-hide" id="close-modal" data-dismiss="modal">Close</button> 
+        <button type="button" class="btn btn-default en-hide" id="close-modal" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary confirm-btn" id="submit-acnt" >Ok</button>
       </div>
     </div>
@@ -223,7 +223,7 @@
           <i class="glyphicon glyphicon-user"></i> <i class="glyphicon glyphicon-chevron-down"></i>
         </a>
         <ul class="dropdown-menu dropdown-user">
-          <li><a href="#" id="btn-settings"><i class="fui-gear"></i> Settings</a></li>
+          <li><a href="javascript:void(0);" id="btn-settings"><i class="fui-gear"></i> Settings</a></li>
           <li><a href="logout.php"><i class="fui-export"></i> Logout</a></li>
         </ul>
         <!-- /.dropdown-user -->
