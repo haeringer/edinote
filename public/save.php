@@ -15,9 +15,8 @@
     // if save.php was called with an empty filename, return 1
     if (empty($_POST["filename"])) {
         $rval = 1;
-    }
-    else {
-        $filename = $_POST["filename"];
+    } else {
+        $filename = htmlspecialchars($_POST["filename"]);
     }
 
     if ($filename !== NULL && $save_as === 'false') {

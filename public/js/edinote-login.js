@@ -17,38 +17,32 @@ $(function() {
 		$.ajax({
 			type: "POST",
 			url: "login.php",
-			data: {
-				username: username,
-				password: password
-			},
+			data: { username: username, password: password },
 			beforeSend: function() {
 				$("#submit-login").html('Connecting...').addClass('disabled');
 			}
 		})
 
 		.done(function(response) {
-			console.log('login.php returned ' + response);
+			console.log('login.php returned ' + JSON.stringify(response));
 
-			if (response === '1') {
+			if (response.rval === 0) {
 				// redirect to main
 				document.location.href = "/";
-			}
-			else if (response === '2') {
-				$(".alert").css('display', 'none');
-				$(".empty-username").show();
-				submitBtnRevert();
-			}
-			else if (response === '3') {
-				$(".alert").css('display', 'none');
-				$(".empty-password").show();
-				submitBtnRevert();
-			}
-			else if (response === '0') {
+			} else if (response.rval === 1) {
 				$(".alert").css('display', 'none');
 				$(".invalid-login").show();
 				submitBtnRevert();
+			} else if (response.rval === 2) {
+				$(".alert").css('display', 'none');
+				$(".empty-username").show();
+				submitBtnRevert();
+			} else if (response.rval === 3) {
+				$(".alert").css('display', 'none');
+				$(".empty-password").show();
+				submitBtnRevert();
 			} else {
-				console.log('what happened?');
+				console.log('oops?!');
 			}
 		})
 

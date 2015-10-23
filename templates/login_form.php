@@ -9,12 +9,7 @@
   <meta name="author" content="Ben Haeringer">
   <link rel="shortcut icon" href="../img/favicon-1.ico?v=1" type="image/x-icon">
   <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
-
-  <?php if (isset($title)): ?>
-      <title>Edinote: <?= htmlspecialchars($title) ?></title>
-  <?php else: ?>
-      <title>Edinote</title>
-  <?php endif ?>
+  <title>&#60;Edinote&#62; - Login</title>
 
   <!-- Bootstrap Core CSS -->
   <link href="/css/bootstrap.min.css" rel="stylesheet">

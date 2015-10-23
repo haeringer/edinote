@@ -18,9 +18,6 @@ var ext;
 var extDefault = '';
 var rename = false;
 var scrollContainer;
-var fName = /^[A-Za-z0-9]([A-Za-z0-9 ._-]{1,50})([A-Za-z0-9]$)/;
-var tName = /^([A-Za-z0-9 ._!"'$()=?+*'#,:-]{1,10})$/;
-var uName = /^[A-Za-z0-9]([A-Za-z0-9._-]{1,30})([A-Za-z0-9]$)/;
 
 define([
     'jquery',
@@ -281,7 +278,7 @@ function userAdd() {
         $("#ua-empty").show();
         return false;
     }
-    else if (validate(filename, uName) === false) {
+    else if (validate(filename, 'uName') === false) {
         $('.alert').hide();
         $("#validate-u").show();
         return false;
@@ -468,7 +465,7 @@ function saveAs() {
         $("input#save-as").focus();
         return false;
     }
-    else if (validate(filename, fName) === false) {
+    else if (validate(filename, 'fName') === false) {
         $('.alert').hide();
         $("#validate-f").show();
         $("input#save-as").focus();
@@ -634,7 +631,7 @@ function saveTag() {
         $("input#save-tag").focus();
         return false;
     }
-    if (validate(tag, tName) === false) {
+    if (validate(tag, 'tName') === false) {
         $('.alert').hide();
         $("#validate-t").show();
         return false;
@@ -653,6 +650,9 @@ function saveTag() {
             $('#TagModal').modal('hide');
             $('#' + response.tagId).text(tag);
             console.log('file tagged');
+        }
+        else if (response.rval === 1) {
+            console.log('tag name was empty');
         }
         else if (response.rval === 2) {
             console.log('database query failed');
@@ -897,8 +897,18 @@ function Search() {
 }
 
 // input validation
-function validate(val, regex)
-{
+function validate(val, input) {
+
+    var regex;
+
+    if (input === "uName") {
+        regex = /^[A-Za-z0-9]([A-Za-z0-9._-]{1,30})([A-Za-z0-9]$)/;
+    } else if (input === "fName") {
+        regex = /^[A-Za-z0-9]([A-Za-z0-9 ._-]{1,50})([A-Za-z0-9]$)/;
+    } else if (input === "tName") {
+        regex = /^([A-Za-z0-9 ._!"'$()=?+*'#,:-]{1,10})$/;
+    }
+
     if (regex.test(val)) {
         return true;
     }

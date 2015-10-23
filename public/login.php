@@ -13,42 +13,51 @@
     // else if user reached page via POST (as by submitting a form via POST)
     else if ($_SERVER["REQUEST_METHOD"] == "POST")
     {
+        $rval = NULL;
+
         // validate submission
         if (empty($_POST["username"]))
         {
-            echo 2;
-            exit;
+            $rval = 2;
         }
         else if (empty($_POST["password"]))
         {
-            echo 3;
-            exit;
+            $rval = 3;
         }
+        else {
+            // query database for user
+            $rows = query("SELECT * FROM users WHERE username = ?", $_POST["username"]);
 
-        // query database for user
-        $rows = query("SELECT * FROM users WHERE username = ?", $_POST["username"]);
-
-        // if we found user, check password
-        if (count($rows) == 1)
-        {
-            // first (and only) row
-            $row = $rows[0];
-
-            // compare hash of user's input against hash that's in database
-            if (crypt($_POST["password"], $row["hash"]) == $row["hash"])
+            // if we found user, check password
+            if (count($rows) == 1)
             {
-                // remember that user's now logged in by storing user's ID in session
-                $_SESSION["id"] = $row["id"];
+                // first (and only) row
+                $row = $rows[0];
 
-                // redirect to main
-                // redirect("/");
-                echo 1;
-                exit;
+                // compare hash of user's input against hash that's in database
+                if (crypt($_POST["password"], $row["hash"]) == $row["hash"])
+                {
+                    // remember that user's now logged in by storing user's ID in session
+                    $_SESSION["id"] = $row["id"];
+
+                    $rval = 0;
+                } else {
+                    // credentials not valid
+                    $rval = 1;
+                }
+            } else {
+                $rval = 1;
             }
         }
 
-        // credentials not valid
-        echo 0;
+            // build array for ajax response
+        $response = [
+            "rval" => $rval
+        ];
+
+        // spit out content as json
+        header("Content-type: application/json");
+        echo json_encode($response);
     }
 
 ?>

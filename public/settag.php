@@ -4,14 +4,15 @@
 
     $filename = $_POST["filename"];
     $fileId = $_POST["fileId"];
-    $tag = $_POST["tag"];
     $tagged = false;
     $tag_num = NULL;
     $tagId = NULL;
     $rval = NULL;
 
-    if (empty($_POST["filename"])) {
+    if (empty($_POST["tag"])) {
         $rval = 1;
+    } else {
+        $tag = htmlspecialchars($_POST["tag"]);
     }
 
     // get tag slots
