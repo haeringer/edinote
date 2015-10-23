@@ -428,7 +428,7 @@ a.list-group-item, li.list-group-item {
 }
 
 .alert {
-    padding: 25px 0px 25px 15px;
+    /*padding: 25px 0px 25px 15px;*/
     margin-top: 5px;
-    line-height: 0px;
+    /*line-height: 0px;*/
 }

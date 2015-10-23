@@ -44,10 +44,14 @@
       </div>
       <div class="modal-body">
         <div class="input-group input-group-lg col-sm-12">
-          <input type="text" name="filename" class="form-control" id="save-as" placeholder="Example.md">
+          <input type="text" name="filename" class="form-control" id="save-as" pattern="[A-Za-z]{3}">
         </div>
-      <div class="alert alert-info" id="filename_empty"><br>Please enter a file name!</div>
-      <div class="alert alert-danger" id="filename_exists"><br>File name already exists!</div>
+      <div class="alert alert-info" id="filename_empty">Please enter a file name!</div>
+      <div class="alert alert-warning" id="validate-f">
+        Use max. 50 of the following characters and symbols for filenames:<br>
+        Begin and end with A-Za-z0-9, no symbols other than ' - ', ' _ ', '&nbsp; &nbsp;' or ' . '
+      </div>
+      <div class="alert alert-danger" id="filename_exists">File name already exists!</div>
       </div>
       <div class="modal-footer">
         <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
@@ -72,8 +76,12 @@
         <div class="input-group input-group-lg col-sm-12">
           <input type="text" name="tag" class="form-control" id="save-tag">
         </div>
-        <div class="alert alert-info" id="tag_empty"><br>Please enter a tag!</div>
-        <div class="alert alert-warning" id="tags_full"><br>Sorry, you can assign only up to three tags per file!</div>
+        <div class="alert alert-info" id="tag_empty">Please enter a tag!</div>
+        <div class="alert alert-warning" id="validate-t">
+          Use max. 10 of the following characters and symbols for tag names:<br>
+          A-Z, a-z, 0-9, ._ !"'$()=?+*'#:-
+        </div>
+        <div class="alert alert-warning" id="tags_full">Sorry, you can assign only up to three tags per file!</div>
       </div>
       <div class="modal-footer">
         <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
@@ -122,8 +130,8 @@
                 <input type="password" name="pw" class="form-control" placeholder="New password" id="save-pw">
                 <input type="password" name="pw-confirm" class="form-control" placeholder="Confirmation" id="confirm-pw">
               </div>
-              <div class="alert alert-danger" id="pw-confirm-nomatch"><br>Password confirmation does not match!</div>
-              <div class="alert alert-info" id="pw-demo"><br>Password change not allowed in demo.</div>
+              <div class="alert alert-danger" id="pw-confirm-nomatch">Password confirmation does not match!</div>
+              <div class="alert alert-info" id="pw-demo">Password change not allowed in demo.</div>
             </div>
 
             <?php if ($admin === 'true'): ?>
@@ -139,9 +147,13 @@
                   </div>
                 </div>
               </form>
-              <div class="alert alert-info" id="ua-empty"><br>Please fill out username and password!</div>
-              <div class="alert alert-danger" id="ua-exists"><br>Username already exists!</div>
-              <div class="alert alert-success" id="ua-success"><br>User successfully created.</div>
+              <div class="alert alert-info" id="ua-empty">Please fill out username and password!</div>
+              <div class="alert alert-warning" id="validate-u">
+                Use max. 30 of the following characters and symbols for usernames:<br>
+                Begin and end with A-Za-z0-9; no symbols other than ' . ', ' _ ' or ' - '
+              </div>
+              <div class="alert alert-danger" id="ua-exists">Username already exists!</div>
+              <div class="alert alert-success" id="ua-success">User successfully created.</div>
 
               <hr></hr>
               <h6>Delete user</h6>
@@ -160,8 +172,8 @@
                   </div>
                 </fieldset>
               </form>
-              <div class="alert alert-info" id="ud-empty"><br>No user selected!</div>
-              <div class="alert alert-success" id="ud-success"><br>User successfully deleted.</div>
+              <div class="alert alert-info" id="ud-empty">No user selected!</div>
+              <div class="alert alert-success" id="ud-success">User successfully deleted.</div>
 
             </div>
             <?php endif; ?>

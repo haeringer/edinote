@@ -18,6 +18,9 @@ var ext;
 var extDefault = '';
 var rename = false;
 var scrollContainer;
+var fName = /^[A-Za-z0-9]([A-Za-z0-9 ._-]{1,50})([A-Za-z0-9]$)/;
+var tName = /^([A-Za-z0-9 ._!"'$()=?+*'#,:-]{1,10})$/;
+var uName = /^[A-Za-z0-9]([A-Za-z0-9._-]{1,30})([A-Za-z0-9]$)/;
 
 define([
     'jquery',
@@ -110,11 +113,11 @@ $(function() {
     $('#opt-txt').click(function() { extDefault = 'txt' });
     $('a[href="#admin"]').on('show.bs.tab', function () {
         $('#submit-acnt').hide();
-        $('#close-modal').fadeIn("slow");
+        $('#close-modal').fadeIn();
     });
     $('a[href="#user"]').on('show.bs.tab', function () {
         $('#close-modal').hide();
-        $('#submit-acnt').fadeIn("slow");
+        $('#submit-acnt').fadeIn();
     });
     $('#useradd').click(function() { userAdd() });
     $('#userdel').click(function() { userDel() });
@@ -278,6 +281,11 @@ function userAdd() {
         $("#ua-empty").show();
         return false;
     }
+    else if (validate(filename, uName) === false) {
+        $('.alert').hide();
+        $("#validate-u").show();
+        return false;
+    }
 
     $('#loading-spinner').fadeIn(100);
     $.ajax({
@@ -388,6 +396,7 @@ function newFile() {
     editor.focus();
     $('.list-group-item').removeClass('active');
     $('#tag-add').addClass('bottom-disabled');
+    $('#rename').addClass('bottom-disabled');
 }
 
 // load file content into editor or view
@@ -459,10 +468,16 @@ function saveAs() {
         $("input#save-as").focus();
         return false;
     }
+    else if (validate(filename, fName) === false) {
+        $('.alert').hide();
+        $("#validate-f").show();
+        $("input#save-as").focus();
+        return false;
+    }
     saveFile(filename, true, false);
 }
 
-// save file
+// save new file with name dialog, or save existing file directly, or rename
 function saveFile(filename, save_as, renameTrigger) {
     contents = editor.getSession().getValue();
 
@@ -535,6 +550,7 @@ function saveFile(filename, save_as, renameTrigger) {
                     $('#list-top').after(response.fileEl);
                     $('#' + response.fileId).addClass('active');
                     $('#tag-add').removeClass('bottom-disabled');
+                    $('#rename').removeClass('bottom-disabled');
                     fileId = response.fileId;
                     aceMode(filename);
                     editor.focus();
@@ -612,11 +628,17 @@ function tagFile() {
 function saveTag() {
     console.log('save tag on file ' + filename);
     var tag = $("input#save-tag").val();
-      if (tag === "") {
+    if (tag === "") {
+        $('.alert').hide();
         $("#tag_empty").show();
         $("input#save-tag").focus();
         return false;
-      }
+    }
+    if (validate(tag, tName) === false) {
+        $('.alert').hide();
+        $("#validate-t").show();
+        return false;
+    }
 
     $.ajax({
         method: "POST",
@@ -874,6 +896,16 @@ function Search() {
     Ps.update(scrollContainer);
 }
 
+// input validation
+function validate(val, regex)
+{
+    if (regex.test(val)) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
 
 // end of define()
 });
