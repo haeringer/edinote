@@ -1,0 +1,44 @@
+Basic configuration steps needed to setup a Cisco 5505 ASA firewall for connecting a small network to the Internet. 
+
+We assume that our ISP has assigned us a static public IP address (e.g 200.200.200.1 as an example) and that our internal network range is 192.168.1.0/24. We will use Port Address Translation (PAT) to translate our internal IP addresses to the public address of the outside interface. The difference of the 5505 model from the bigger ASA models is that it has an 8-port 10/100 switch which acts as Layer 2 only. That is, you can not configure the physical ports as Layer 3 ports, rather you have to create interface Vlans and assign the Layer 2 interfaces in each VLAN. By default, interface Ethernet0/0 is assigned to VLAN 2 and it's the outside interface (the one which connects to the Internet), and the other 7 interfaces (Ethernet0/1 to 0/7) are assigned by default to VLAN 1 and are used for connecting to the internal network. Let's see the basic configuration setup of the most important steps that you need to configure.
+
+Step1: Configure the internal interface vlan 
+------------------------------------------------------ 
+ASA5505(config)# interface Vlan 1 
+ASA5505(config-if)# nameif inside 
+ASA5505(config-if)# security-level 100 
+ASA5505(config-if)# ip address 192.168.1.1 255.255.255.0 
+ASA5505(config-if)# no shut
+
+Step 2: Configure the external interface vlan (connected to Internet) 
+------------------------------------------------------------------------------------- 
+ASA5505(config)# interface Vlan 2 
+ASA5505(config-if)# nameif outside 
+ASA5505(config-if)# security-level 0 
+ASA5505(config-if)# ip address 200.200.200.1 255.255.255.0 
+ASA5505(config-if)# no shut
+
+Step 3: Assign Ethernet 0/0 to Vlan 2 
+------------------------------------------------- 
+ASA5505(config)# interface Ethernet0/0 
+ASA5505(config-if)# switchport access vlan 2 
+ASA5505(config-if)# no shut
+
+Step 4: Enable the rest interfaces with no shut 
+-------------------------------------------------- 
+ASA5505(config)# interface Ethernet0/1 
+ASA5505(config-if)# no shut
+
+Do the same for Ethernet0/1 to 0/7.
+
+Step 5: Configure PAT on the outside interface 
+----------------------------------------------------- 
+ASA5505(config)# global (outside) 1 interface 
+ASA5505(config)# nat (inside) 1 0.0.0.0 0.0.0.0
+
+Step 6: Configure default route towards the ISP (assume default gateway is 200.200.200.2 
+--------------------------------------------------------------------------------------------------------- 
+ASA5505(config)# route outside 0.0.0.0 0.0.0.0 200.200.200.2 1
+
+The above steps are the absolutely necessary steps you need to configure for making the appliance operational. Of course there are much more configuration details that you need to implement in order to enhance the security and functionality of your appliance, such as Access Control Lists, Static NAT, DHCP, DMZ zones, authentication etc.
+

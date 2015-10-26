@@ -13,7 +13,8 @@
     }
 
     // get name of file
-    $filename = query("SELECT file FROM files WHERE fileid = ?", $fileId)[0]['file'];
+    $filename = query("SELECT file FROM files WHERE fileid = ?"
+                        , $fileId)[0]['file'];
 
     // extract content of file
     $content = file_get_contents($usrdir.$filename);

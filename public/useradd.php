@@ -17,27 +17,22 @@
             $rval = 2;
         }
         else {
-            $insrt = query("INSERT INTO users (username, hash, admin, demo
-                            , viewmode, defaultext)
-                            VALUES (?, ?, ?, 'false', 'false', 'md')"
-                            , $name, crypt($pw), $adm);
-
-            if ($insrt === false)
+            if (query("INSERT INTO users (username, hash, admin, demo
+                , viewmode, defaultext) VALUES (?, ?, ?, 'false'
+                , 'false', 'md')", $name, crypt($pw), $adm) !== false)
             {
-                // username already exists
-                $rval = 3;
-            } else {
                 // user was successfully added to db; create user directory
-                $dir = mkdir(DATADIR . $name);
-
-                if ($dir === false)
+                if (mkdir(DATADIR . $name) !== false)
                 {
-                    // could not create directory
-                    $rval = 4;
-                } else {
                     // success
                     $rval = 0;
+                } else {
+                    // could not create directory
+                    $rval = 4;
                 }
+            } else {
+                // username already exists
+                $rval = 3;
             }
         }
     }

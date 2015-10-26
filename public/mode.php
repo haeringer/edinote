@@ -1,7 +1,7 @@
 <?php
 
     require(__DIR__ . "/../includes/config.php");
-    
+
     $rval = NULL;
     $init = $_POST["init"];
 
@@ -17,10 +17,9 @@
     // switch mode if mode.php was called from switch button
     if ($init === 'false') {
         if ($viewmode === 'false') {
-            $changemode = query("UPDATE users SET viewmode = 'true' 
-                                WHERE id = ?", $_SESSION["id"]);
 
-            if ($changemode !== false) {
+            if (query("UPDATE users SET viewmode = 'true'
+                WHERE id = ?", $_SESSION["id"]) !== false) {
                 $viewmode = 'true';
             }
             else {
@@ -28,10 +27,18 @@
             }
         }
         else {
-            $changemode = query("UPDATE users SET viewmode = 'false' 
-                                WHERE id = ?", $_SESSION["id"]);
-
-            if ($changemode !== false) {
+            if (query("UPDATE users SET viewmode = 'false'
+                WHERE id = ?", $_SESSION["id"]) !== false) {
+                $viewmode = 'false';
+            }
+            else {
+                $rval = 1;
+            }
+        }
+    } else {
+        if ($_SESSION["user"] === "demo") {
+            if (query("UPDATE users SET viewmode = 'false'
+                WHERE id = ?", $_SESSION["id"]) !== false) {
                 $viewmode = 'false';
             }
             else {
@@ -39,10 +46,11 @@
             }
         }
     }
-    
+
     // json response
     $response = [
         "rval" => $rval,
+        "username" => $_SESSION["user"],
         "viewmode_r" => $viewmode
     ];
 

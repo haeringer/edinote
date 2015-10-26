@@ -116,7 +116,7 @@
 
             <div id="user" class="tab-pane fade in active">
               <div class="btn-group" data-toggle="buttons">
-                <h6>Default file extension</h6>
+                <h6>Default extension for new files</h6>
                 <label class="btn btn-primary en-radio" id="opt-md">
                   <input type="radio" name="opt-md" autocomplete="off">.md (Markdown)
                 </label>
@@ -131,7 +131,7 @@
                 <input type="password" name="pw-confirm" class="form-control" placeholder="Confirmation" id="confirm-pw">
               </div>
               <div class="alert alert-danger" id="pw-confirm-nomatch">Password confirmation does not match!</div>
-              <div class="alert alert-info" id="pw-demo">Password change not allowed in demo.</div>
+              <div class="alert alert-danger" id="pw-demo">Password change not allowed in demo.</div>
             </div>
 
             <?php if ($admin === 'true'): ?>
@@ -227,7 +227,7 @@
 
     </div>
     <div id='loading-spinner'><img alt="loading..." src="../img/loading.gif"></div>
-    <a class="navbar-brand brand" href="#"><img alt="Edinote" src="../img/logo-b-1.png"></a>
+    <!--<a class="navbar-brand brand" href="#"><img alt="Edinote" src="../img/logo-b-1.png"></a>-->
     <!-- /.navbar-header -->
 
     <!-- Non-collapsing right-side stuff (dropdown) -->

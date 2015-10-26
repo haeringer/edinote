@@ -25,23 +25,20 @@
                 // something went wrong
                 $rval = 3;
             } else {
-                // user was successfully deleted from db;
-                // delete user directory plus containing files
-
+                // user was successfully deleted from db; delete user files
                 foreach(scandir($dir) as $file) {
                     if ('.' === $file || '..' === $file) continue;
                     if (is_dir("$dir/$file")) rmdir_recursive("$dir/$file");
                     else unlink("$dir/$file");
                 }
-                $rm = rmdir($dir);
-
-                if ($rm === false)
+                // delete user directory
+                if (rmdir($dir) !== false)
                 {
-                    // could not delete directory
-                    $rval = 4;
-                } else {
                     // success
                     $rval = 0;
+                } else {
+                    // could not delete directory
+                    $rval = 4;
                 }
             }
         }

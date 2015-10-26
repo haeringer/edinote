@@ -1,0 +1,19 @@
+
+kron policy-list VPNSACLEAR
+ cli clear crypto sa
+ cli clear crypto session
+!
+kron occurrence VPNSACLEAR at 03:55 13 recurring
+ policy-list VPNSACLEAR
+!
+
+***
+
+kron policy-list VPNRESTART
+ cli clear crypto sa
+ cli clear crypto session
+ ping 10.1.1.1 source 10.1.20.1
+!
+kron occurrence VPNRESTART at 04:00 13 recurring
+ policy-list VPNRESTART
+!

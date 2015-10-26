@@ -1,0 +1,289 @@
+
+- Implementierung von Policies zwischen Servern (Ost-West-Verkehr): Realisierung via Nexus 1000V (Nexus 7000 hat kein FWSM)
+
+- Nexus 9000: Kann dynamische QoS-Policies: Wird eine VM migriert, folgt die Policy dem Server
+    - Beherrscht automatische Anwendungserkennung
+    
+- FabricPath: L2 mit beliebiger Vernetzung, beliebiger Topologie, beliebig vielen redundanten Pfaden
+    - Cisco-proprietär, basiert auf IS-IS (IS-IS arbeitet auch auf Layer2!)
+    - cisco.com/en/US/prod/collateral/switches/ps9441/ps9402/at_a_glance_c45-605626.pdf
+    - FabricPath = TRILL-kompatibel; soll umgeschaltet werden können wenn dieses mal standardisiert ist
+    - nur mit F Modulen möglich!
+    - Switche arbeiten zusammen wie die Switch-Fabric in einem Chassis!
+    - für externe Geräte sieht die FabricPath-'Wolke' aus wie ein einziger Switch
+    - Alle Switche haben die gleiche MAC Table; jeder Switch kennt somit auch die MAC-Interface-Zuordnung der anderen Switche
+        - Switche innerhalb der Wolke bekommen IDs S1, S2 etc.
+        - Traffic wird durch die Wolke encapsulated; bekommt Header mit Switch ID etc.
+    - Terminologie: Core Switches = Spines, Access Switches = Leafes
+    - VLANs müssen definiert werden als FabricPath-VLANs oder Nicht-FP-VLAN ("CE VLAN"); letztere können innerhalb der bzw. durch die FP-Wolke nicht geforwardet werden!
+    - Wenn man alte nicht-FP-Switche per vPC an zwei FP-Switche anschließen möchte, wird vPC+ benötigt. Alternativ klassisch mit STP anschließen
+    
+- VDC (Virtual Device Context): virtuelle Switche im Switch; können nur durch Kabel verbunden werden
+    - Architektur: 1 Basis Linux > 1 NX-OS > 8 VDCs --> eigene Prozesse, getrennte Fault domain, VDCs können separat rebootet werden
+    - z.B. Wissenschaftsnetz, Verwaltungsnetz, Testnetz...??
+    - dedizierte Hardware-Ressourcen; CPU-shares etc.
+        - Ports bei manchen Modulen nur in 4er Gruppen zuweisbar (nicht die gleichen Gruppen wie shared Ports!)
+    - auch separates Management/Administration
+    - VDC 1 (default VDC) zum Admin-VDC machen bzw. dadurch ersetzen (hat keine Ports), VDC 2-x sind produktive VDCs
+        - geht auch schon ohne VDC-Lizenz! (Admin-VDC + 1 Produktiv-VDC)
+    - bestimmte Features nur in default VDC möglich, z.B. VDC administration, OS upgrades & Feature installations, Ethanalyzer captures
+    - Nicht alle Line cards zusammen in einer VDC möglich, z.B. keine F2 zusammen mit M2!
+    - Supervisor-Switchover bei Test-VDC auf Bring-down setzen, damit bei Problem der Test-VDC-Prozesse kein Switchover der SUPs für alle VDCs gemacht wird
+    
+- vPC (Virtual Port Channel): Etherchannel zwischen 3 Geräten
+    - Im Grunde 'Überlistung' von Spanning Tree
+    - LACP-basiert, d.h. auch z.B. Enterasys Access Switche anschließbar
+    
+- Nexus 2000 FEX:
+    - Vorteile:
+        - deutlich vereinfachtes Management: z.B. statt 20 nur 2 FW-Upgrades & Konfigurationen
+        - Kosten
+    - Nachteil:
+        - Traffic geht immer über 7000er; schlecht nur bei viel Ost-West-Traffic
+        
+- OTV (Overlay Transport Virtualization): ermöglicht L2-Verbindung zwischen zwei Rechenzentren, die eigentlich durch L3 getrennt sind
+    - Using OTV to Extend Layer 2 between Two Data Centers Connected Through Dark Fiber Links: cisco.com/en/US/prod/collateral/switches/ps9441/ps9402/white_paper_c11-644634.pdf
+    - Grundlagen: cisco.com/en/US/prod/collateral/switches/ps9441/ps9402/solution_overview_c22-574939.pdf
+    - Cisco Overlay Transport Virtualization Technology Introduction and Deployment Considerations: cisco.com/en/US/docs/solutions/Enterprise/Data_Center/DCI/whitepaper/DCI3_OTV_Intro_WP.pdf
+    - Gleiche VLANs & IP-Netze in beiden Rechenzentren
+    - Frames werden in IP encapsuliert und auf der anderen Seite wieder entpackt (wieder auf Basis von IS-IS)
+    - von außen sind die Netzwerke über ein anderes Gateway erreichbar als intern
+    - BPDUs werden nicht über OTV geschickt -> STP Probleme bleiben lokal
+
+- STP Bridge Assurance:
+    - Wenn ein Switch fehlerhaft keine BPDUs mehr sendet, ansonsten aber noch normal forwardet, öffnet der Backup-Switch fehlerhafterweise seinen Port und erzeugt somit einen Loop
+    - Durch Bridge Assurance wird dieses Verhalten verhindert; kommen keine BPDU 'Hellos' mehr, wird STP nur auf inconsistent gesetzt
+
+- Port Channel:
+    - LACP, bis zu 8 o. 16 Interfaces bündeln je nach HW
+- vPC (virtual Port Channel):
+    - zwei Verbindungen zw. den Chassis: 
+        - vPC Peer Keepalive Link: trägt heartbeat packets, ist aber im Betrieb nicht dramatisch wichtig.
+        - vPC Peer Link: trägt essentielle Steuerdaten und flooded traffic (broadcast (ARP!), multicast, unknown unicast)
+            - muss ein PortChannel aus mindestens zwei 10G Interfaces sein!
+            - nicht über verschiedene Modultypen möglich (M1/M2/etc.)
+            - bei komplettem Wegfall des Peers stoppt das secondary vPC peer device das forwarding
+            - über den Peer Link müssen alle genutzten VLANs erlaubt sein, inkl. native VLAN
+        - vPC Object Tracking: bestimmte Interfaces als Trigger für vPC failover bzw. deaktivieren eines Peer devices
+        - STP in Verbindung mit vPC: siehe Bild! (Quelle http://www.seanxwang.com/2010/06/understand-bridge-assurance.html)
+            - Primary vPC Peer device = primary STP root = HSRP active router, secondary analog
+            - mit #peer-switch agieren beide vPC devices als 1 STP root
+        - Bei VRRP o. HSRP agieren sowohl Master als auch Backup Router als Forwarder!
+
+- Access Lists
+    - atomic programming: Macht ACL-Updates Stück für Stück, so dass keine Traffic-Unterbrechung stattfindet. Benötigt zusätzliche Hardware-Ressourcen
+    - ACL capturing: Wie 'internes SPAN'; legt eine Kopie des definierten Traffics als capture-Datei ab
+    - keine Wildcard mehr bei ACLs; normale Subnetzmaske!
+    - ACL session manager: Anlegen von Hosts, Netzen etc. als Objects möglich + Referenzierung derselben in den ACLs
+        - ACL inkl. referenzierten Objekten anzeigen: # show access-list XYZ expanded
+
+
+
+--- Hardware
+
+    - Fabric Modules = Backplane. Bis zu 5; Durchsatz erhöht sich mit jedem Modul
+        - Je zwei Verbindungen (Traces) mit 23GB zu jeder Line Card, d.h. jede Line Card ist mit 46Gb/s an ein Fabric Module angebunden
+    - Central Arbiter = 'Wächter', der vor der Backplane sitzt und sämtlichen Traffic 'überwacht' - erst dadurch lossless / FC möglich. Arbiter sitzt auf den Supervisor Modulen.
+        - Virtual Output Queueing:
+            - Catalyst: "fire & forget" = Line cards schicken Pakete an Switch Fabric / Matrix und kümmern sich nicht weiter darum. In der Fabric sitzen die Queues; sind diese voll > Packet loss
+            - Nexus: Line Cards bzw. Interfaces müssen für jedes Paket beim Arbiter anfragen. Verneint dieser die Anfrage wg. voller Fabric Queues, werden die Pakete in den Incoming Queues der Line Cards gepuffert (Abfangen von Peaks)
+    - Ältere Line cards (M1 Serie): shared mode = 4 Interfaces teilen sich 10G Bandbreite auf einem Asic (4-zu-1 oversubscription). Eines davon kann in dedicated mode geschaltet werden, dann sind die restlichen 3 inaktiv
+    - Power Supplies Redundancy Modes: Auf Full Redundancy setzen; jedes Netzteil hat zwei Anschlüsse für unterschiedliche Stromkreise
+    - Austausch von Fan Modules o. Power Supplies: Bei Austausch kein Loch lassen, da Airflow komplett gestört; Switch kann schon nach einigen Minuten herunterfahren
+    
+- alle 'intelligenten' Module anzeigen:
+# show module
+
+- ALLE Module anzeigen, auch Power o. Fan:
+# show inventory
+
+- Temperaturen etc. anzeigen:
+# show environment
+    
+- einzelne Module / Fabric Module herunterfahren:
+# out-of-service module / xbar
+
+- SFP anzeigen:
+# show int eth 2/1 transceiver
+    
+    
+    
+--- NX-OS
+
+- Cisco Fabric Services (CFS): Distribution von Konfigurationsänderungen auf alle Switche in der CFS-Domäne (nur manche Features unterstützt!)
+    - Durch CFS werden Features auch domänenweit gelockt, so dass nicht zwei Admins gleichzeitig konfigurieren können
+    - copy run start muss anschließend jedoch auf allen Switchen einzeln gemacht werden
+
+- kein tg, ge etc. mehr, nur noch eth:
+switch(config)# int eth 3/1
+
+- kein 'do' mehr nötig:
+switch(config)# show run
+
+- grundsätzliche Features aktivieren (SSH, OSPF, VLANs etc.) / anzeigen:
+# feature ssh
+# show feature
+
+- running config inkl. default configs anzeigen / einzelne Features anzeigen (wie |s ) / default configs eines Features anzeigen / unterschiede running-conf & startup-conf:
+# show run all
+# show run aclmgr
+# show run cdp all
+# show run diff
+
+- config Checkpoints und Rollback (kann per Scheduler auch getimed werden!):
+# checkpoint 2013-11-06 description ACL-Update
+# show checkpoint summary
+# rollback running-config checkpoint 2013-11-06
+
+- In-Service Software Upgrade (ISSU): FW-Update im Betrieb: Switch prüft Interfaces nach und nach auf Last, macht bei niedriger Last eine sehr kurze Forwarding-Pause (Pakete werden gepuffert) und macht in dieser Zeit das Upgrade
+    - kann daher bis zu 30-40 min dauern
+    - für jedes FW-Upgrade werden zwei Images benötigt (Kickstart-Image (Linux-Basis) und System-Image (NX-OS)) -> NX-OS ist eine von Linux gestartete Anwendung
+    # install all kickstart n7000-s1-kickstart.6.1.1.bn system n7000-s1-dk9.6.1.1.bin
+        - Image wird anschließend noch verifiziert
+    - Bei manchen Upgrades kann zusätzlich ein EPLD-Upgrade nötig sein (nicht im Produktionsbetrieb möglich)
+    
+- Ethanalyzer: Nexus-internes Packet capturing, 
+    - nur für Pakete, welche die CPU passieren - z.B. Aufbau einer TCP-Verbindung ja, Userdaten nein
+    
+- SPAN: Als source für den Mirror-Port kann nicht nur ein Port angegeben werden, sondern auch z.B. ein VLAN oder IP-Adressen
+    - ERSPAN (Encapsulated Remote SPAN): SPAN auch remote möglich
+
+- Graceful Restart = IETF-Standard-Version von NSF 
+
+- VDC Konfigurationen anzeigen
+# show vdc detail
+
+- Alle Ports innerhalb einer VDC anzeigen:
+# show vdc membership
+
+- Zu VDC wechseln & zurück:
+# switchto vdc XYZ
+# switchback
+
+
+--- vPC
+
+- vPC Peer Keepalive Link muss zuerst stehen, bevor der Peer Link (s.u.) konfiguriert werden darf!
+# show vcp peer-keepalive
+
+- vPC Peer Link:
+# int port-channel 10
+ # switchport mode trunk
+ # switchport trunk allowed vlan 100-500
+ # switchport trunk native vlan 100
+ # vpc peer-link
+ # spanning-tree port type network
+
+- vPC:
+# int eth 1/1-2
+ # channel-group 10 mode active
+ # interface port-channel 10
+ # switchport mode trunk
+ # vpc 10
+ 
+
+# show vpc brief
+# show vpc consistency-parameters global
+
+
+--- Nexus 2000 Fabric Extender (FEX)
+
+- Link zu FEX kein Ethernet, sondern mit VNTags getaggte Verbindung wie intern im Switch zu Fabric
+
+- kein lokales Switching
+
+- Link von N5K/N7K zu FEX: Kann entweder PortChannel sein o. mehrere einzelne Links (10G) sein
+    - Mehrere einzelne Links: Bricht einer weg, fallen die zugeordneten Ports (z.B. 1-24) aus
+    - PortChannel: Bandbreite für alle Ports verringert sich
+        --> Bei Multihomed angeschlossenen Endgeräten einzelne Links verwenden, damit für die ausgefallenen Ports ein Failover auf die andere FEX gemacht wird, anstatt die Bandbreite für alle Hosts zu senken!
+
+- FEX installation:
+
+# install feature-set fex
+# feature-set fex
+# fex 111
+ # description "FEX 111, rack 4, top"
+# int e 1/1-2
+ # switchport
+ # switchport mode fex-fabric
+ # channel-group 41
+ # no shut
+# int port-channel 11
+ # fax associate 111
+ # no shut
+ 
+# show fex
+# show fex detail
+# show inventory fex 111
+
+
+--- FabricPath
+
+# install feature-set fabricpath
+# feature-set fabricpath
+
+- switch-ID besser manuell vergeben, nicht automatisch vergeben lassen (sonst kryptische Zahl):
+# fabricpath switch-id 11
+# show fabricpath switch-id
+
+- IS-IS aktivieren:
+# int eth 2/11-12
+ # switchport mode fabricpath
+
+# spanning-tree vlan 11-20 priority 8192
+
+# vlan 1-10
+ # mode fabricpath
+# show fabricpath topology vlan active
+
+
+
+--- Fiber Channel
+
+- mehrere Festplatten (JBOD, just a bunch of disks) per SCSI-Kabel an Host = Direct Attached Storage (DAS)
+- SCSI:
+    + hohe Bandbreite
+    + In-Order-Delivery (IOD): Daten werden in Reihenfolge abgesendet und in gleicher Reihenfolge empfangen - dadurch keine 'ACKs' o.ä. nötig
+    + lossless
+    - Distanz
+    - Skalierbarkeit
+    - Management, Security
+- Nachteile von SCSI lösbar durch ein Netzwerk -> FiberChannel -> SCSI wird encapsuliert > DAS wird zu SAN
+
+- FC
+    - WWN = Hardware-Adresse (wie MAC)
+    - FCID = Domain-ID, logische Adresse (wie IP), 24Bit in Hex, z.B. 0x0da308
+        - Jeder Switch in FC bildet zusammen mit den ihm angeschlossenen Hosts eine Domain
+    - Initiator = Host (initiiert den Schreibvorgang)
+    - Target = Platten-shelve
+    - HBA = Netzwerkkarte
+    - E-Port = Port zwischen FC-Switches, F-Port = Port zu FC-Host (Initiator o. Shelve), N-Port = Port an letzterem
+    - Verbindungsaufbau von Initiator zu Target
+        1. FLOGI (Fabric Login): Request von Initiator an FC-Switch
+        2. Switch antwortet mit FCID
+        3. Initiator sendet daraufhin NS Registration und einen NS-Request ("welche Targets gibt es?")
+        4. Switch antwortet mit Zoning-filter Reply, welche dem Initiator nur 1 bestimmtes Target nennt (so dass sich der Initiator nicht mit allen vorhandenen Targets 'paart')
+        5. Initiator sendet PLOGI an Target ('klingelt an')
+        6. Initiator sendet dann PRLI ('will SCSI machen')
+        7. Initiator sendet LUN-require
+        8. Target gibt durch LUN-Masking einen Teil seiner LUNs preis
+    - Dual Fabric: Redundantes Design wie zwei Core-Switche
+    
+- FCoE
+    - IEEE Bedingungen an FC over Ethernet:
+        - min. 10G
+        - Priority Flow control (PFC)/ETS: Flusskontrolle von einem Hop zum anderen
+        - DCBXP (Neighbor exchange über LLDP)
+        - Jumbo Frames
+        - (QCN: Flusskontrolle über Hops hinweg)
+    - zu 95% verwendete Topologie: Single-Hop FCoE
+        - FC Core Switches an 2 Nexus 5000, 
+        - LAN Core Switche an 
+        - Server haben CNA (converged network adapter) mit zwei Anschlüssen an je einem der 5000
+    - FC liegt auf Ethernet gleichwertig zu IP, ARP etc. -> Wirespeed in Hardware, im Gegensatz zu iSCSI o. FCoIP
+    - Schichten 0 und 1 des FC Model werden durch L1 + L2 des OSI Model ersetzt
+
+- 5000er an Brocade nur im NPV Modus betreiben!?
+
+
+

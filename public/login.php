@@ -26,7 +26,8 @@
         }
         else {
             // query database for user
-            $rows = query("SELECT * FROM users WHERE username = ?", $_POST["username"]);
+            $rows = query("SELECT * FROM users WHERE username = ?"
+                            , $_POST["username"]);
 
             // if we found user, check password
             if (count($rows) == 1)
@@ -34,10 +35,10 @@
                 // first (and only) row
                 $row = $rows[0];
 
-                // compare hash of user's input against hash that's in database
+                // compare hash of user's input against hash in database
                 if (crypt($_POST["password"], $row["hash"]) == $row["hash"])
                 {
-                    // remember that user's now logged in by storing user's ID in session
+                    // store user's ID in session
                     $_SESSION["id"] = $row["id"];
 
                     $rval = 0;

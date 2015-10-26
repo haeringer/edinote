@@ -1,6 +1,6 @@
 The MIT License (MIT)
 
-Copyright (c) 2015 Ben Häringer
+Copyright (c) 2015 Ben Haeringer
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +19,23 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+
+## Third party software
+
+Edinote depends on the following languages, databases, frameworks and libraries
+which all have their own license terms:
+
+* Javascript
+* jQuery
+* PHP
+* SQlite
+* MySQL
+* Ace
+* RequireJS
+* Bootstrap
+* FlatUI
+* marked
+* perfect-scrollbar
+* nprogress
+* CS50

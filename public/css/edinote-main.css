@@ -181,9 +181,9 @@ p {
 }
 
 
-.brand {
+/*.brand {
     display: none;
-}
+}*/
 
 #loading-spinner {
     display: none;
@@ -195,7 +195,7 @@ p {
 }
 
  @media(min-width:768px) {
-     .brand {
+ /*    .brand {
         position: absolute;
         right: 80px;
         bottom: 5px;
@@ -204,7 +204,7 @@ p {
      #loading-spinner {
         right: 290px;
     }
-}
+}*/
 
 * {
   -webkit-border-radius: 0 !important;

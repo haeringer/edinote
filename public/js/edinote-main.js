@@ -18,6 +18,7 @@ var ext;
 var extDefault = '';
 var rename = false;
 var scrollContainer;
+var username;
 
 define([
     'jquery',
@@ -139,12 +140,19 @@ $(function() {
     scrollContainer = document.getElementById('file-list');
     Ps.initialize(scrollContainer);
 
+    // check which mode user is in at initial page load
+    switchMode(true, false);
+
+    // check default file extension at initial page load
+    defaultExt(true);
+
     // stop progress bar and blend in UI
     require(['nprogress'], function(NProgress) { NProgress.done() });
 
     $("#wrapper").delay(1000).fadeIn(500, function() {
         editor.focus();
     });
+
     console.log('main window loaded');
 });
 
@@ -203,9 +211,6 @@ function defaultExt(init) {
         $('#loading-spinner').fadeOut(500);
     }
 }
-
-// check default file extension at initial page load
-defaultExt(true);
 
 
 /******************************************************************************
@@ -278,7 +283,7 @@ function userAdd() {
         $("#ua-empty").show();
         return false;
     }
-    else if (validate(filename, 'uName') === false) {
+    else if (validate(name, 'uName') === false) {
         $('.alert').hide();
         $("#validate-u").show();
         return false;
@@ -419,11 +424,12 @@ function loadFile(fileId_load) {
 
     .done(function(response, textStatus, jqXHR) {
 
-        console.log('file "' + response.filename + '" loaded');
         filename = response.filename;
         contents = response.content;
         ext = filename.substr((~-filename.lastIndexOf(".") >>> 0) + 2);
         enableDelete();
+        console.log('file "' + response.filename + '" loaded');
+        $('#loading-spinner').fadeOut(500);
 
         if (viewmode === false) {
             /* fill editor with response data returned from getfile.php and set
@@ -440,7 +446,6 @@ function loadFile(fileId_load) {
     .fail(function(jqXHR, textStatus, errorThrown) {
         console.log(errorThrown.toString());
     });
-    $('#loading-spinner').fadeOut(500);
 }
 
 // show content as markdown or plain text depending on file extension
@@ -497,6 +502,7 @@ function saveFile(filename, save_as, renameTrigger) {
         }
         input.focus();
     } else {
+        $('#loading-spinner').fadeIn(100);
         $.ajax({
             method: "POST",
             url: "save.php",
@@ -510,28 +516,11 @@ function saveFile(filename, save_as, renameTrigger) {
         })
 
         .done(function(response) {
+            $('#loading-spinner').fadeOut(500);
             console.log('rename: ' + rename);
             console.log('save.php returned ' + JSON.stringify(response));
 
-            if (response.rval === 1) {
-                console.log('filename still empty?!');
-            }
-            else if (response.rval === 2) {
-                $("#filename_exists").show();
-                $("input#save-as").focus();
-                return 0;
-            }
-            else if (response.rval === 3) {
-                console.log("couldn't write to database");
-            }
-            else if (response.rval === 4) {
-                console.log("file renamed");
-                rename = false;
-                $('#SaveModal').modal('hide');
-                $('#' + fileId).children('div.lgi-name').text(filename);
-                editor.focus();
-            }
-            else if (response.rval === 0) {
+            if (response.rval === 0) {
                 // clear changed state of file
                 editor.session.getUndoManager().markClean();
                 fileState();
@@ -542,7 +531,6 @@ function saveFile(filename, save_as, renameTrigger) {
                 if (save_as === true) {
                     enableDelete();
                     $('#SaveModal').modal('hide');
-                    $('#loading-spinner').fadeIn(100);
                     // insert new file element
                     $('#list-top').after(response.fileEl);
                     $('#' + response.fileId).addClass('active');
@@ -551,8 +539,28 @@ function saveFile(filename, save_as, renameTrigger) {
                     fileId = response.fileId;
                     aceMode(filename);
                     editor.focus();
-                    $('#loading-spinner').fadeOut(500);
                 }
+            }
+            else if (response.rval === 4) {
+                console.log("file renamed");
+                rename = false;
+                $('#SaveModal').modal('hide');
+                $('#' + fileId).children('div.lgi-name').text(filename);
+                editor.focus();
+            }
+            else if (response.rval === 1) {
+                console.log('filename still empty?!');
+            }
+            else if (response.rval === 2) {
+                $("#filename_exists").show();
+                $("input#save-as").focus();
+                return 0;
+            }
+            else if (response.rval === 3) {
+                console.log("couldn't write to database");
+            }
+            else if (response.rval === 5) {
+                alert('This file is read-only in the demo.');
             } else {
                 console.log('oops?!');
             }
@@ -561,6 +569,7 @@ function saveFile(filename, save_as, renameTrigger) {
         .fail(function(response, jqXHR, textStatus, errorThrown) {
             console.log('save.php returned ' + JSON.stringify(response));
             console.log(errorThrown.toString());
+            $('#loading-spinner').fadeOut(500);
         });
     }
 }
@@ -599,6 +608,9 @@ function deleteFile(filename) {
         else if (response.rval === 2) {
             console.log("couldn't delete file from file system");
         }
+        else if (response.rval === 3) {
+            alert('This file is read-only in the demo.');
+        }
     })
 
     .fail(function(jqXHR, textStatus, errorThrown) {
@@ -624,6 +636,7 @@ function tagFile() {
 
 function saveTag() {
     console.log('save tag on file ' + filename);
+    $('#loading-spinner').fadeIn(100);
     var tag = $("input#save-tag").val();
     if (tag === "") {
         $('.alert').hide();
@@ -645,6 +658,7 @@ function saveTag() {
 
     .done(function(response) {
         console.log('settag.php returned ' + JSON.stringify(response));
+        $('#loading-spinner').fadeOut(500);
 
         if (response.rval === 0) {
             $('#TagModal').modal('hide');
@@ -681,7 +695,7 @@ function selectTag(tagId_obj) {
 
 function removeTag() {
     console.log('remove Tag ' + tagId);
-
+    $('#loading-spinner').fadeIn(100);
     $.ajax({
         method: "POST",
         url: "rmtag.php",
@@ -689,7 +703,8 @@ function removeTag() {
     })
 
     .done(function(response) {
-            console.log('rmtag.php returned ' + JSON.stringify(response));
+        console.log('rmtag.php returned ' + JSON.stringify(response));
+        $('#loading-spinner').fadeOut(500);
 
         if (response.rval === 1) {
             console.log("tag ID was empty");
@@ -712,7 +727,7 @@ function removeTag() {
 
 /******************************************************************************
  * switch edinote mode or just hide div of inactive mode, depending on call
-   parameter */
+   parameter. Also fetch username at initial page load */
 function switchMode(init, newfile) {
     if (init === true) {
         $.ajax({ method: "POST", url: "mode.php", data: { init: init } })
@@ -729,6 +744,10 @@ function switchMode(init, newfile) {
                 $('#mode').addClass('active');
             } else {
                 console.log('mode.php returned ' + JSON.stringify(response));
+            }
+            username = response.username;
+            if (username === 'demo') {
+                demoMode();
             }
         })
 
@@ -791,9 +810,6 @@ function switchMode(init, newfile) {
     }
 }
 
-// check which mode user is in at initial page load
-switchMode(true, false);
-
 
 /******************************************************************************
  * various stuff
@@ -827,7 +843,7 @@ $(window).bind("load resize", function() {
     }
 });
 
-// enable submitting modal form with return key  TODO consolidate??
+// enable submitting modal form with return key TODO consolidate??
 (function enableReturn() {
     $('#save-as').on('keypress', function(e) {
         if(e.keyCode === 13) {
@@ -855,7 +871,9 @@ function enableDelete() {
 function alertUnsaved() {
     if (editor.session.getUndoManager().isClean()) {
         console.log('leaving saved or empty file..');
-    } else {
+    }
+    else if (filename !== '0_README.md')
+    {
         return (confirm('Your document has not been saved yet.\n\n'
                     + 'Are you sure you want to leave?') === true);
     }
@@ -915,6 +933,12 @@ function validate(val, input) {
     else {
         return false;
     }
+}
+
+function demoMode() {
+    setTimeout(function() {
+        loadFile('fid_56252aa57bade');
+    },250);
 }
 
 // end of define()

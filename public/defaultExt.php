@@ -1,7 +1,7 @@
 <?php
 
     require(__DIR__ . "/../includes/config.php");
-    
+
     $rval = NULL;
     $init = $_POST["init"];
 
@@ -17,17 +17,27 @@
     // switch mode if defaultExt.php was called from account settings
     if ($init === 'false') {
 
-        $changeExt = query("UPDATE users SET defaultext = ? WHERE id = ?"
-                            , $_POST["extDefault"], $_SESSION["id"]);
-
-        if ($changeExt !== false) {
+        if (query("UPDATE users SET defaultext = ? WHERE id = ?"
+            , $_POST["extDefault"], $_SESSION["id"]) !== false) {
             $rval = 0;
         }
         else {
             $rval = 1;
         }
     }
-    
+    else {
+        if ($_SESSION["user"] === "demo") {
+            if (query("UPDATE users SET defaultext = 'md' WHERE id = ?"
+            , $_SESSION["id"]) !== false) {
+                $defaultExt = 'md';
+                $rval = 0;
+            }
+            else {
+                $rval = 1;
+            }
+        }
+    }
+
     // json response
     $response = [
         "rval" => $rval,

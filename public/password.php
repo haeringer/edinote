@@ -3,14 +3,11 @@
     require("../includes/config.php");
 
     $rval = NULL;
-    
-    $demo = query("SELECT demo FROM users WHERE id = ?"
-                        , $_SESSION["id"])[0]['demo'];
 
-    if ($demo === 'true')
-    {
+    if (query("SELECT demo FROM users WHERE id = ?"
+        , $_SESSION["id"])[0]['demo'] === 'true') {
         $rval = 5;
-    } 
+    }
     else {
         if ($_POST["pw"] === NULL) {
             // password is empty
@@ -26,10 +23,8 @@
         }
         else {
             // update user's password
-            $updatePw = query("UPDATE users SET hash = ? WHERE id = ?"
-                            , crypt($_POST["pw"]), $_SESSION["id"]);
-            
-            if ($updatePw !== false) {
+            if (query("UPDATE users SET hash = ? WHERE id = ?"
+                , crypt($_POST["pw"]), $_SESSION["id"]) !== false) {
                 $rval = 0;
             } else {
                 $rval = 4;

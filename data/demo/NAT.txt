@@ -1,0 +1,84 @@
+##### Static NAT:
+
+- IOS Router:
+int#ip nat inside
+int#ip nat outside
+#ip nat inside source static 10.1.1.1 87.90.153.2  <-- <inside local host address> <inside global host address>)
+
+- ASA (bis 8.2):
+#static (inside,outside) 87.90.153.2 10.1.1.1 netmask 255.255.255.255 <-- !! inside,outside <outside> <inside>
+
+- ASA (ab 8.3, Network Object NAT):
+(config)# object network HOST-XY_OBJ1
+(config-network-object)# host 10.1.1.1
+(config-network-object)# nat (inside,outside) source static 10.2.2.2 dns
+
+
+##### Static PAT:
+
+- IOS Router:
+int#ip nat inside
+int#ip nat outside
+#ip nat inside source static tcp 10.1.1.1 8080 87.90.153.2 80
+
+- ASA (bis 8.2):
+#static (inside,outside) tcp interface 80 10.1.1.1 8080 netmask 255.255.255.255 <-- !! inside,outside <outside> <inside>
+
+- ASA (ab 8.3, Network Object NAT):
+(config)# object network FTP-SERVER
+(config-network-object)# host 10.1.1.1
+(config-network-object)# nat (inside,outside) static interface service tcp 21 2121
+
+
+##### Dynamic PAT (NAT Overload):
+
+- IOS Router (mit nur einer public IP -> ohne pool):
+int#ip nat inside
+int#ip nat outside
+#access-list 1 permit 10.1.1.2 0.0.0.255  <-- am inside interface von dieser adresse ankommende pakete werden genattet
+#access-list 1 permit 10.1.1.3 0.0.0.255
+#ip nat inside source list 1 interface Serial0/0 overload
+
+- ASA (bis 8.2):
+#nat (inside) 1 10.129.0.0 255.255.255.0
+#nat (inside) 1 192.168.1.0 255.255.255.0 <-- optional weitere netze, die gepattet werden sollen
+#global (outside) 1 interface  <-- so wird auf die outside interface ip adresse gepattet
+ODER, bei mehreren öffentlichen IP adressen:
+#global (outside) 1 87.90.153.2-87.90.153.30 netmask 255.255.255.0  <-- so wird auf eine dieser outside adressen gepattet
+
+- ASA (ab 8.3, Network Object NAT):
+(config)# object network INSIDE-NETZ
+(config-network-object)# subnet 192.168.2.0 255.255.255.0
+(config-network-object)# nat (inside,outside) dynamic interface
+
+
+##### Dynamic NAT:
+
+- IOS Router:
+int#ip nat inside
+int#ip nat outside
+#access-list 1 permit 10.1.1.2  <-- am inside interface von dieser adresse ankommende pakete werden genattet
+#access-list 1 permit 10.1.1.3
+#ip nat pool NAME 87.90.153.1 87.90.153.2 netmask 255.255.255.252  <-- <erste public ip> <letzte public ip> 'netmask' maske
+#ip nat inside source list 1 pool NAME 
+
+- ASA:
+#global (outside) 1 87.90.153.2-87.90.153.30 netmask 255.255.255.0  <-- define the pool of global addresses
+wenn nur eine IP -> interface adreesse: #global (outside) interface (?)
+#nat (inside) 1 10.1.1.0 255.255.255.0  <-- map pool 1 to an inside network address
+
+
+#####
+
+- No NAT ASA:
+#nat (inside) 0 access-list NO-NAT
+
+
+NAT Troubleshooting:
+sh ip nat translations
+sh ip nat statistics
+clear ip nat translations
+debug ip nat
+
+ASA:
+sh xlate
