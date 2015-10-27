@@ -26,7 +26,8 @@
         }
     }
     else {
-        if ($_SESSION["user"] === "demo") {
+        // if initial page load && demo user, always set to 'md'
+        if ($_SESSION['demo'] === 'true') {
             if (query("UPDATE users SET defaultext = 'md' WHERE id = ?"
             , $_SESSION["id"]) !== false) {
                 $defaultExt = 'md';
@@ -41,6 +42,7 @@
     // json response
     $response = [
         "rval" => $rval,
+        "demo" => $_SESSION["demo"],
         "ext" => $defaultExt
     ];
 

@@ -18,7 +18,7 @@ var ext;
 var extDefault = '';
 var rename = false;
 var scrollContainer;
-var username;
+var demo;
 
 define([
     'jquery',
@@ -140,12 +140,6 @@ $(function() {
     scrollContainer = document.getElementById('file-list');
     Ps.initialize(scrollContainer);
 
-    // check which mode user is in at initial page load
-    switchMode(true, false);
-
-    // check default file extension at initial page load
-    defaultExt(true);
-
     // stop progress bar and blend in UI
     require(['nprogress'], function(NProgress) { NProgress.done() });
 
@@ -155,6 +149,12 @@ $(function() {
 
     console.log('main window loaded');
 });
+
+// check which mode user is in at initial page load
+switchMode(true, false);
+
+// check default file extension at initial page load
+defaultExt(true);
 
 
 function showSettings() {
@@ -173,7 +173,7 @@ function Settings() {
 
 
 /******************************************************************************
- * set default file extension
+ * set default file extension and get demo flag at initial page load
  */
 function defaultExt(init) {
     if (init === true) {
@@ -187,6 +187,10 @@ function defaultExt(init) {
                 $('#opt-md').addClass('active');
             } else {
                 $('#opt-txt').addClass('active');
+            }
+            demo = response.demo;
+                if (demo === 'true') {
+                    demoMode();
             }
         })
         .fail(function(jqXHR, textStatus, errorThrown) {
@@ -203,7 +207,6 @@ function defaultExt(init) {
             else {
                 console.log('oops');
             }
-
         })
         .fail(function(jqXHR, textStatus, errorThrown) {
             console.log(errorThrown.toString());
@@ -481,6 +484,11 @@ function saveAs() {
 
 // save new file with name dialog, or save existing file directly, or rename
 function saveFile(filename, save_as, renameTrigger) {
+    if (demo === 'true' && filename === '0_README.md') {
+        alert('This file is read-only in the demo.');
+        return false;
+    }
+
     contents = editor.getSession().getValue();
 
     if (filename === '' || renameTrigger === true) {
@@ -558,9 +566,6 @@ function saveFile(filename, save_as, renameTrigger) {
             }
             else if (response.rval === 3) {
                 console.log("couldn't write to database");
-            }
-            else if (response.rval === 5) {
-                alert('This file is read-only in the demo.');
             } else {
                 console.log('oops?!');
             }
@@ -585,6 +590,11 @@ function fileState() {
 
 // delete file
 function deleteFile(filename) {
+    if (demo === 'true' && filename === '0_README.md') {
+        alert('This file is read-only in the demo.');
+        return false;
+    }
+
     $('#loading-spinner').fadeIn(100);
     console.log('deleting file ' + filename);
 
@@ -607,9 +617,6 @@ function deleteFile(filename) {
         }
         else if (response.rval === 2) {
             console.log("couldn't delete file from file system");
-        }
-        else if (response.rval === 3) {
-            alert('This file is read-only in the demo.');
         }
     })
 
@@ -727,7 +734,7 @@ function removeTag() {
 
 /******************************************************************************
  * switch edinote mode or just hide div of inactive mode, depending on call
-   parameter. Also fetch username at initial page load */
+   parameter */
 function switchMode(init, newfile) {
     if (init === true) {
         $.ajax({ method: "POST", url: "mode.php", data: { init: init } })
@@ -745,12 +752,7 @@ function switchMode(init, newfile) {
             } else {
                 console.log('mode.php returned ' + JSON.stringify(response));
             }
-            username = response.username;
-            if (username === 'demo') {
-                demoMode();
-            }
         })
-
         .fail(function(jqXHR, textStatus, errorThrown) {
             console.log(errorThrown.toString());
         });

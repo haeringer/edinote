@@ -24,7 +24,7 @@ an easy setup for your own web server.
 
 ## Demo ##
 
-Log in with credentials 'demo' / 'demo' at [demo.edinote.org](https://demo.edinote.org)
+Log in with credentials 'demo' / 'demo' at [demo.edinote.org](https://demo.edinote.org).
 Please note that user settings and files will not be stored permanently in the demo.
 
 
@@ -33,14 +33,18 @@ Please note that user settings and files will not be stored permanently in the d
 ### Prerequisites
 
 Edinote runs with a standard Apache or Nginx + PHP setup. PHP is tested for version 5.5.
+
+As its database, Edinote comes with SQLite per default, so the below instructions are
+also for using it with SQLite. Installation setup for usage with MySQL is still in development.
+
 For example, to get started on Ubuntu 14.04 with Apache, you can use the following
 installation commands:
 
     sudo apt-get update
-    sudo apt-get install apache2 php5 libapache2-mod-php5
+    sudo apt-get install apache2 php5 libapache2-mod-php5 php5-sqlite
 
-You can use a standard vhost like the Apache example below (of course it
-is highly recommended to use SSL/HTTPS for production).
+You can use a standard vhost like the Apache example below (but of course you should use
+SSL/HTTPS for production).
 
     <VirtualHost *:80>
 
@@ -54,11 +58,8 @@ is highly recommended to use SSL/HTTPS for production).
 
 ### Install
 
-The below instructions are for using Edinote with a SQLite database. Installation
-for usage with MySQL is still in development.
-
-To install Edinote, download the latest [release](https://github.com/haeringer/edinote/releases)
-and unpack it in your web server document root (for example, /var/www/ on Ubuntu):
+To install Edinote, choose the latest [release](https://github.com/haeringer/edinote/releases),
+download and unpack it in your web server document root (for example, /var/www/ on Ubuntu):
 
     cd /var/www/
     sudo wget https://github.com/haeringer/edinote/archive/vX.X.X.tar.gz
@@ -73,7 +74,7 @@ on the Edinote data directory:
 
     sudo chown -R www-data:www-data demo.edinote.org/data
 
-After installation, restart you web server (e.g. `service apache2 restart` on Ubuntu)
+After installation, restart your web server (e.g. `service apache2 restart` on Ubuntu)
 and login as user '**admin**' with password '**edinote**'. After login, change the
 default password in the user settings.
 
@@ -93,8 +94,8 @@ Change the DATADIR path in the Edinote configuration:
 ### Data Import
 
 If you already have a bunch of text files that you'd like to import into Edinote,
-you can just copy those files into the data directory of your user (e.g. data/admin/)
-and Edinote will read them in and update the database at page reload automatically.
+you can just copy those files into the data directory of your user (e.g. into data/admin/)
+and Edinote will read them in, updating the database automatically at page reload.
 
 
 ## License

@@ -4,8 +4,7 @@
 
     $rval = NULL;
 
-    if (query("SELECT demo FROM users WHERE id = ?"
-        , $_SESSION["id"])[0]['demo'] === 'true') {
+    if ($_SESSION['demo'] === 'true') {
         $rval = 5;
     }
     else {

@@ -6,26 +6,21 @@
     $filename = $_POST["filename"];
     $rval = NULL;
 
-    if ($_SESSION['user'] === 'demo' && $filename === '0_README.md') {
-        $rval = 3;
-    }
-    else {
-        // delete filename from database
-        if (query("DELETE FROM files WHERE id = ? AND file = ?"
-                    , $_SESSION["id"], $filename) !== false)
+    // delete filename from database
+    if (query("DELETE FROM files WHERE id = ? AND file = ?"
+                , $_SESSION["id"], $filename) !== false)
+    {
+        // delete file from file system
+        if (unlink($usrdir.$filename) !== false)
         {
-            // delete file from file system
-            if (unlink($usrdir.$filename) !== false)
-            {
-                $rval = 0;
-            }
-            else {
-                $rval = 2;
-            }
+            $rval = 0;
         }
         else {
-            $rval = 1;
+            $rval = 2;
         }
+    }
+    else {
+        $rval = 1;
     }
 
      // json response

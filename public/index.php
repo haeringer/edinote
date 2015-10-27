@@ -14,9 +14,9 @@
     $_SESSION["usrdir"] = DATADIR . query("SELECT username FROM users WHERE id = ?"
                                 , $_SESSION["id"])[0]['username'] . "/";
 
-    // fetch username for demo functionality
-    $_SESSION["user"] = query("SELECT username FROM users WHERE id = ?"
-                                , $_SESSION["id"])[0]['username'];
+    // check if user has demo flag checked
+    $_SESSION["demo"] = query("SELECT demo FROM users WHERE id = ?"
+                                , $_SESSION["id"])[0]['demo'];
 
     // check if user has Edinote admin rights
     $_SESSION["admin"] = query("SELECT admin FROM users WHERE id = ?"

@@ -16,10 +16,8 @@ require.config({
         'ace': '/js/ace',
         'bootstrap': 'bootstrap.min',
         'jquery': 'jquery.min',
-        'pace': 'pace.min',
         'marked': 'marked.min',
-        'perfect-scrollbar': 'perfect-scrollbar.min',
-        'list': 'list.min'
+        'perfect-scrollbar': 'perfect-scrollbar.min'
     },
     shim: {
         "bootstrap" : { "deps" : ['jquery'] }

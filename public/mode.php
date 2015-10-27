@@ -36,7 +36,7 @@
             }
         }
     } else {
-        if ($_SESSION["user"] === "demo") {
+        if ($_SESSION['demo'] === 'true') {
             if (query("UPDATE users SET viewmode = 'false'
                 WHERE id = ?", $_SESSION["id"]) !== false) {
                 $viewmode = 'false';
@@ -50,7 +50,6 @@
     // json response
     $response = [
         "rval" => $rval,
-        "username" => $_SESSION["user"],
         "viewmode_r" => $viewmode
     ];
 
