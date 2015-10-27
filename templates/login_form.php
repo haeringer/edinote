@@ -9,7 +9,7 @@
   <meta name="author" content="Ben Haeringer">
   <link rel="shortcut icon" href="../img/favicon-1.ico?v=1" type="image/x-icon">
   <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
-  <title>&#60;Edinote&#62; - Login</title>
+  <title>&#60;Edinote&#62; Log in</title>
 
   <!-- Bootstrap Core CSS -->
   <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -32,7 +32,7 @@
 
 <div class="container">
 <form class="form-signin" action="./" method="post">
-  <p class="pull-right" href="#"><img alt="Brand" src="../img/logo-b-1.png"></p></br></br>
+  <p class="pull-right" href="#"><img alt="&#60;Edinote&#62;" src="../img/logo-b-1.png"></p></br></br>
   <!-- <h3 class="form-signin-heading">Please sign in</h3> -->
   <label for="inputUsername" class="sr-only">Username</label>
   <label for="inputPassword" class="sr-only">Password</label>

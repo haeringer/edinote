@@ -432,3 +432,14 @@ a.list-group-item, li.list-group-item {
     margin-top: 5px;
     /*line-height: 0px;*/
 }
+
+pre {
+    border-style: none;
+    border-radius: 3px !important;
+}
+
+code {
+    color: #444;
+    border-radius: 3px !important;
+    background-color: #F7F7F7 !important;
+}
