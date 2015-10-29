@@ -20,11 +20,8 @@
   <!-- Flat UI CSS -->
   <link href="/flat-ui/dist/css/flat-ui.min.css" rel="stylesheet">
 
-  <!-- Custom CSS -->
+  <!-- Edinote CSS -->
   <link href="/css/edinote-main.css" rel="stylesheet">
-
-  <!-- jQuery -->
-  <script src="/js/jquery.min.js"></script>
 
 </head>
 
@@ -32,29 +29,32 @@
 
 <div class="container">
 <form class="form-signin" action="./" method="post">
-  <p class="pull-right" href="#"><img alt="&#60;Edinote&#62;" src="../img/logo-b-1.png"></p></br></br>
+  <p class="pull-right"><img alt="&#60;Edinote&#62;" src="../img/logo-b-1.png"></p><br><br>
   <!-- <h3 class="form-signin-heading">Please sign in</h3> -->
   <label for="inputUsername" class="sr-only">Username</label>
   <label for="inputPassword" class="sr-only">Password</label>
-  <input type="username" id="inputUsername" class="form-control" name="username" type="text" placeholder="Username" required autofocus>
-  <input type="password" id="inputPassword" class="form-control" name="password" type="password" placeholder="Password" required>
+  <input id="inputUsername" class="form-control" name="username" type="text" placeholder="Username" required autofocus>
+  <input id="inputPassword" class="form-control" name="password" type="password" placeholder="Password" required>
   <!-- <div class="checkbox">
     <label>
       <input type="checkbox" value="remember-me"> Remember me
     </label>
   </div> -->
   <button id="submit-login" class="btn btn-lg btn-primary btn-block confirm-btn" type="button">Log in</button>
-  </br>
+  <br>
   <div class="alert alert-danger invalid-login en-hide">Invalid username/password!</div>
   <div class="alert alert-danger empty-username en-hide">Please enter a username!</div>
   <div class="alert alert-danger empty-password en-hide">Please enter a password!</div>
 </form>
 </div>
 
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
 <!-- Bootstrap Core JavaScript -->
 <script src="/js/bootstrap.min.js"></script>
 
-<!-- edinote login js -->
+<!-- Edinote login page js -->
 <script src="/js/edinote-login.js"></script>
 
 </body>

@@ -35,7 +35,7 @@
 
 <!-- SaveModal -->
 <div class="modal" id="SaveModal" tabindex="-1" role="dialog" aria-labelledby="SaveModalLabel">
-  <form name="saveAs" action="">
+  <form name="saveAs">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -65,7 +65,7 @@
 
 <!-- TagModal -->
 <div class="modal" id="TagModal" tabindex="-1" role="dialog" aria-labelledby="TagModalLabel">
-  <form name="tagFile" action="">
+  <form name="tagFile">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -95,7 +95,7 @@
 
 <!-- AcntModal -->
 <div class="modal" id="AcntModal" tabindex="-1" role="dialog" aria-labelledby="AcntModalLabel">
-  <form name="Acnt" action="">
+  <form name="Acnt">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -103,7 +103,6 @@
         <h4 class="modal-title" id="AcntModalLabel">Settings</h4>
       </div>
       <div class="modal-body">
-
         <div>
           <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#user">User Account</a></li>
@@ -111,20 +110,18 @@
               <li><a data-toggle="tab" href="#admin">Admin</a></li>
             <?php endif; ?>
           </ul>
-
           <div class="tab-content">
-
             <div id="user" class="tab-pane fade in active">
               <div class="btn-group" data-toggle="buttons">
                 <h6>Default extension for new files</h6>
                 <label class="btn btn-primary en-radio" id="opt-md">
-                  <input type="radio" name="opt-md" autocomplete="off">.md (Markdown)
+                  <input type="radio" name="opt-md">.md (Markdown)
                 </label>
                 <label class="btn btn-primary en-radio" id="opt-txt">
-                  <input type="radio" name="opt-txt" autocomplete="off">.txt (Text)
+                  <input type="radio" name="opt-txt">.txt (Text)
                 </label>
               </div>
-              <hr></hr>
+              <hr>
               <div class="input-group input-group-lg col-sm-12">
                 <h6>Change password</h6>
                 <input type="password" name="pw" class="form-control" placeholder="New password" id="save-pw">
@@ -133,11 +130,9 @@
               <div class="alert alert-danger" id="pw-confirm-nomatch">Password confirmation does not match!</div>
               <div class="alert alert-danger" id="pw-demo">Password change not allowed in demo.</div>
             </div>
-
             <?php if ($admin === 'true'): ?>
             <div id="admin" class="tab-pane fade">
               <h6>Add user</h6>
-              <form action="useradd.php" method="post">
                 <div class="input-group input-group-lg col-sm-12">
                   <input autofocus class="form-control" id="ua-name" name="username" placeholder="Username" type="text"/>
                   <input class="form-control" id="ua-pw" name="password" placeholder="Password" type="password"/>
@@ -146,7 +141,6 @@
                     <label class="en-label"><input type="checkbox" id="ua-admin" name="admin-check" value="">Admin</label>
                   </div>
                 </div>
-              </form>
               <div class="alert alert-info" id="ua-empty">Please fill out username and password!</div>
               <div class="alert alert-warning" id="validate-u">
                 Use max. 30 of the following characters and symbols for usernames:<br>
@@ -154,10 +148,8 @@
               </div>
               <div class="alert alert-danger" id="ua-exists">Username already exists!</div>
               <div class="alert alert-success" id="ua-success">User successfully created.</div>
-
-              <hr></hr>
+              <hr>
               <h6>Delete user</h6>
-              <form action="userdel.php" method="post">
                 <fieldset>
                   <div class="form-group">
                     <select id="ud-name" class="form-control" name="users">
@@ -171,16 +163,12 @@
                     <button id="userdel" type="button" class="btn btn-primary confirm-btn pull-right">Delete</button>
                   </div>
                 </fieldset>
-              </form>
               <div class="alert alert-info" id="ud-empty">No user selected!</div>
               <div class="alert alert-success" id="ud-success">User successfully deleted.</div>
-
             </div>
             <?php endif; ?>
-
           </div>
         </div>
-
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default en-hide" id="close-modal" data-dismiss="modal">Close</button>
@@ -195,7 +183,7 @@
 <div id="wrapper" class="en-hide" >
 
   <!-- Navigation -->
-  <nav class="navbar navbar-fixed-top" role="navigation">
+  <nav class="navbar navbar-fixed-top">
 
     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
       <span class="sr-only">Toggle navigation</span>
@@ -259,7 +247,7 @@
         <div id="ls-top" class="list-width"></div>
         <ul class="list pre-scrollable" id="file-list">
 
-          <div id="list-top"></div>
+          <li class="en-hide" id="list-top"></li>
 
           <?php for ($i = 0; $i < sizeof($files); $i++) { ?>
             <li class="list-group-item" id="<?=$files[$i]["fileid"]?>">
