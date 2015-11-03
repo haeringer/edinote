@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Edinote">
+  <meta name="description" content="Note taking web application for self-hosting. Comes with tagging & Markdown support; can be used as alternative to Evernote.">
   <meta name="author" content="Ben Haeringer">
   <link rel="shortcut icon" href="../img/favicon-1.ico?v=1" type="image/x-icon">
   <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
