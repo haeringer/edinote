@@ -16,6 +16,8 @@
 
   <!-- Bootstrap Core CSS -->
   <link href="/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/bootstrap-modal-bs3patch.css" rel="stylesheet">
+  <link href="/css/bootstrap-modal.css" rel="stylesheet">
 
   <!-- Flat UI CSS -->
   <link href="/flat-ui/dist/css/flat-ui.min.css" rel="stylesheet">
@@ -247,7 +249,7 @@
         <div id="ls-top" class="list-width"></div>
         <ul class="list pre-scrollable" id="file-list">
 
-          <li class="en-hide" id="list-top"></li>
+          <li class="hidden" id="list-top"></li>
 
           <?php for ($i = 0; $i < sizeof($files); $i++) { ?>
             <li class="list-group-item" id="<?=$files[$i]["fileid"]?>">

@@ -489,7 +489,7 @@ function loadFile(fileId_load) {
             /* fill editor with response data returned from getfile.php and set
                cursor to beginning of file */
             editor.getSession().setValue(contents, -1);
-            editor.focus();
+            if ($(window).width() > 768) { editor.focus() }
             // set syntax highlighting
             aceMode(filename);
         } else {
@@ -535,6 +535,12 @@ function saveAs() {
 
 // save new file with name dialog, or save existing file directly, or rename
 function saveFile(filename, save_as, renameTrigger) {
+    if (save_as === false) {
+        if (((renameTrigger === true) && (filename === '')) ||
+        ((renameTrigger === false) && ($('button#save').hasClass('disabled')))){
+            return false;
+        }
+    }
     if (demo === 'true' && filename === '0_README.md') {
         alert('This file is read-only in the demo.');
         return false;
@@ -548,6 +554,7 @@ function saveFile(filename, save_as, renameTrigger) {
         $('#SaveModal').modal('toggle');
         $("#save-as").val('new file.' + extDefault);
         if (renameTrigger === true) {
+            if ($('button#rename').hasClass('bottom-disabled')) { return false }
             rename = true;
             filename_old = filename.slice(0);
             $("#save-as").val(filename_old);
@@ -625,7 +632,6 @@ function saveFile(filename, save_as, renameTrigger) {
         .fail(function(response, jqXHR, textStatus, errorThrown) {
             console.log('save.php returned ' + JSON.stringify(response));
             console.log(errorThrown.toString());
-            $('#loading-spinner').fadeOut(500);
         });
     }
 }
@@ -641,6 +647,8 @@ function fileState() {
 
 // delete file
 function deleteFile(filename) {
+    if ($('button#delete').hasClass('disabled')) { return false }
+
     if (demo === 'true' && filename === '0_README.md') {
         alert('This file is read-only in the demo.');
         return false;
@@ -669,12 +677,12 @@ function deleteFile(filename) {
         else if (response.rval === 2) {
             console.log("couldn't delete file from file system");
         }
+        $('#loading-spinner').fadeOut(500);
     })
 
     .fail(function(jqXHR, textStatus, errorThrown) {
         console.log(errorThrown.toString());
     });
-    $('#loading-spinner').fadeOut(500);
 }
 
 
@@ -684,6 +692,7 @@ function deleteFile(filename) {
 
 // set tag
 function tagFile() {
+    if ($('#tag-add').hasClass('bottom-disabled')) { return false }
     console.log('tag file ' + filename);
     $('.alert').hide();
     $('#TagModal').modal('toggle');
@@ -752,6 +761,7 @@ function selectTag(tagId_obj) {
 }
 
 function removeTag() {
+    if ($('button#tag-rm').hasClass('bottom-disabled')) { return false }
     console.log('remove Tag ' + tagId);
     $('#loading-spinner').fadeIn(100);
     $.ajax({
