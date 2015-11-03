@@ -33,6 +33,7 @@
                     WHERE id = ? ORDER BY LOWER(file)", $_SESSION["id"]);
 
     // array of filenames contained in db
+    $files_db = [];
     for ($i = 0; $i < sizeof($files); $i++) {
         $files_db[$i] = $files[$i]["file"];
     }
