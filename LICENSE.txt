@@ -23,8 +23,8 @@ SOFTWARE.
 
 ## Third party software
 
-Edinote depends on the following languages, databases, frameworks and libraries
-which all have their own license terms:
+Edinote includes and depends on the following languages, databases, frameworks
+and libraries, each using their own license terms:
 
 * Javascript
 * jQuery
@@ -37,6 +37,6 @@ which all have their own license terms:
 * FlatUI
 * marked
 * perfect-scrollbar
-* mousetrap
+* Mousetrap
 * nprogress
 * CS50
