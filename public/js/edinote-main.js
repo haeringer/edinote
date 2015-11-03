@@ -240,6 +240,7 @@ function defaultExt(init) {
                 $('#opt-txt').addClass('active');
             }
             demo = response.demo;
+            console.log(demo);
                 if (demo === 'true') {
                     demoMode();
             }

@@ -1,6 +1,6 @@
 <?php
 
-    require(__DIR__ . "/../includes/config.php");
+    require("../includes/config.php");
 
     $rval = NULL;
 

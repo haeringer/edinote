@@ -1,6 +1,6 @@
 <?php
 
-    require(__DIR__ . "/../includes/config.php");
+    require("../includes/config.php");
 
     $filename = $_POST["filename"];
     $fileId = $_POST["fileId"];

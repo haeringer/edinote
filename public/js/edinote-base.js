@@ -18,10 +18,12 @@ require.config({
         'jquery': 'jquery.min',
         'mousetrap': 'mousetrap.min',
         'marked': 'marked.min',
-        'perfect-scrollbar': 'perfect-scrollbar.min'
+        'perfect-scrollbar': 'perfect-scrollbar.min',
+        'typeahead': 'typeahead.bundle.min'
     },
     shim: {
-        "bootstrap" : { "deps" : ['jquery'] }
+        "bootstrap" : { "deps" : ['jquery'] },
+        "typeahead" : { "deps" : ['jquery'] }
     }
 });
 
