@@ -16,8 +16,6 @@
 
   <!-- Bootstrap Core CSS -->
   <link href="/css/bootstrap.min.css" rel="stylesheet">
-  <link href="/css/bootstrap-modal-bs3patch.css" rel="stylesheet">
-  <link href="/css/bootstrap-modal.css" rel="stylesheet">
 
   <!-- Flat UI CSS -->
   <link href="/flat-ui/dist/css/flat-ui.min.css" rel="stylesheet">
@@ -76,7 +74,7 @@
       </div>
       <div class="modal-body">
         <div class="input-group input-group-lg col-sm-12">
-          <input type="text" name="tag" class="form-control" id="save-tag">
+          <input type="text" name="tag" class="typeahead form-control" id="save-tag">
         </div>
         <div class="alert alert-info" id="tag_empty">Please enter a tag!</div>
         <div class="alert alert-warning" id="validate-t">

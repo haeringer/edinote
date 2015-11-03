@@ -262,8 +262,8 @@ function defaultExt(init) {
         .fail(function(jqXHR, textStatus, errorThrown) {
             console.log(errorThrown.toString());
         });
-        $('#loading-spinner').fadeOut(500);
     }
+    $('#loading-spinner').fadeOut(500);
 }
 
 
@@ -844,6 +844,7 @@ function switchMode(init, newfile) {
                 else {
                     console.log('mode.php returned ' + JSON.stringify(response));
                 }
+
             })
             .fail(function(jqXHR, textStatus, errorThrown) {
                 console.log(errorThrown.toString());
