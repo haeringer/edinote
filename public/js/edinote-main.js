@@ -23,10 +23,11 @@ var demo;
 define([
     'jquery',
     'perfect-scrollbar',
+    'mousetrap',
     'ace/ace',
     'ace/ext/modelist',
     'bootstrap'
-    ], function($, Ps, ace) {
+    ], function($, Ps, Mousetrap, ace) {
 
 
 /******************************************************************************
@@ -54,16 +55,31 @@ editor.$blockScrolling = Infinity;
 // register any changes made to a file
 editor.on('input', function() { fileState() });
 
-// bind saveFile() to ctrl-s
+// keyboard shortcuts for external functions when focus is on editor
 editor.commands.addCommand({
     name: 'saveFile',
-    bindKey: {
-        win: 'Ctrl-S',
-        mac: 'Command-S',
-        sender: 'editor|cli'
-    },
-    // call saveFile() with parameter save_as = false
+    bindKey: { win: 'Ctrl-S', mac: 'Command-S', sender: 'editor|cli' },
     exec: function () { saveFile(filename, false, false) }
+});
+editor.commands.addCommand({
+    name: 'newFile',
+    bindKey: { win: 'Ctrl-N', mac: 'Command-N', sender: 'editor|cli' },
+    exec: function () { newFile() }
+});
+editor.commands.addCommand({
+    name: 'deleteFile',
+    bindKey: { win: 'Ctrl-Shift-D', mac: 'Command-Shift-D', sender: 'editor|cli' },
+    exec: function () { deleteFile(filename) }
+});
+editor.commands.addCommand({
+    name: 'switchMode',
+    bindKey: { win: 'Ctrl-Shift-M', mac: 'Command-Shift-M', sender: 'editor|cli' },
+    exec: function () { switchMode(false, false) }
+});
+editor.commands.addCommand({
+    name: 'tagFile',
+    bindKey: { win: 'Ctrl-T', mac: 'Command-T', sender: 'editor|cli' },
+    exec: function () { tagFile() }
 });
 
 var aceMode = function (filename) {
@@ -73,6 +89,46 @@ var aceMode = function (filename) {
     editor.session.setMode(mode);
 };
 
+/******************************************************************************
+ * Keyboard shortcuts when focus is outside editor
+ */
+Mousetrap.bind(['command+s', 'ctrl+s'], function() {
+    saveFile(filename, false, false)
+    return false;
+});
+Mousetrap.bind(['command+n', 'ctrl+n'], function() {
+    newFile();
+    return false;
+});
+Mousetrap.bind(['command+shift+d', 'ctrl+shift+d'], function() {
+    deleteFile(filename);
+    return false;
+});
+Mousetrap.bind(['command+shift+m', 'ctrl+shift+m'], function() {
+    switchMode(false, false);
+    return false;
+});
+Mousetrap.bind(['command+t', 'ctrl+t'], function() {
+    tagFile();
+    return false;
+});
+
+// enable submitting modal forms with return key
+// TODO consolidate??
+(function enableReturn() {
+    $('#save-as').on('keypress', function(e) {
+        if(e.keyCode === 13) {
+            e.preventDefault();
+            $('#submit-fn').trigger('click');
+        }
+    });
+    $('#save-tag').on('keypress', function(e) {
+        if(e.keyCode === 13) {
+            e.preventDefault();
+            $('#submit-tag').trigger('click');
+        }
+    });
+}());
 
 
 /******************************************************************************
@@ -120,7 +176,6 @@ $(function() {
     $('#useradd').click(function() { userAdd() });
     $('#userdel').click(function() { userDel() });
 
-
     // bootstrap tooltips
     $('[data-toggle="tooltip"]').tooltip({container: 'body'});
 
@@ -142,11 +197,7 @@ $(function() {
 
     // stop progress bar and blend in UI
     require(['nprogress'], function(NProgress) { NProgress.done() });
-
-    $("#wrapper").delay(1000).fadeIn(500, function() {
-        editor.focus();
-    });
-
+    $("#wrapper").delay(1000).fadeIn(500, function() { editor.focus() });
     console.log('main window loaded');
 });
 
@@ -844,22 +895,6 @@ $(window).bind("load resize", function() {
         $('div.navbar-collapse').removeClass('collapse');
     }
 });
-
-// enable submitting modal form with return key TODO consolidate??
-(function enableReturn() {
-    $('#save-as').on('keypress', function(e) {
-        if(e.keyCode === 13) {
-            e.preventDefault();
-            $('#submit-fn').trigger('click');
-        }
-    });
-    $('#save-tag').on('keypress', function(e) {
-        if(e.keyCode === 13) {
-            e.preventDefault();
-            $('#submit-tag').trigger('click');
-        }
-    });
-}());
 
 function enableDelete() {
     if (filename !== '') {

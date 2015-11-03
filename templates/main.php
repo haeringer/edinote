@@ -5,8 +5,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="">
-  <meta name="author" content="">
+  <meta name="description" content="Note taking web application for self-hosting. Comes with tagging & Markdown support; can be used as alternative to Evernote.">
+  <meta name="author" content="Ben Haeringer">
   <link rel="shortcut icon" href="../img/favicon-1.ico?v=1" type="image/x-icon">
   <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
   <title>&#60;Edinote&#62;</title>
@@ -196,18 +196,18 @@
 
       <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group">
-          <button type="button" id="new" class="btn btn-default navbar-btn" data-toggle="tooltip" data-placement="bottom" title="New">
+          <button type="button" id="new" class="btn btn-default navbar-btn" data-toggle="tooltip" data-placement="bottom" title="New (Ctrl+N)">
             <span class="fui-plus" aria-hidden="true"></span>
           </button>
-          <button type="button" id="delete" class="btn btn-default navbar-btn disabled" data-toggle="tooltip" data-placement="bottom" title="Delete">
+          <button type="button" id="delete" class="btn btn-default navbar-btn disabled" data-toggle="tooltip" data-placement="bottom" title="Delete (Ctrl+Shift+D)">
             <span class="fui-cross" aria-hidden="true"></span>
           </button>
-          <button type="button" id="save" class="btn btn-default navbar-btn disabled" data-toggle="tooltip" data-placement="bottom" title="Save">
+          <button type="button" id="save" class="btn btn-default navbar-btn disabled" data-toggle="tooltip" data-placement="bottom" title="Save (Ctrl+S)">
             <span class="fui-check" aria-hidden="true"></span>
           </button>
         </div>
         <div class="btn-group" role="group">
-          <button type="button" id="mode" class="btn btn-default navbar-btn" data-toggle="tooltip" data-placement="bottom" title="View mode">
+          <button type="button" id="mode" class="btn btn-default navbar-btn" data-toggle="tooltip" data-placement="bottom" title="View mode (Ctrl+Shift+M)">
             <span class="fui-eye" aria-hidden="true"></span>
           </button>
         </div>
@@ -268,7 +268,7 @@
 
         <div class="btn-toolbar en-bottom" role="toolbar">
           <div class="btn-group btn-group-s" role="group">
-            <button type="button" id="tag-add" class="btn btn-bottom bottom-disabled" data-toggle="tooltip" data-placement="right" title="Add Tag">
+            <button type="button" id="tag-add" class="btn btn-bottom bottom-disabled" data-toggle="tooltip" data-placement="right" title="Add Tag (Ctrl+T)">
               <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
             </button>
             <button type="button" id="tag-rm" class="btn btn-bottom bottom-disabled" data-toggle="tooltip" data-placement="right" title="Remove Tag">

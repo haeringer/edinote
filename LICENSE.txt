@@ -37,5 +37,6 @@ which all have their own license terms:
 * FlatUI
 * marked
 * perfect-scrollbar
+* mousetrap
 * nprogress
 * CS50
