@@ -92,26 +92,49 @@ var aceMode = function (filename) {
 /******************************************************************************
  * Keyboard shortcuts when focus is outside editor
  */
-Mousetrap.bind(['command+s', 'ctrl+s'], function() {
-    saveFile(filename, false, false)
+Mousetrap.bind(['command+s', 'ctrl+s'], function(e) {
+    e.preventDefault();
+    saveFile(filename, false, false);
     return false;
 });
-Mousetrap.bind(['command+n', 'ctrl+n'], function() {
+Mousetrap.bind(['command+n', 'ctrl+n'], function(e) {
+    e.preventDefault();
     newFile();
     return false;
 });
-Mousetrap.bind(['command+shift+d', 'ctrl+shift+d'], function() {
+Mousetrap.bind(['command+shift+d', 'ctrl+shift+d'], function(e) {
+    e.preventDefault();
     deleteFile(filename);
     return false;
 });
-Mousetrap.bind(['command+shift+m', 'ctrl+shift+m'], function() {
+Mousetrap.bind(['command+shift+m', 'ctrl+shift+m'], function(e) {
+    e.preventDefault();
     switchMode(false, false);
     return false;
 });
-Mousetrap.bind(['command+t', 'ctrl+t'], function() {
+Mousetrap.bind(['command+t', 'ctrl+shift+t'], function(e) {
+    e.preventDefault();
     tagFile();
     return false;
 });
+
+
+
+Mousetrap.bind('ctrl+f', function(e) {
+    // override browser search
+    if (e.preventDefault) {
+        e.preventDefault();
+    } else {
+        // internet explorer
+        e.returnValue = false;
+    }
+    // re-focus search box
+    $("#q").focus();
+});
+
+
+
+
 
 // enable submitting modal forms with return key
 // TODO consolidate??

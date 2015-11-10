@@ -268,7 +268,7 @@
 
         <div class="btn-toolbar en-bottom" role="toolbar">
           <div class="btn-group btn-group-s" role="group">
-            <button type="button" id="tag-add" class="btn btn-bottom bottom-disabled" data-toggle="tooltip" data-placement="right" title="Add Tag (Ctrl+T)">
+            <button type="button" id="tag-add" class="btn btn-bottom bottom-disabled" data-toggle="tooltip" data-placement="right" title="Add Tag (Ctrl+Shift+T)">
               <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
             </button>
             <button type="button" id="tag-rm" class="btn btn-bottom bottom-disabled" data-toggle="tooltip" data-placement="right" title="Remove Tag">
