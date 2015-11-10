@@ -78,7 +78,7 @@ editor.commands.addCommand({
 });
 editor.commands.addCommand({
     name: 'tagFile',
-    bindKey: { win: 'Ctrl-T', mac: 'Command-T', sender: 'editor|cli' },
+    bindKey: { win: 'Ctrl-Shift-T', mac: 'Command-Shift-T', sender: 'editor|cli' },
     exec: function () { tagFile() }
 });
 
@@ -112,7 +112,7 @@ Mousetrap.bind(['command+shift+m', 'ctrl+shift+m'], function(e) {
     switchMode(false, false);
     return false;
 });
-Mousetrap.bind(['command+t', 'ctrl+shift+t'], function(e) {
+Mousetrap.bind(['command+shift+t', 'ctrl+shift+t'], function(e) {
     e.preventDefault();
     tagFile();
     return false;
