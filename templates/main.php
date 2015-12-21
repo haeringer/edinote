@@ -196,10 +196,10 @@
 
       <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group">
-          <button type="button" id="new" class="btn btn-default navbar-btn" data-toggle="tooltip" data-placement="bottom" title="New (Ctrl+N)">
+          <button type="button" id="new" class="btn btn-default navbar-btn" data-toggle="tooltip" data-placement="bottom" title="New (Ctrl+Alt+N)">
             <span class="fui-plus" aria-hidden="true"></span>
           </button>
-          <button type="button" id="delete" class="btn btn-default navbar-btn disabled" data-toggle="tooltip" data-placement="bottom" title="Delete (Ctrl+Shift+D)">
+          <button type="button" id="delete" class="btn btn-default navbar-btn disabled" data-toggle="tooltip" data-placement="bottom" title="Delete (Ctrl+Alt+D)">
             <span class="fui-cross" aria-hidden="true"></span>
           </button>
           <button type="button" id="save" class="btn btn-default navbar-btn disabled" data-toggle="tooltip" data-placement="bottom" title="Save (Ctrl+S)">
@@ -207,7 +207,7 @@
           </button>
         </div>
         <div class="btn-group" role="group">
-          <button type="button" id="mode" class="btn btn-default navbar-btn" data-toggle="tooltip" data-placement="bottom" title="View mode (Ctrl+Shift+M)">
+          <button type="button" id="mode" class="btn btn-default navbar-btn" data-toggle="tooltip" data-placement="bottom" title="View mode (Ctrl+Alt+M)">
             <span class="fui-eye" aria-hidden="true"></span>
           </button>
         </div>
@@ -268,13 +268,13 @@
 
         <div class="btn-toolbar en-bottom" role="toolbar">
           <div class="btn-group btn-group-s" role="group">
-            <button type="button" id="tag-add" class="btn btn-bottom bottom-disabled" data-toggle="tooltip" data-placement="right" title="Add Tag (Ctrl+Shift+T)">
+            <button type="button" id="tag-add" class="btn btn-bottom bottom-disabled" data-toggle="tooltip" data-placement="right" title="Add Tag (Ctrl+Alt+T)">
               <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
             </button>
-            <button type="button" id="tag-rm" class="btn btn-bottom bottom-disabled" data-toggle="tooltip" data-placement="right" title="Remove Tag">
+            <button type="button" id="tag-rm" class="btn btn-bottom bottom-disabled" data-toggle="tooltip" data-placement="right" title="Remove Tag (Ctrl+Alt+E)">
               <span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>
             </button>
-            <button type="button" id="rename" class="btn btn-bottom bottom-disabled" data-toggle="tooltip" data-placement="right" title="Rename File">
+            <button type="button" id="rename" class="btn btn-bottom bottom-disabled" data-toggle="tooltip" data-placement="right" title="Rename File (Ctrl+Alt+R)">
               <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
             </button>
           </div>

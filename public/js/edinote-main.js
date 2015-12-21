@@ -63,23 +63,33 @@ editor.commands.addCommand({
 });
 editor.commands.addCommand({
     name: 'newFile',
-    bindKey: { win: 'Ctrl-Shift-N', mac: 'Command-Shift-N', sender: 'editor|cli' },
+    bindKey: { win: 'Ctrl-Alt-N', mac: 'Command-Alt-N', sender: 'editor|cli' },
     exec: function () { newFile() }
 });
 editor.commands.addCommand({
     name: 'deleteFile',
-    bindKey: { win: 'Ctrl-Shift-D', mac: 'Command-Shift-D', sender: 'editor|cli' },
+    bindKey: { win: 'Ctrl-Alt-D', mac: 'Command-Alt-D', sender: 'editor|cli' },
     exec: function () { deleteFile(filename) }
 });
 editor.commands.addCommand({
     name: 'switchMode',
-    bindKey: { win: 'Ctrl-Shift-M', mac: 'Command-Shift-M', sender: 'editor|cli' },
+    bindKey: { win: 'Ctrl-Alt-M', mac: 'Command-Alt-M', sender: 'editor|cli' },
     exec: function () { switchMode(false, false) }
 });
 editor.commands.addCommand({
     name: 'tagFile',
     bindKey: { win: 'Ctrl-Alt-T', mac: 'Command-Alt-T', sender: 'editor|cli' },
     exec: function () { tagFile() }
+});
+editor.commands.addCommand({
+    name: 'removeTag',
+    bindKey: { win: 'Ctrl-Alt-E', mac: 'Command-Alt-E', sender: 'editor|cli' },
+    exec: function () { removeTag() }
+});
+editor.commands.addCommand({
+    name: 'renameFile',
+    bindKey: { win: 'Ctrl-Alt-R', mac: 'Command-Alt-R', sender: 'editor|cli' },
+    exec: function () { saveFile(filename, false, true) }
 });
 
 var aceMode = function (filename) {
@@ -97,17 +107,17 @@ Mousetrap.bind(['command+s', 'ctrl+s'], function(e) {
     saveFile(filename, false, false);
     return false;
 });
-Mousetrap.bind(['command+shift+n', 'ctrl+shift+n'], function(e) {
+Mousetrap.bind(['command+alt+n', 'ctrl+alt+n'], function(e) {
     e.preventDefault();
     newFile();
     return false;
 });
-Mousetrap.bind(['command+shift+d', 'ctrl+shift+d'], function(e) {
+Mousetrap.bind(['command+alt+d', 'ctrl+alt+d'], function(e) {
     e.preventDefault();
     deleteFile(filename);
     return false;
 });
-Mousetrap.bind(['command+shift+m', 'ctrl+shift+m'], function(e) {
+Mousetrap.bind(['command+alt+m', 'ctrl+alt+m'], function(e) {
     e.preventDefault();
     switchMode(false, false);
     return false;
@@ -115,6 +125,16 @@ Mousetrap.bind(['command+shift+m', 'ctrl+shift+m'], function(e) {
 Mousetrap.bind(['command+alt+t', 'ctrl+alt+t'], function(e) {
     e.preventDefault();
     tagFile();
+    return false;
+});
+Mousetrap.bind(['command+alt+e', 'ctrl+alt+e'], function(e) {
+    e.preventDefault();
+    removeTag();
+    return false;
+});
+Mousetrap.bind(['command+alt+r', 'ctrl+alt+r'], function(e) {
+    e.preventDefault();
+    saveFile(filename, false, true);
     return false;
 });
 Mousetrap.bind(['command+f', 'ctrl+f'], function(e) {
