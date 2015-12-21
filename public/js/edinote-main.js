@@ -63,7 +63,7 @@ editor.commands.addCommand({
 });
 editor.commands.addCommand({
     name: 'newFile',
-    bindKey: { win: 'Ctrl-N', mac: 'Command-N', sender: 'editor|cli' },
+    bindKey: { win: 'Ctrl-Shift-N', mac: 'Command-Shift-N', sender: 'editor|cli' },
     exec: function () { newFile() }
 });
 editor.commands.addCommand({
@@ -78,7 +78,7 @@ editor.commands.addCommand({
 });
 editor.commands.addCommand({
     name: 'tagFile',
-    bindKey: { win: 'Ctrl-Shift-T', mac: 'Command-Shift-T', sender: 'editor|cli' },
+    bindKey: { win: 'Ctrl-Alt-T', mac: 'Command-Alt-T', sender: 'editor|cli' },
     exec: function () { tagFile() }
 });
 
@@ -97,7 +97,7 @@ Mousetrap.bind(['command+s', 'ctrl+s'], function(e) {
     saveFile(filename, false, false);
     return false;
 });
-Mousetrap.bind(['command+n', 'ctrl+n'], function(e) {
+Mousetrap.bind(['command+shift+n', 'ctrl+shift+n'], function(e) {
     e.preventDefault();
     newFile();
     return false;
@@ -112,32 +112,19 @@ Mousetrap.bind(['command+shift+m', 'ctrl+shift+m'], function(e) {
     switchMode(false, false);
     return false;
 });
-Mousetrap.bind(['command+shift+t', 'ctrl+shift+t'], function(e) {
+Mousetrap.bind(['command+alt+t', 'ctrl+alt+t'], function(e) {
     e.preventDefault();
     tagFile();
     return false;
 });
-
-
-
-Mousetrap.bind('ctrl+f', function(e) {
-    // override browser search
-    if (e.preventDefault) {
-        e.preventDefault();
-    } else {
-        // internet explorer
-        e.returnValue = false;
-    }
-    // re-focus search box
-    $("#q").focus();
+Mousetrap.bind(['command+f', 'ctrl+f'], function(e) {
+    e.preventDefault();
+    $("#filter").focus();
+    return false;
 });
 
 
-
-
-
 // enable submitting modal forms with return key
-// TODO consolidate??
 (function enableReturn() {
     $('#save-as').on('keypress', function(e) {
         if(e.keyCode === 13) {
