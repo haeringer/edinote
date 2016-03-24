@@ -35,13 +35,12 @@ Please note that user settings and files will not be stored permanently in the d
 Edinote runs with a standard Apache or Nginx + PHP setup. PHP is tested for version 5.5.
 
 As its database, Edinote comes with SQLite per default, so the below instructions are
-also for using it with SQLite. Installation setup for usage with MySQL is still in development.
+also for using it with SQLite. Installation setup for usage with MySQL is in development.
 
 For example, to get started on Ubuntu 14.04 with Apache, you can use the following
-installation commands:
+installation command:
 
-    sudo apt-get update
-    sudo apt-get install apache2 php5 libapache2-mod-php5 php5-sqlite
+    sudo apt-get update && apt-get install apache2 php5 libapache2-mod-php5 php5-sqlite
 
 You can use a standard vhost like the Apache example below (but of course you should use
 SSL/HTTPS for production).
@@ -63,11 +62,11 @@ download and unpack it in your web server document root (for example, /var/www/ 
 
     cd /var/www/
     sudo wget https://github.com/haeringer/edinote/archive/vX.X.X.tar.gz
-    sudo tar xf edinote-X.X.X.tar.gz
+    sudo tar xf vX.X.X.tar.gz
 
 Rename the unpacked directory to the name you configured in the web server vhost:
 
-    sudo mv edinote-X.X.X.tar.gz demo.edinote.org
+    sudo mv edinote-X.X.X demo.edinote.org
 
 Grant the web server user (for example, 'www-data' on Ubuntu) owner permissions
 on the Edinote data directory:
