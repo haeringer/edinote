@@ -12,7 +12,7 @@
   <title>&#60;Edinote&#62;</title>
 
   <!-- NProgress loading indicator CSS -->
-  <link href="/css/nprogress.css" rel="stylesheet">
+  <link href="/css/nprogress-login.css" rel="stylesheet">
 
   <!-- Bootstrap Core CSS -->
   <link href="/css/bootstrap.min.css" rel="stylesheet">

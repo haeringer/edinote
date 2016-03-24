@@ -25,9 +25,10 @@ define([
     'perfect-scrollbar',
     'mousetrap',
     'ace/ace',
+    'nprogress',
     'ace/ext/modelist',
     'bootstrap'
-    ], function($, Ps, Mousetrap, ace) {
+    ], function($, Ps, Mousetrap, ace, NProgress) {
 
 
 /******************************************************************************
@@ -225,9 +226,18 @@ $(function() {
     scrollContainer = document.getElementById('file-list');
     Ps.initialize(scrollContainer);
 
-    // stop progress bar and blend in UI
-    require(['nprogress'], function(NProgress) { NProgress.done() });
-    $("#wrapper").delay(1000).fadeIn(500, function() { editor.focus() });
+    // stop progress bar, blend in UI and reconfigure NProgress
+    NProgress.done();
+    $("#wrapper").delay(1000).fadeIn(500, function() {
+        editor.focus();
+        $('link[href="/css/nprogress-login.css"]').attr('href','/css/nprogress.css');
+        NProgress.configure({
+            minimum: 0.1,
+            speed: 350,
+            trickleSpeed: 250,
+            trickleRate: 0.2
+        });
+    });
     console.log('main window loaded');
 });
 
@@ -238,6 +248,7 @@ switchMode(true, false);
 defaultExt(true);
 
 
+
 function showSettings() {
     $('.alert').hide();
     $('#AcntModal').modal('toggle');
@@ -246,7 +257,7 @@ function showSettings() {
 }
 
 function Settings() {
-    $('#loading-spinner').fadeIn(100);
+    NProgress.start();
     console.log('save settings');
     chPassword();
     defaultExt(false);
@@ -294,7 +305,7 @@ function defaultExt(init) {
             console.log(errorThrown.toString());
         });
     }
-    $('#loading-spinner').fadeOut(500);
+    NProgress.done();
 }
 
 
@@ -350,7 +361,7 @@ function chPassword() {
     .fail(function(jqXHR, textStatus, errorThrown) {
         console.log(errorThrown.toString());
     });
-    $('#loading-spinner').fadeOut(500);
+    NProgress.done();
 }
 
 
@@ -374,7 +385,7 @@ function userAdd() {
         return false;
     }
 
-    $('#loading-spinner').fadeIn(100);
+    NProgress.start();
     $.ajax({
         method: "POST",
         url: "useradd.php",
@@ -408,7 +419,7 @@ function userAdd() {
     .fail(function(jqXHR, textStatus, errorThrown) {
         console.log(errorThrown.toString());
     });
-    $('#loading-spinner').fadeOut(500);
+    NProgress.done();
 }
 
 
@@ -429,7 +440,7 @@ function userDel() {
         return false;
     }
 
-    $('#loading-spinner').fadeIn(100);
+    NProgress.start();
     $.ajax({
         method: "POST",
         url: "userdel.php",
@@ -461,7 +472,7 @@ function userDel() {
     .fail(function(jqXHR, textStatus, errorThrown) {
         console.log(errorThrown.toString());
     });
-    $('#loading-spinner').fadeOut(500);
+    NProgress.done();
 }
 
 
@@ -493,7 +504,7 @@ function loadFile(fileId_load) {
         return;
     }
 
-    $('#loading-spinner').fadeIn(100);
+    NProgress.start();
     fileId = fileId_load;
     console.log('load file with id ' + fileId);
 
@@ -514,7 +525,7 @@ function loadFile(fileId_load) {
         ext = filename.substr((~-filename.lastIndexOf(".") >>> 0) + 2);
         enableDelete();
         console.log('file "' + response.filename + '" loaded');
-        $('#loading-spinner').fadeOut(500);
+        NProgress.done();
 
         if (viewmode === false) {
             /* fill editor with response data returned from getfile.php and set
@@ -599,7 +610,7 @@ function saveFile(filename, save_as, renameTrigger) {
         }
         input.focus();
     } else {
-        $('#loading-spinner').fadeIn(100);
+        NProgress.start();
         $.ajax({
             method: "POST",
             url: "save.php",
@@ -613,7 +624,7 @@ function saveFile(filename, save_as, renameTrigger) {
         })
 
         .done(function(response) {
-            $('#loading-spinner').fadeOut(500);
+            NProgress.done();
             console.log('rename: ' + rename);
             console.log('save.php returned ' + JSON.stringify(response));
 
@@ -685,7 +696,7 @@ function deleteFile(filename) {
         return false;
     }
 
-    $('#loading-spinner').fadeIn(100);
+    NProgress.start();
     console.log('deleting file ' + filename);
 
     $.ajax({
@@ -708,7 +719,7 @@ function deleteFile(filename) {
         else if (response.rval === 2) {
             console.log("couldn't delete file from file system");
         }
-        $('#loading-spinner').fadeOut(500);
+        NProgress.done();
     })
 
     .fail(function(jqXHR, textStatus, errorThrown) {
@@ -734,7 +745,7 @@ function tagFile() {
 
 function saveTag() {
     console.log('save tag on file ' + filename);
-    $('#loading-spinner').fadeIn(100);
+    NProgress.start();
     var tag = $("input#save-tag").val();
     if (tag === "") {
         $('.alert').hide();
@@ -756,7 +767,7 @@ function saveTag() {
 
     .done(function(response) {
         console.log('settag.php returned ' + JSON.stringify(response));
-        $('#loading-spinner').fadeOut(500);
+        NProgress.done();
 
         if (response.rval === 0) {
             $('#TagModal').modal('hide');
@@ -794,7 +805,7 @@ function selectTag(tagId_obj) {
 function removeTag() {
     if ($('button#tag-rm').hasClass('bottom-disabled')) { return false }
     console.log('remove Tag ' + tagId);
-    $('#loading-spinner').fadeIn(100);
+    NProgress.start();
     $.ajax({
         method: "POST",
         url: "rmtag.php",
@@ -803,7 +814,7 @@ function removeTag() {
 
     .done(function(response) {
         console.log('rmtag.php returned ' + JSON.stringify(response));
-        $('#loading-spinner').fadeOut(500);
+        NProgress.done();
 
         if (response.rval === 1) {
             console.log("tag ID was empty");
