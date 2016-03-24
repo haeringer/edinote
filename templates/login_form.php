@@ -22,6 +22,15 @@
 
   <!-- Edinote CSS -->
   <link href="/css/edinote-main.css" rel="stylesheet">
+  
+  <!-- jQuery -->
+  <script src="/js/jquery.min.js"></script>
+
+  <!-- Bootstrap Core JavaScript -->
+  <script src="/js/bootstrap.min.js"></script>
+
+  <!-- Edinote login page js -->
+  <script src="/js/edinote-login.js"></script>
 
 </head>
 
@@ -48,14 +57,7 @@
 </form>
 </div>
 
-<!-- jQuery -->
-<script src="/js/jquery.min.js"></script>
 
-<!-- Bootstrap Core JavaScript -->
-<script src="/js/bootstrap.min.js"></script>
-
-<!-- Edinote login page js -->
-<script src="/js/edinote-login.js"></script>
 
 </body>
 
