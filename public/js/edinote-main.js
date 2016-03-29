@@ -304,8 +304,8 @@ function defaultExt(init) {
         .fail(function(jqXHR, textStatus, errorThrown) {
             console.log(errorThrown.toString());
         });
+        NProgress.done();
     }
-    NProgress.done();
 }
 
 
