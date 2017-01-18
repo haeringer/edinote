@@ -13,13 +13,14 @@ an easy setup for your own web server.
 * Simple, quick file management
 * Instant file search
 * Tag support
-* A real good text editor (Ace)
-* Formatted Markdown view
+* Formatted Markdown view option
 * Syntax highlighting
-* **no** WYSIWYG - it's Markdown ;)
 * Keyboard shortcuts
+* Note storage as text files for simple backup
 * Mobile usability
 * Multi-user support
+* A real good text editor (Ace)
+* **no** WYSIWYG - it's Markdown ;)
 
 
 ## Demo ##
@@ -42,8 +43,8 @@ installation command:
 
     sudo apt-get update && apt-get install apache2 php5 libapache2-mod-php5 php5-sqlite
 
-You can use a standard vhost like the Apache example below (but of course you should use
-SSL/HTTPS for production).
+You can use a simple standard vhost like the Apache example below. For production however, you should use
+SSL/HTTPS, for example with a certificate from [letsencrypt](https://letsencrypt.org/getting-started/).
 
     <VirtualHost *:80>
 

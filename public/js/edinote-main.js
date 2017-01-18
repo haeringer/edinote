@@ -19,6 +19,7 @@ var extDefault = '';
 var rename = false;
 var scrollContainer;
 var demo;
+var width;
 
 define([
     'jquery',
@@ -921,14 +922,19 @@ function switchMode(init, newfile) {
  * various stuff
  */
 
-// set height of editor/view mode container + width of some sidebar elements
+// set height of editor/view mode container + sidebar size & collapse
 function setSize() {
-    var editor_height = $(window).height() - 110;
-    var sidebar_height = editor_height - 100;
+    width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;
+    if (width < 768) {
+        var editor_height = $(window).height();
+        $('div.navbar-collapse').addClass('collapse');
+    } else {
+        editor_height = $(window).height() - 110;
+        $('div.navbar-collapse').removeClass('collapse');
+    }
     $("#editor-container").css("height", editor_height);
     $("#md-container").css("height", editor_height);
-    $("#file-list").css("max-height", sidebar_height);
-
+    $("#file-list").css("max-height", editor_height - 100);
     var filesWidth = $(window).width() - 22;
     if (filesWidth < 768) {
         $('.list-width').css('width', filesWidth);
@@ -937,17 +943,8 @@ function setSize() {
     }
 }
 setSize();
-window.onresize = function(event) { setSize() };
-
-// collapse sidebar on mobile/resize
-$(window).bind("load resize", function() {
-    var width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;
-    if (width < 768) {
-        $('div.navbar-collapse').addClass('collapse');
-    } else {
-        $('div.navbar-collapse').removeClass('collapse');
-    }
-});
+// call again when resizing
+$(window).bind("load resize", function() { setSize() });
 
 function enableDelete() {
     if (filename !== '') {
