@@ -26,7 +26,7 @@ an easy setup for your own web server.
 ## Demo ##
 
 Log in with credentials 'demo' / 'demo' at [demo.edinote.org](https://demo.edinote.org).
-Please note that user settings and files will not be stored permanently in the demo.
+Please note that new files are erased every 30 minutes in the demo.
 
 
 ## Installation
