@@ -38,7 +38,7 @@ var EventEmitter = require("../lib/event_emitter").EventEmitter;
 
 var CHAR_COUNT = 0;
 
-var FontMetrics = exports.FontMetrics = function(parentEl, interval) {
+var FontMetrics = exports.FontMetrics = function(parentEl) {
     this.el = dom.createElement("div");
     this.$setMeasureNodeStyles(this.el.style, true);
     
@@ -133,7 +133,7 @@ var FontMetrics = exports.FontMetrics = function(parentEl, interval) {
                rect = this.$measureNode.getBoundingClientRect();
             } catch(e) {
                rect = {width: 0, height:0 };
-            };
+            }
             var size = {
                 height: rect.height,
                 width: rect.width / CHAR_COUNT

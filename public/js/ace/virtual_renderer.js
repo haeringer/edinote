@@ -126,7 +126,7 @@ var VirtualRenderer = function(container, theme) {
         column : 0
     };
 
-    this.$fontMetrics = new FontMetrics(this.container, 500);
+    this.$fontMetrics = new FontMetrics(this.container);
     this.$textLayer.$setFontMetrics(this.$fontMetrics);
     this.$textLayer.addEventListener("changeCharacterSize", function(e) {
         _self.updateCharacterSize();
@@ -245,6 +245,7 @@ var VirtualRenderer = function(container, theme) {
         
         this.$loop.schedule(this.CHANGE_FULL);
         this.session.$setFontMetrics(this.$fontMetrics);
+        this.scrollBarV.scrollLeft = this.scrollBarV.scrollTop = null;
         
         this.onChangeNewLineMode = this.onChangeNewLineMode.bind(this);
         this.onChangeNewLineMode()
@@ -680,8 +681,12 @@ var VirtualRenderer = function(container, theme) {
      * @returns {Number}
      **/
     this.getLastFullyVisibleRow = function() {
-        var flint = Math.floor((this.layerConfig.height + this.layerConfig.offset) / this.layerConfig.lineHeight);
-        return this.layerConfig.firstRow - 1 + flint;
+        var config = this.layerConfig;
+        var lastRow = config.lastRow
+        var top = this.session.documentToScreenRow(lastRow, 0) * config.lineHeight;
+        if (top - this.session.getScrollTop() > config.height - config.lineHeight)
+            return lastRow - 1;
+        return lastRow;
     };
 
     /**
@@ -908,12 +913,13 @@ var VirtualRenderer = function(container, theme) {
     this.$autosize = function() {
         var height = this.session.getScreenLength() * this.lineHeight;
         var maxHeight = this.$maxLines * this.lineHeight;
-        var desiredHeight = Math.max(
-            (this.$minLines||1) * this.lineHeight,
-            Math.min(maxHeight, height)
+        var desiredHeight = Math.min(maxHeight, 
+            Math.max((this.$minLines || 1) * this.lineHeight, height)
         ) + this.scrollMargin.v + (this.$extraHeight || 0);
         if (this.$horizScroll)
             desiredHeight += this.scrollBarH.getHeight();
+        if (this.$maxPixelHeight && desiredHeight > this.$maxPixelHeight)
+            desiredHeight = this.$maxPixelHeight;
         var vScroll = height > maxHeight;
         
         if (desiredHeight != this.desiredHeight ||
@@ -1027,7 +1033,7 @@ var VirtualRenderer = function(container, theme) {
             minHeight : minHeight,
             maxHeight : maxHeight,
             offset : offset,
-            gutterOffset : Math.max(0, Math.ceil((offset + size.height - size.scrollerHeight) / lineHeight)),
+            gutterOffset : lineHeight ? Math.max(0, Math.ceil((offset + size.height - size.scrollerHeight) / lineHeight)) : 0,
             height : this.$size.scrollerHeight
         };
 
@@ -1170,13 +1176,13 @@ var VirtualRenderer = function(container, theme) {
         var scrollTop = this.$scrollAnimation ? this.session.getScrollTop() : this.scrollTop;
         
         if (scrollTop + topMargin > top) {
-            if (offset)
+            if (offset && scrollTop + topMargin > top + this.lineHeight)
                 top -= offset * this.$size.scrollerHeight;
             if (top === 0)
                 top = -this.scrollMargin.top;
             this.session.setScrollTop(top);
         } else if (scrollTop + this.$size.scrollerHeight - bottomMargin < top + this.lineHeight) {
-            if (offset)
+            if (offset && scrollTop + this.$size.scrollerHeight - bottomMargin < top -  this.lineHeight)
                 top += offset * this.$size.scrollerHeight;
             this.session.setScrollTop(top + this.lineHeight - this.$size.scrollerHeight);
         }
@@ -1516,8 +1522,8 @@ var VirtualRenderer = function(container, theme) {
         function afterLoad(module) {
             if (_self.$themeId != theme)
                 return cb && cb();
-            if (!module.cssClass)
-                return;
+            if (!module || !module.cssClass)
+                throw new Error("couldn't load module " + theme + " or it didn't call define");
             dom.importCssString(
                 module.cssText,
                 module.cssClass,
@@ -1719,6 +1725,12 @@ config.defineOptions(VirtualRenderer.prototype, "renderer", {
         set: function(val) {
             this.updateFull();
         }
+    },
+    maxPixelHeight: {
+        set: function(val) {
+            this.updateFull();
+        },
+        initialValue: 0
     },
     scrollPastEnd: {
         set: function(val) {

@@ -81,10 +81,6 @@ var JadeHighlightRules = function() {
             regex: "^!!!\\s*(?:[a-zA-Z0-9-_]+)?"
         },
         {
-            token : "punctuation.section.comment",
-            regex : "^\\s*\/\/(?:\\s*[^-\\s]|\\s+\\S)(?:.*$)"
-        },
-        {
             onMatch: function(value, currentState, stack) {
                 stack.unshift(this.next, value.length - 2, currentState);
                 return "comment";
@@ -138,7 +134,7 @@ var JadeHighlightRules = function() {
         // Match any tag, id or class. skip AST filters
         {
             token: "meta.tag.any.jade",
-            regex: /^\s*(?!\w+\:)(?:[\w-]+|(?=\.|#)])/,
+            regex: /^\s*(?!\w+:)(?:[\w-]+|(?=\.|#)])/,
             next: "tag_single"
         },
         {
@@ -156,8 +152,13 @@ var JadeHighlightRules = function() {
         }
     ],
     "comment_block": [
-        {regex: /^\s*/, onMatch: function(value, currentState, stack) {
+        {regex: /^\s*(?:\/\/)?/, onMatch: function(value, currentState, stack) {
             if (value.length <= stack[1]) {
+                if (value.slice(-1) == "/") {
+                    stack[1] = value.length - 2;
+                    this.next = "";
+                    return "comment";
+                }
                 stack.shift();
                 stack.shift();
                 this.next = stack.shift();

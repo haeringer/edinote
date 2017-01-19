@@ -44,7 +44,7 @@ define(function(require, exports, module) {
                     regex : /"(?:[^"\\]|\\.)*?"/
                 }, {
                     token : "string", // raw
-                    regex : '[`](?:[^`]*)$',
+                    regex : '`',
                     next : "bqstring"
                 }, {
                     token : "constant.numeric", // rune
@@ -96,7 +96,7 @@ define(function(require, exports, module) {
                     regex : "\\*\\/",
                     next : "start"
                 }, {
-                    defaultToken : "comment",
+                    defaultToken : "comment"
                 }
             ],
             "bqstring" : [

@@ -48,11 +48,11 @@ SSL/HTTPS, for example with a certificate from [letsencrypt](https://letsencrypt
 
     <VirtualHost *:80>
 
-    	ServerName demo.edinote.org
-    	DocumentRoot /var/www/demo.edinote.org/public
+    	ServerName edinote.example.com
+    	DocumentRoot /var/www/edinote.example.com/public
 
-    	ErrorLog ${APACHE_LOG_DIR}/demo.edinote.org-error.log
-    	CustomLog ${APACHE_LOG_DIR}/demo.edinote.org-access.log combined
+    	ErrorLog ${APACHE_LOG_DIR}/edinote.example.com-error.log
+    	CustomLog ${APACHE_LOG_DIR}/edinote.example.com-access.log combined
 
     </VirtualHost>
 
@@ -67,28 +67,28 @@ download and unpack it in your web server document root (for example, /var/www/ 
 
 Rename the unpacked directory to the name you configured in the web server vhost:
 
-    sudo mv edinote-X.X.X demo.edinote.org
+    sudo mv edinote-X.X.X edinote.example.com
 
 Grant the web server user (for example, 'www-data' on Ubuntu) owner permissions
 on the Edinote data directory:
 
-    sudo chown -R www-data:www-data demo.edinote.org/data
+    sudo chown -R www-data:www-data edinote.example.com/data
 
 After installation, restart your web server (e.g. `service apache2 restart` on Ubuntu)
 and login as user '**admin**' with password '**edinote**'. After login, change the
 default password in the user settings.
 
-### Move the data directory (optional)
+### Move the data directory (recommended)
 
 In production environments, it is recommended to place the data directory outside
-of the web server document root, for example at /var/lib/:
+of the web server document root, for example on an external storage or at /var/lib/:
 
     sudo mkdir /var/lib/edinote
-    sudo mv demo.edinote.org/data /var/lib/edinote/
+    sudo mv edinote.example.com/data /var/lib/edinote/
 
 Change the DATADIR path in the Edinote configuration:
 
-    sudo vi demo.edinote.org/includes/constants.php
+    sudo vi edinote.example.com/includes/constants.php
     define("DATADIR", "/var/lib/edinote/data/");
 
 ### Data Import

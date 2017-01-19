@@ -19,7 +19,6 @@ var extDefault = '';
 var rename = false;
 var scrollContainer;
 var demo;
-var width;
 
 define([
     'jquery',
@@ -924,7 +923,7 @@ function switchMode(init, newfile) {
 
 // set height of editor/view mode container + sidebar size & collapse
 function setSize() {
-    width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;
+    var width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;
     if (width < 768) {
         var editor_height = $(window).height();
         $('div.navbar-collapse').addClass('collapse');
@@ -989,7 +988,7 @@ function Search() {
     var searchSplit = searchTerm.replace(/ /g, "'):containsi('");
 
     // actual search: filter out / hide unmatched items
-    $("#file-list li").not(":containsi('" + searchSplit + "')").each(function(e)   {
+    $("#file-list li").not(":containsi('" + searchSplit + "')").each(function(e) {
           $(this).addClass('en-hide');
     });
 

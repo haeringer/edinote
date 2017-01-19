@@ -148,6 +148,7 @@ var EditSession = function(text, mode) {
     this.$undoSelect = true;
 
     this.$foldData = [];
+    this.id = "session" + (++EditSession.$uid);
     this.$foldData.toString = function() {
         return this.join("\n");
     };
@@ -536,8 +537,8 @@ var EditSession = function(text, mode) {
     };
 
     /**
-     * Returns an array of numbers, indicating which rows have breakpoints.
-     * @returns {[Number]}
+     * Returns an array of strings, indicating the breakpoint class (if any) applied to each row.
+     * @returns {[String]}
      **/
     this.getBreakpoints = function() {
         return this.$breakpoints;
@@ -565,7 +566,7 @@ var EditSession = function(text, mode) {
     };
 
     /**
-     * Sets a breakpoint on the row number given by `rows`. This function also emites the `'changeBreakpoint'` event.
+     * Sets a breakpoint on the row number given by `row`. This function also emites the `'changeBreakpoint'` event.
      * @param {Number} row A row index
      * @param {String} className Class of the breakpoint
      *
@@ -581,7 +582,7 @@ var EditSession = function(text, mode) {
     };
 
     /**
-     * Removes a breakpoint on the row number given by `rows`. This function also emites the `'changeBreakpoint'` event.
+     * Removes a breakpoint on the row number given by `row`. This function also emites the `'changeBreakpoint'` event.
      * @param {Number} row A row index
      *
      **/
@@ -1843,13 +1844,13 @@ var EditSession = function(text, mode) {
             // The document size is the current size - the extra width for tabs
             // and multipleWidth characters.
             var len = displayed.length;
-            displayed.join("").
+            displayed.join("")
                 // Get all the TAB_SPACEs.
-                replace(/12/g, function() {
+                .replace(/12/g, function() {
                     len -= 1;
-                }).
+                })
                 // Get all the CHAR_EXT/multipleWidth characters.
-                replace(/2/g, function() {
+                .replace(/2/g, function() {
                     len -= 1;
                 });
 
@@ -2466,7 +2467,7 @@ var EditSession = function(text, mode) {
                c >= 0xFE68 && c <= 0xFE6B ||
                c >= 0xFF01 && c <= 0xFF60 ||
                c >= 0xFFE0 && c <= 0xFFE6;
-    };
+    }
 
 }).call(EditSession.prototype);
 
