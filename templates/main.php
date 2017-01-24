@@ -266,7 +266,7 @@
         </ul>
         <div class="list-shadow list-shadow-bottom list-width"></div>
 
-        <div class="btn-toolbar en-bottom" role="toolbar">
+        <div class="btn-toolbar" role="toolbar">
           <div class="btn-group btn-group-s" role="group">
             <button type="button" id="tag-add" class="btn btn-bottom bottom-disabled" data-toggle="tooltip" data-placement="right" title="Add Tag (Ctrl+Alt+T)">
               <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
@@ -278,6 +278,14 @@
               <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
             </button>
           </div>
+        <div class="btn-toolbar-right pull-right" role="toolbar">
+          <div class="btn-group btn-group-s" role="group">
+            <button type="button" id="recyclebin" class="btn btn-bottom" data-toggle="tooltip" data-placement="right" title="Recycle Bin (Ctrl+Alt+B)">
+              <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
+
         </div>
 
       </div>

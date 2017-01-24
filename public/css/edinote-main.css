@@ -274,6 +274,10 @@ p {
     padding-left: 15px;
 }
 
+.btn-toolbar-right {
+    padding-right: 15px;
+}
+
 .btn-bottom {
     background-color: #ECF0F1;
     color: #95A5A6;
