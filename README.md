@@ -33,15 +33,19 @@ Please note that new files are erased every 30 minutes in the demo.
 
 ### Prerequisites
 
-Edinote runs with a standard Apache or Nginx + PHP setup. PHP is tested for version 5.5.
+Edinote runs with a standard Apache or Nginx + PHP setup. PHP is tested for versions from 5.5 up to 7.0.
 
 As its database, Edinote comes with SQLite per default, so the below instructions are
 also for using it with SQLite. Installation setup for usage with MySQL is in development.
 
-For example, to get started on Ubuntu 14.04 with Apache, you can use the following
+For example, to get started on Ubuntu 16.04 with Apache, you can use the following
 installation command:
 
-    sudo apt-get update && apt-get install apache2 php5 libapache2-mod-php5 php5-sqlite
+    sudo apt-get update && apt-get install apache2 php libapache2-mod-php php-sqlite3
+
+SQLite support may be disabled by default. Enable it by uncommenting the following line in `/etc/php/7.0/apache2/php.ini`:
+
+    extension=php_pdo_sqlite.dll
 
 You can use a simple standard vhost like the Apache example below. For production however, you should use
 SSL/HTTPS, for example with a certificate from [letsencrypt](https://letsencrypt.org/getting-started/).
