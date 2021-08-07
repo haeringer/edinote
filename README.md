@@ -25,7 +25,7 @@ an easy setup for your own web server.
 
 ## Demo ##
 
-Log in with credentials 'demo' / 'demo' at [demo.edinote.org](https://demo.edinote.org).
+Log in with credentials 'demo' / 'demo' at [edinote.haeringer.org](http://edinote.haeringer.org).
 Please note that new files are erased every 30 minutes in the demo.
 
 
