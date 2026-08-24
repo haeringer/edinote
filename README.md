@@ -1,3 +1,5 @@
+⚠️ This project is no longer being developed.
+
 # Edinote #
 
 Edinote is a web-based note taking application. It aims to be simple and fast,
@@ -25,8 +27,15 @@ an easy setup for your own web server.
 
 ## Demo ##
 
-Log in with credentials 'demo' / 'demo' at [edinote.haeringer.org](http://edinote.haeringer.org).
+Log in with credentials 'demo' / 'demo' at [~~https://demo.edinote.org~~](http://demo.edinote.org)(inactive).
 Please note that new files are erased every 30 minutes in the demo.
+
+
+## Screenshots ##
+<img width="2404" height="1633" alt="Screenshot from 2026-08-24 21-51-19" src="https://github.com/user-attachments/assets/5ac1ecfd-39d1-4fb9-9eb2-944b8ed6c5c5" />
+<img width="2404" height="1633" alt="Screenshot from 2026-08-24 21-51-30" src="https://github.com/user-attachments/assets/c0910b65-d962-4653-a14f-dce56b69c9e9" />
+<img width="2404" height="1633" alt="Screenshot from 2026-08-24 21-53-45" src="https://github.com/user-attachments/assets/619ed9eb-00bb-4309-a17e-986ef348a765" />
+<img width="2404" height="1633" alt="Screenshot from 2026-08-24 21-51-53" src="https://github.com/user-attachments/assets/314466e8-46a6-478f-852a-421e60b764f0" />
 
 
 ## Installation
